@@ -105,10 +105,10 @@ function HudTooltip({ content, children }: { content: string; children: ReactEle
 
 // The browser's default focus outline all but disappears on the dark bar.
 const hudFocusClasses =
-	"focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#10b981]/70";
+	"focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#9a85f7]/70";
 
 // Exact values from the design's renderVals() (comfortable density, rounded
-// shape, #10b981 accent) — btnSize 34 / btnRadius 10 / containerRadius 17
+// shape, #9a85f7 accent) — btnSize 34 / btnRadius 10 / containerRadius 17
 // (btnRadius + padY) / dividerLen 22. Every control is its own standalone
 // transparent icon button (no shared "group" pill background) — grouping
 // reads purely from proximity + the divider spans between logical sections.
@@ -273,7 +273,7 @@ export const HudSystemAudioButton = memo(function HudSystemAudioButton({
 				aria-disabled={locked || undefined}
 				onClick={locked ? undefined : onClick}
 			>
-				<VolumeIcon muted={!enabled} className={enabled ? "text-[#10b981]" : ""} />
+				<VolumeIcon muted={!enabled} className={enabled ? "text-[#9a85f7]" : ""} />
 			</button>
 		</HudTooltip>
 	);
@@ -303,7 +303,7 @@ export const HudMicButton = memo(function HudMicButton({
 				aria-disabled={locked || undefined}
 				onClick={locked ? undefined : onClick}
 			>
-				<MicIcon muted={!enabled} className={enabled ? "text-[#10b981]" : ""} />
+				<MicIcon muted={!enabled} className={enabled ? "text-[#9a85f7]" : ""} />
 			</button>
 		</HudTooltip>
 	);
@@ -332,7 +332,7 @@ export function HudCameraPreviewButton({
 				onClick={disabled ? undefined : onClick}
 			>
 				{visible ? (
-					<Eye className="text-[#10b981]" size={ICON_SIZE} />
+					<Eye className="text-[#9a85f7]" size={ICON_SIZE} />
 				) : (
 					<EyeOff size={ICON_SIZE} />
 				)}
@@ -365,7 +365,7 @@ export const HudCameraButton = memo(function HudCameraButton({
 				aria-disabled={locked || undefined}
 				onClick={locked ? undefined : onClick}
 			>
-				<CameraIcon off={!enabled} className={enabled ? "text-[#10b981]" : ""} />
+				<CameraIcon off={!enabled} className={enabled ? "text-[#9a85f7]" : ""} />
 			</button>
 		</HudTooltip>
 	);
@@ -429,7 +429,7 @@ export const HudCursorButton = memo(function HudCursorButton({
 				aria-disabled={locked || undefined}
 				className={`flex h-[34px] w-[34px] shrink-0 items-center justify-center rounded-[10px] border-0 cursor-pointer transition-all duration-150 active:scale-95 aria-disabled:cursor-not-allowed aria-disabled:opacity-50 aria-disabled:active:scale-100 ${hudFocusClasses} ${styles.electronNoDrag} ${
 					editableOverlay
-						? "bg-[#10b981] text-[#08090d] hover:bg-[#0e9e6e] aria-disabled:hover:bg-[#10b981]"
+						? "bg-[#9a85f7] text-[#08090d] hover:bg-[#8571ee] aria-disabled:hover:bg-[#9a85f7]"
 						: "bg-transparent text-[#828c99] hover:bg-white/[0.08] hover:text-[#f5f7fa] aria-disabled:hover:bg-transparent"
 				}`}
 				onClick={locked ? undefined : onClick}
@@ -829,7 +829,7 @@ export const HudNotice = memo(function HudNotice({
 					type="button"
 					size="sm"
 					onClick={onConfirm}
-					className={`h-8 rounded-[9px] bg-[#10b981] text-[13px] font-semibold text-[#08090d] hover:bg-[#10b981]/85 ${hudFocusClasses}`}
+					className={`h-8 rounded-[9px] bg-[#9a85f7] text-[13px] font-semibold text-[#08090d] hover:bg-[#9a85f7]/85 ${hudFocusClasses}`}
 				>
 					{confirmLabel}
 				</Button>

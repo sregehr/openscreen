@@ -51,7 +51,7 @@
 		"zoomExistsAtLocation": "W tym miejscu już jest powiększenie lub brakuje miejsca.",
 		"zoomSuggestionUnavailable": "Obsługa sugestii powiększenia jest niedostępna",
 		"noCursorTelemetry": "Brak danych o kursorze w tym nagraniu",
-		"noCursorTelemetryDescription": "Nagraj ekran za pomocą OpenScreen, aby uzyskać powiększenia śledzące kursor.",
+		"noCursorTelemetryDescription": "Nagraj ekran za pomocą Docebo Screen Recorder, aby uzyskać powiększenia śledzące kursor.",
 		"noUsableTelemetry": "Za mało ruchu kursora",
 		"noUsableTelemetryDescription": "Nagranie nie zawiera wystarczającej ilości danych o ruchu kursora.",
 		"noDwellMoments": "Nie znaleziono wyraźnych momentów zatrzymania kursora",

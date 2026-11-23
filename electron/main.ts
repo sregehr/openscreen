@@ -281,7 +281,7 @@ function setupApplicationMenu() {
 			submenu: [
 				{
 					role: "about",
-					label: mainT("common", "actions.about") || "About OpenScreen",
+					label: mainT("common", "actions.about") || "About Docebo Screen Recorder",
 				},
 				{
 					label: mainT("common", "actions.permissions") || "Permissions…",
@@ -318,7 +318,7 @@ function setupApplicationMenu() {
 				{ type: "separator" },
 				{
 					role: "hide",
-					label: mainT("common", "actions.hide") || "Hide OpenScreen",
+					label: mainT("common", "actions.hide") || "Hide Docebo Screen Recorder",
 				},
 				{
 					role: "hideOthers",
@@ -454,7 +454,7 @@ function setupApplicationMenu() {
 						]
 					: []),
 				{
-					label: mainT("common", "actions.about") || "About OpenScreen",
+					label: mainT("common", "actions.about") || "About Docebo Screen Recorder",
 					click: runAboutDialog,
 				},
 				{ type: "separator" as const },
@@ -590,7 +590,7 @@ async function presentAboutDialog() {
 	const heading = `${PRODUCT_NAME} ${facts.version}`;
 	const choice = await showMessageBox({
 		type: "info",
-		title: mainT("common", "actions.about") || "About OpenScreen",
+		title: mainT("common", "actions.about") || "About Docebo Screen Recorder",
 		message: heading,
 		detail,
 		buttons: [
@@ -1059,10 +1059,10 @@ function updateTrayMenu(recording: boolean = false) {
 				isMac
 					? {
 							role: "about" as const,
-							label: mainT("common", "actions.about") || "About OpenScreen",
+							label: mainT("common", "actions.about") || "About Docebo Screen Recorder",
 						}
 					: {
-							label: mainT("common", "actions.about") || "About OpenScreen",
+							label: mainT("common", "actions.about") || "About Docebo Screen Recorder",
 							click: runAboutDialog,
 						},
 				// Right next to About, and reachable without opening any window: this is the

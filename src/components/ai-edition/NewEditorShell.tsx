@@ -78,6 +78,7 @@ import v4 from "./v4/EditorShellV4.module.css";
 import { type EditorMode, EditorTopBar } from "./v4/EditorTopBar";
 import { type Facet, FloatingInspector } from "./v4/FloatingInspector";
 import { MediaStage } from "./v4/MediaStage";
+import { ProjectsStage } from "./v4/ProjectsStage";
 import { RecStage } from "./v4/RecStage";
 import { V4Timeline } from "./v4/V4Timeline";
 
@@ -415,9 +416,12 @@ export function NewEditorShell() {
 			}
 		: null;
 
-	// refresh project list when the Open Project modal is open
+	// Refresh the project list whenever something that shows it is on screen: the Open
+	// Project modal, or the Projects page. `projectId` is a dependency so that creating or
+	// switching a project while the page is up shows on it.
+	// biome-ignore lint/correctness/useExhaustiveDependencies: projectId only re-triggers the fetch
 	useEffect(() => {
-		if (!openProjectOpen) return;
+		if (!openProjectOpen && mode !== "projects") return;
 		void (async () => {
 			try {
 				const next = await nativeBridgeClient.aiEdition.listProjects();
@@ -426,7 +430,7 @@ export function NewEditorShell() {
 				// ponytail: silent
 			}
 		})();
-	}, [openProjectOpen]);
+	}, [openProjectOpen, mode, projectId]);
 
 	// Auto-load project recording session on mount
 	useEffect(() => {
@@ -913,6 +917,20 @@ export function NewEditorShell() {
 			}
 		},
 		[loadProject],
+	);
+
+	// A card on the Projects page: the open project just returns to the editor; any other
+	// goes through the same unsaved-changes prompt as the Open Project dialog.
+	const handleOpenFromProjectsPage = useCallback(
+		async (id: string) => {
+			if (id !== useProjectStore.getState().projectId) {
+				if ((await promptUnsaved("open")) === "cancel") return;
+				await handleSelectProject(id);
+				if (useProjectStore.getState().projectId !== id) return;
+			}
+			setMode("edit");
+		},
+		[handleSelectProject, promptUnsaved],
 	);
 
 	// The dialog's starting point picks the tab the fresh project opens on:
@@ -1607,7 +1625,7 @@ export function NewEditorShell() {
 		openVoiceoverFlow,
 	]);
 
-	const showTimeline = mode !== "rec";
+	const showTimeline = mode !== "rec" && mode !== "projects";
 	const timelineRow = mode === "media" ? "188px" : `${timelineHeightPx}px`;
 	const bodyColumns = mode === "edit" && chatOpen ? `${chatWidthPx}px 1fr` : "1fr";
 
@@ -1842,6 +1860,16 @@ export function NewEditorShell() {
 						</>
 					) : mode === "media" ? (
 						<MediaStage onAddToTimeline={handleDropAsset} />
+					) : mode === "projects" ? (
+						<ProjectsStage
+							projects={projectSummaries}
+							activeProjectId={projectId}
+							onOpen={(id) => void handleOpenFromProjectsPage(id)}
+							onNew={() => void requestProjectDialog("new")}
+							onDelete={async (id) => {
+								await handleDeleteProject(id, "keep");
+							}}
+						/>
 					) : (
 						<RecStage
 							onStartRecording={() => void handleNewRecording()}

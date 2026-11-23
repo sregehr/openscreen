@@ -285,6 +285,8 @@ function createShimBridgeClient() {
 				title: doc.project.title,
 				updatedAt: doc.project.updatedAt,
 				assetCount: doc.assets.length,
+				createdAt: doc.project.createdAt,
+				thumbnailPath: doc.assets.find((asset) => asset.kind === "video")?.originalPath ?? null,
 			}));
 
 	// ponytail: stateful LLM config/credentials so the "connect a provider"

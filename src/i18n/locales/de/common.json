@@ -40,9 +40,9 @@
 		"zoomOut": "Verkleinern",
 		"toggleFullScreen": "Vollbild ein-/ausschalten",
 		"recordingStatus": "Aufnahme: {{source}}",
-		"about": "Über OpenScreen",
+		"about": "Über Docebo Screen Recorder",
 		"services": "Dienste",
-		"hide": "OpenScreen ausblenden",
+		"hide": "Docebo Screen Recorder ausblenden",
 		"hideOthers": "Andere ausblenden",
 		"unhide": "Alle einblenden",
 		"saveDiagnostics": "Diagnosedaten speichern",
@@ -51,11 +51,11 @@
 		"closeNotification": "Benachrichtigung schließen"
 	},
 	"updates": {
-		"available": "OpenScreen {{latestVersion}} ist verfügbar. Du verwendest {{currentVersion}}.",
-		"current": "OpenScreen ist auf dem neuesten Stand ({{currentVersion}}).",
-		"readyToInstall": "OpenScreen {{latestVersion}} wurde heruntergeladen. Starte neu, um die Installation abzuschließen.",
+		"available": "Docebo Screen Recorder {{latestVersion}} ist verfügbar. Du verwendest {{currentVersion}}.",
+		"current": "Docebo Screen Recorder ist auf dem neuesten Stand ({{currentVersion}}).",
+		"readyToInstall": "Docebo Screen Recorder {{latestVersion}} wurde heruntergeladen. Starte neu, um die Installation abzuschließen.",
 		"blockedRecording": "Beende deine Aufnahme, bevor du das Update installierst.",
-		"blockedLocation": "Verschiebe OpenScreen in deinen Programme-Ordner, bevor du aktualisierst.",
+		"blockedLocation": "Verschiebe Docebo Screen Recorder in deinen Programme-Ordner, bevor du aktualisierst.",
 		"failed": "Nach Updates konnte nicht gesucht werden.",
 		"downloadFailed": "Das Update konnte nicht heruntergeladen werden."
 	},

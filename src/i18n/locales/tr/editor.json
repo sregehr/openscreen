@@ -43,7 +43,7 @@
 		"microphoneDefaulted": "Seçilen mikrofon belirlenemedi. Varsayılan giriş kaydediliyor.",
 		"microphoneUnavailable": "Bu macOS sürümü mikrofonu kaydedemiyor. Mikrofonsuz kaydediliyor.",
 		"restartFailed": "Yeni kayıt başlatılamadı. Önceki kayıt silindi.",
-		"accessibilityAllowAndRetry": "OpenScreen için Erişilebilirlik erişimine izin verin, ardından geri sayımı başlatmak için tekrar kayda basın.",
+		"accessibilityAllowAndRetry": "Docebo Screen Recorder için Erişilebilirlik erişimine izin verin, ardından geri sayımı başlatmak için tekrar kayda basın.",
 		"cursorAccessibilityUnavailable": "Erişilebilirlik erişimi kapalı. Kayıt devam edecek ancak imleç efektleri sınırlı olabilir. Tüm imleç efektlerini kullanmak için Sistem Ayarları'ndan erişimi açın.",
 		"selectSource": "Lütfen kayıt için bir kaynak seçin"
 	},
@@ -103,6 +103,7 @@
 		"changeLanguage": "Dili değiştir",
 		"editorMode": "Düzenleyici modu",
 		"modes": {
+			"projects": "Projeler",
 			"media": "Medya",
 			"edit": "Düzenle",
 			"rec": "Kayıt"
@@ -178,7 +179,7 @@
 		"detectedLanguage": "Algılanan dil: {{language}}",
 		"noAudioTrack": "Ses parçası yok",
 		"noAudioTrackHint": "Bu medyada ses parçası yok — metne dökülecek bir şey bulunmuyor.",
-		"mediaUnreadableHint": "Bu medyanın sesi okunamadı. OpenScreen'in bulunduğu klasöre erişebildiğinden emin olun, ardından yeniden oluşturun.",
+		"mediaUnreadableHint": "Bu medyanın sesi okunamadı. Docebo Screen Recorder'in bulunduğu klasöre erişebildiğinden emin olun, ardından yeniden oluşturun.",
 		"noSpeechDetected": "Konuşma algılanmadı"
 	},
 	"exportDialog": {
@@ -297,7 +298,7 @@
 			"disclaimer": "Videonuzun transkripsiyonu seçtiğiniz sağlayıcıya gönderilecek. Bir sağlayıcı bağlamadan hiçbir şey paylaşılmaz."
 		},
 		"authorUser": "Siz",
-		"authorAssistant": "OpenScreen",
+		"authorAssistant": "Docebo Screen Recorder",
 		"rewindToMessage": "Bu mesaja geri sar",
 		"rewindTip": "Bu mesaja geri sar. Sonraki değişiklikler geri alınır.",
 		"copyMessage": "Mesajı kopyala",
@@ -373,6 +374,10 @@
 		"trashFailed": "Kayıtlar Çöp Sepeti'ne taşınamadı. Kalıcı olarak silinsin mi?",
 		"recycleFailed": "Kayıtlar Geri Dönüşüm Kutusu'na taşınamadı. Kalıcı olarak silinsin mi?",
 		"deletePermanently": "Kalıcı olarak sil"
+	},
+	"projectsStage": {
+		"empty": "Henüz proje yok. Başlamak için bir tane oluşturun.",
+		"current": "Açık"
 	},
 	"editClipDialog": {
 		"title": "Klibi düzenle",
@@ -452,7 +457,7 @@
 	},
 	"mcpServer": {
 		"title": "MCP sunucusu",
-		"description": "Claude Code veya Codex gibi kendi çalıştırdığınız MCP istemcilerinin, yalnızca düzenleyicide açık olan projede değil, projelerinizin herhangi birinde yapay zekâ düzenleme araçlarını kullanmasına izin verin. Kendi hesaplarıyla oturum açarlar; OpenScreen bunları hiçbir zaman görmez.",
+		"description": "Claude Code veya Codex gibi kendi çalıştırdığınız MCP istemcilerinin, yalnızca düzenleyicide açık olan projede değil, projelerinizin herhangi birinde yapay zekâ düzenleme araçlarını kullanmasına izin verin. Kendi hesaplarıyla oturum açarlar; Docebo Screen Recorder bunları hiçbir zaman görmez.",
 		"enableLabel": "Sunucu",
 		"enable": "MCP sunucusunu etkinleştir",
 		"editsLabel": "MCP düzenlemeleri",

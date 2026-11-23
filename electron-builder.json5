@@ -3,7 +3,7 @@
   "$schema": "https://raw.githubusercontent.com/electron-userland/electron-builder/master/packages/app-builder-lib/scheme.json",
   "appId": "com.etiennelescot.openscreen",
   "asar": true,
-  "productName": "Openscreen",
+  "productName": "Docebo Screen Recorder",
   // There is deliberately no `electronVersion` here. electron-builder needs an EXACT
   // version because it downloads the binaries for one release, and it takes that from
   // package.json's `electron` devDependency, which is pinned without a caret for this

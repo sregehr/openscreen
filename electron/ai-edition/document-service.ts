@@ -44,6 +44,26 @@ export interface ProjectSummary {
 	title: string;
 	updatedAt: string;
 	assetCount: number;
+	createdAt: string;
+	/** Where the last clip ends on the timeline; 0 for a project with no clips. */
+	durationSec: number;
+	/** The video a listing can show a frame of: the primary asset, else the first video. */
+	thumbnailPath: string | null;
+}
+
+function summarizeProject(parsed: AxcutDocument): ProjectSummary {
+	const videos = parsed.assets.filter((asset) => asset.kind === "video");
+	const thumbnail =
+		videos.find((asset) => asset.id === parsed.project.primaryAssetId) ?? videos[0] ?? null;
+	return {
+		id: parsed.project.id,
+		title: parsed.project.title,
+		updatedAt: parsed.project.updatedAt,
+		assetCount: parsed.assets.length,
+		createdAt: parsed.project.createdAt,
+		durationSec: parsed.timeline.clips.reduce((end, clip) => Math.max(end, clip.timelineEndSec), 0),
+		thumbnailPath: thumbnail?.originalPath ?? null,
+	};
 }
 
 function stampForSave(document: AxcutDocument): AxcutDocument {
@@ -374,12 +394,7 @@ export class DocumentService {
 	}
 
 	async listProjects(): Promise<ProjectSummary[]> {
-		const summaries = (await this.readAllProjects()).map((parsed) => ({
-			id: parsed.project.id,
-			title: parsed.project.title,
-			updatedAt: parsed.project.updatedAt,
-			assetCount: parsed.assets.length,
-		}));
+		const summaries = (await this.readAllProjects()).map(summarizeProject);
 		summaries.sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
 		return summaries;
 	}

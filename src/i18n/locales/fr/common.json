@@ -40,9 +40,9 @@
 		"zoomOut": "Zoom arrière",
 		"toggleFullScreen": "Basculer en plein écran",
 		"recordingStatus": "Enregistrement : {{source}}",
-		"about": "À propos d’OpenScreen",
+		"about": "À propos d’Docebo Screen Recorder",
 		"services": "Services",
-		"hide": "Masquer OpenScreen",
+		"hide": "Masquer Docebo Screen Recorder",
 		"hideOthers": "Masquer les autres",
 		"unhide": "Tout afficher",
 		"saveDiagnostics": "Enregistrer les diagnostics",
@@ -51,11 +51,11 @@
 		"closeNotification": "Fermer la notification"
 	},
 	"updates": {
-		"available": "OpenScreen {{latestVersion}} est disponible. Vous utilisez la version {{currentVersion}}.",
-		"current": "OpenScreen est à jour ({{currentVersion}}).",
-		"readyToInstall": "OpenScreen {{latestVersion}} a été téléchargé. Redémarrez pour terminer l'installation.",
+		"available": "Docebo Screen Recorder {{latestVersion}} est disponible. Vous utilisez la version {{currentVersion}}.",
+		"current": "Docebo Screen Recorder est à jour ({{currentVersion}}).",
+		"readyToInstall": "Docebo Screen Recorder {{latestVersion}} a été téléchargé. Redémarrez pour terminer l'installation.",
 		"blockedRecording": "Terminez votre enregistrement avant d'installer la mise à jour.",
-		"blockedLocation": "Déplacez OpenScreen dans le dossier Applications avant de le mettre à jour.",
+		"blockedLocation": "Déplacez Docebo Screen Recorder dans le dossier Applications avant de le mettre à jour.",
 		"failed": "Impossible de rechercher les mises à jour.",
 		"downloadFailed": "Impossible de télécharger la mise à jour."
 	},

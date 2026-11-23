@@ -31,7 +31,7 @@ import { formatFirstFixedBinding } from "@/lib/shortcuts";
 import { StylePresetsMenu } from "../StylePresetsMenu";
 import styles from "./EditorShellV4.module.css";
 
-export type EditorMode = "media" | "edit" | "rec";
+export type EditorMode = "projects" | "media" | "edit" | "rec";
 
 export interface TopBarActions {
 	openProject: () => void;
@@ -69,6 +69,7 @@ function applyUpdate() {
 }
 
 const MODES: Array<{ id: EditorMode; labelKey: string }> = [
+	{ id: "projects", labelKey: "topbar.modes.projects" },
 	{ id: "media", labelKey: "topbar.modes.media" },
 	{ id: "edit", labelKey: "topbar.modes.edit" },
 	{ id: "rec", labelKey: "topbar.modes.rec" },
@@ -401,13 +402,13 @@ function AppMenu({ actions }: { actions: TopBarActions }) {
 				className={`${styles.brand} ${styles.brandBtn}`}
 				aria-haspopup="menu"
 				aria-expanded={open}
-				aria-label="OpenScreen"
+				aria-label="Docebo Screen Recorder"
 				onClick={() => setOpen((v) => !v)}
 			>
 				{/* Decorative: the wordmark beside it already names the app — and, being the
 				    button's only text, is also its accessible name. */}
 				<img src={logoMark} alt="" draggable={false} />
-				<span className={styles.name}>OpenScreen</span>
+				<span className={styles.name}>Docebo Screen Recorder</span>
 				<ChevronDown size={13} className={styles.brandChevron} aria-hidden />
 			</button>
 			{open ? (

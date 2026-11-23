@@ -40,9 +40,9 @@
 		"zoomOut": "تصغير",
 		"toggleFullScreen": "ملء الشاشة",
 		"recordingStatus": "جاري التسجيل: {{source}}",
-		"about": "حول OpenScreen",
+		"about": "حول Docebo Screen Recorder",
 		"services": "خدمات",
-		"hide": "إخفاء OpenScreen",
+		"hide": "إخفاء Docebo Screen Recorder",
 		"hideOthers": "إخفاء الآخرين",
 		"unhide": "إظهار الكل",
 		"saveDiagnostics": "حفظ التشخيصات",
@@ -51,11 +51,11 @@
 		"closeNotification": "إغلاق الإشعار"
 	},
 	"updates": {
-		"available": "يتوفر OpenScreen {{latestVersion}}. الإصدار المثبت هو {{currentVersion}}.",
-		"current": "OpenScreen محدّث ({{currentVersion}}).",
-		"readyToInstall": "تم تنزيل OpenScreen {{latestVersion}}. أعد التشغيل لإكمال التثبيت.",
+		"available": "يتوفر Docebo Screen Recorder {{latestVersion}}. الإصدار المثبت هو {{currentVersion}}.",
+		"current": "Docebo Screen Recorder محدّث ({{currentVersion}}).",
+		"readyToInstall": "تم تنزيل Docebo Screen Recorder {{latestVersion}}. أعد التشغيل لإكمال التثبيت.",
 		"blockedRecording": "أنهِ التسجيل قبل تثبيت التحديث.",
-		"blockedLocation": "انقل OpenScreen إلى مجلد التطبيقات قبل التحديث.",
+		"blockedLocation": "انقل Docebo Screen Recorder إلى مجلد التطبيقات قبل التحديث.",
 		"failed": "تعذّر التحقق من وجود تحديثات.",
 		"downloadFailed": "تعذّر تنزيل التحديث."
 	},

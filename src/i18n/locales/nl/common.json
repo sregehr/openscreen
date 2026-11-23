@@ -40,9 +40,9 @@
 		"zoomOut": "Uitzoomen",
 		"toggleFullScreen": "Volledig scherm aan/uit",
 		"recordingStatus": "Opname: {{source}}",
-		"about": "Over OpenScreen",
+		"about": "Over Docebo Screen Recorder",
 		"services": "Services",
-		"hide": "OpenScreen verbergen",
+		"hide": "Docebo Screen Recorder verbergen",
 		"hideOthers": "Andere verbergen",
 		"unhide": "Alles tonen",
 		"saveDiagnostics": "Diagnostiek opslaan",
@@ -51,11 +51,11 @@
 		"closeNotification": "Melding sluiten"
 	},
 	"updates": {
-		"available": "OpenScreen {{latestVersion}} is beschikbaar. Je gebruikt {{currentVersion}}.",
-		"current": "OpenScreen is up-to-date ({{currentVersion}}).",
-		"readyToInstall": "OpenScreen {{latestVersion}} is gedownload. Herstart om de installatie af te ronden.",
+		"available": "Docebo Screen Recorder {{latestVersion}} is beschikbaar. Je gebruikt {{currentVersion}}.",
+		"current": "Docebo Screen Recorder is up-to-date ({{currentVersion}}).",
+		"readyToInstall": "Docebo Screen Recorder {{latestVersion}} is gedownload. Herstart om de installatie af te ronden.",
 		"blockedRecording": "Rond je opname af voordat je de update installeert.",
-		"blockedLocation": "Verplaats OpenScreen naar je map Programma’s voordat je de update uitvoert.",
+		"blockedLocation": "Verplaats Docebo Screen Recorder naar je map Programma’s voordat je de update uitvoert.",
 		"failed": "Kon niet controleren op updates.",
 		"downloadFailed": "Kon de update niet downloaden."
 	},

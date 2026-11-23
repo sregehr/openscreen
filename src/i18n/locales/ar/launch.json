@@ -64,8 +64,8 @@
 		"screens": "الشاشات ({{count}})",
 		"windows": "النوافذ ({{count}})",
 		"emptyTitle": "لم يتم العثور على شاشات أو نوافذ",
-		"emptyDescription": "إذا كنت قد منحت للتو إذن تسجيل الشاشة، أعد تحميل هذه النافذة. قد تحتاج على macOS إلى إعادة فتح OpenScreen.",
-		"loadFailedDescription": "تعذّر على OpenScreen تحميل مصادر الالتقاط. أعد تحميل هذه النافذة وحاول مرة أخرى.",
+		"emptyDescription": "إذا كنت قد منحت للتو إذن تسجيل الشاشة، أعد تحميل هذه النافذة. قد تحتاج على macOS إلى إعادة فتح Docebo Screen Recorder.",
+		"loadFailedDescription": "تعذّر على Docebo Screen Recorder تحميل مصادر الالتقاط. أعد تحميل هذه النافذة وحاول مرة أخرى.",
 		"defaultSourceName": "الشاشة"
 	},
 	"recording": {
@@ -79,7 +79,7 @@
 	"languageWithName": "اللغة: {{language}}",
 	"systemLanguagePrompt": {
 		"title": "هل تريد استخدام لغة نظامك؟",
-		"description": "اكتشفنا أن {{language}} هي لغة نظامك. هل تريد تبديل OpenScreen إلى {{language}}؟",
+		"description": "اكتشفنا أن {{language}} هي لغة نظامك. هل تريد تبديل Docebo Screen Recorder إلى {{language}}؟",
 		"switch": "التبديل إلى {{language}}",
 		"keepDefault": "الاحتفاظ باللغة الحالية"
 	},
@@ -90,7 +90,7 @@
 	},
 	"softwareEncoderFallback": {
 		"title": "تم التبديل إلى الترميز البرمجي",
-		"description": "تعذّر تشغيل مرمّز GPU الافتراضي، لذا تحوّل OpenScreen إلى ترميز H.264 البرمجي. سيستمر التسجيل كالمعتاد، لكن استخدام المعالج قد يكون أعلى.",
+		"description": "تعذّر تشغيل مرمّز GPU الافتراضي، لذا تحوّل Docebo Screen Recorder إلى ترميز H.264 البرمجي. سيستمر التسجيل كالمعتاد، لكن استخدام المعالج قد يكون أعلى.",
 		"dismiss": "حسنًا",
 		"dontShowAgain": "عدم الإظهار مرة أخرى"
 	},
@@ -107,7 +107,7 @@
 		"checkingForUpdates": "جارٍ التحقق…"
 	},
 	"permissions": {
-		"title": "يحتاج OpenScreen إلى بعض الأذونات",
+		"title": "يحتاج Docebo Screen Recorder إلى بعض الأذونات",
 		"subtitle": "يطلب منك macOS منح كل إذن مرة واحدة فقط. يمكنك تغييرها في أي وقت من إعدادات النظام.",
 		"level": {
 			"required": "مطلوب",
@@ -144,17 +144,17 @@
 			"continue": "متابعة",
 			"allow": "سماح",
 			"openSettings": "فتح الإعدادات",
-			"restart": "إعادة تشغيل OpenScreen",
+			"restart": "إعادة تشغيل Docebo Screen Recorder",
 			"start": "ابدأ"
 		},
 		"help": {
-			"screenPrompt": "سيطلب منك macOS بعد ذلك تفعيل OpenScreen في إعدادات النظام.",
-			"screenSettings": "في إعدادات النظام، فعِّل OpenScreen. إذا عرض macOS إنهاء التطبيق وإعادة فتحه، فوافق: ستعود هذه النافذة.",
-			"screenNotListed": "لا يظهر OpenScreen في القائمة؟ انقر على +، ثم اختر OpenScreen من التطبيقات.",
-			"screenRestart": "مسموح. يجب إعادة تشغيل OpenScreen ليتمكن من استخدامه.",
-			"screenRecurring": "عند أول تسجيل، سيسألك macOS ما إذا كان يمكن لـ OpenScreen الوصول إلى شاشتك مباشرة دون منتقي النظام. انقر على «السماح». يكرر macOS هذا السؤال من حين لآخر، وهذا أمر طبيعي.",
-			"systemAudioPrompt": "سيطلب منك macOS السماح لـ OpenScreen بتسجيل الصوت الصادر من جهاز Mac.",
-			"systemAudioRequested": "إذا رفضت، ففعِّل OpenScreen ضمن «تسجيل صوت النظام فقط» في إعدادات النظام."
+			"screenPrompt": "سيطلب منك macOS بعد ذلك تفعيل Docebo Screen Recorder في إعدادات النظام.",
+			"screenSettings": "في إعدادات النظام، فعِّل Docebo Screen Recorder. إذا عرض macOS إنهاء التطبيق وإعادة فتحه، فوافق: ستعود هذه النافذة.",
+			"screenNotListed": "لا يظهر Docebo Screen Recorder في القائمة؟ انقر على +، ثم اختر Docebo Screen Recorder من التطبيقات.",
+			"screenRestart": "مسموح. يجب إعادة تشغيل Docebo Screen Recorder ليتمكن من استخدامه.",
+			"screenRecurring": "عند أول تسجيل، سيسألك macOS ما إذا كان يمكن لـ Docebo Screen Recorder الوصول إلى شاشتك مباشرة دون منتقي النظام. انقر على «السماح». يكرر macOS هذا السؤال من حين لآخر، وهذا أمر طبيعي.",
+			"systemAudioPrompt": "سيطلب منك macOS السماح لـ Docebo Screen Recorder بتسجيل الصوت الصادر من جهاز Mac.",
+			"systemAudioRequested": "إذا رفضت، ففعِّل Docebo Screen Recorder ضمن «تسجيل صوت النظام فقط» في إعدادات النظام."
 		},
 		"footer": {
 			"screenRequired": "تسجيل الشاشة مطلوب للتسجيل.",

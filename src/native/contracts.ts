@@ -271,6 +271,11 @@ export interface AiEditionProjectSummary {
 	title: string;
 	updatedAt: string;
 	assetCount: number;
+	createdAt?: string;
+	/** Where the last clip ends on the timeline; 0 for a project with no clips. */
+	durationSec?: number;
+	/** The video a listing can show a frame of, or null when the project has none. */
+	thumbnailPath?: string | null;
 }
 
 export interface AiEditionAssetResult {

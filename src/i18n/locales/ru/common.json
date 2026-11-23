@@ -40,9 +40,9 @@
 		"zoomOut": "Уменьшить",
 		"toggleFullScreen": "Полноэкранный режим",
 		"recordingStatus": "Запись: {{source}}",
-		"about": "О OpenScreen",
+		"about": "О Docebo Screen Recorder",
 		"services": "Сервисы",
-		"hide": "Скрыть OpenScreen",
+		"hide": "Скрыть Docebo Screen Recorder",
 		"hideOthers": "Скрыть остальные",
 		"unhide": "Показать все",
 		"saveDiagnostics": "Сохранить диагностику",
@@ -51,11 +51,11 @@
 		"closeNotification": "Закрыть уведомление"
 	},
 	"updates": {
-		"available": "Доступен OpenScreen {{latestVersion}}. Установлена версия {{currentVersion}}.",
-		"current": "Установлена последняя версия OpenScreen ({{currentVersion}}).",
-		"readyToInstall": "OpenScreen {{latestVersion}} загружен. Перезапустите, чтобы завершить установку.",
+		"available": "Доступен Docebo Screen Recorder {{latestVersion}}. Установлена версия {{currentVersion}}.",
+		"current": "Установлена последняя версия Docebo Screen Recorder ({{currentVersion}}).",
+		"readyToInstall": "Docebo Screen Recorder {{latestVersion}} загружен. Перезапустите, чтобы завершить установку.",
 		"blockedRecording": "Завершите запись перед установкой обновления.",
-		"blockedLocation": "Переместите OpenScreen в папку «Программы» перед обновлением.",
+		"blockedLocation": "Переместите Docebo Screen Recorder в папку «Программы» перед обновлением.",
 		"failed": "Не удалось проверить наличие обновлений.",
 		"downloadFailed": "Не удалось загрузить обновление."
 	},
