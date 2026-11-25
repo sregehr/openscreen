@@ -225,10 +225,16 @@ export const nativeBridgeClient = {
 				action: "document.addAsset",
 				payload: { projectId, path, label, kind },
 			}),
-		removeAsset: (projectId: string, assetId: string) =>
+		removeAsset: (projectId: string, assetId: string, recordings?: AiEditionRecordingsDisposal) =>
 			requireNativeBridgeData<AiEditionAssetResult>({
 				domain: "aiEdition",
 				action: "document.removeAsset",
+				payload: { projectId, assetId, recordings },
+			}),
+		assetRecordings: (projectId: string, assetId: string) =>
+			requireNativeBridgeData<AiEditionProjectRecordingsResult>({
+				domain: "aiEdition",
+				action: "document.assetRecordings",
 				payload: { projectId, assetId },
 			}),
 		llmGetSnapshot: () =>

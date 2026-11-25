@@ -180,7 +180,11 @@
 		"noAudioTrack": "No audio track",
 		"noAudioTrackHint": "This media has no audio track — there is nothing to transcribe.",
 		"mediaUnreadableHint": "Couldn't read this media's audio. Make sure Docebo Screen Recorder can access the folder it's in, then regenerate.",
-		"noSpeechDetected": "No speech detected"
+		"noSpeechDetected": "No speech detected",
+		"removeFromProject": "Remove from project",
+		"confirmRemove": "Remove this media from the project? Clips that use it leave the timeline.",
+		"removed": "Removed {{label}}",
+		"couldNotRemove": "Could not remove media"
 	},
 	"exportDialog": {
 		"title": "Export",

@@ -180,7 +180,11 @@
 		"noAudioTrack": "Keine Audiospur",
 		"noAudioTrackHint": "Dieses Medium hat keine Audiospur — es gibt nichts zu transkribieren.",
 		"mediaUnreadableHint": "Der Ton dieses Mediums konnte nicht gelesen werden. Stelle sicher, dass Docebo Screen Recorder auf den Ordner zugreifen darf, in dem es liegt, und generiere dann neu.",
-		"noSpeechDetected": "Keine Sprache erkannt"
+		"noSpeechDetected": "Keine Sprache erkannt",
+		"removeFromProject": "Aus Projekt entfernen",
+		"confirmRemove": "Dieses Medium aus dem Projekt entfernen? Clips, die es verwenden, werden aus der Timeline entfernt.",
+		"removed": "{{label}} entfernt",
+		"couldNotRemove": "Medium konnte nicht entfernt werden"
 	},
 	"exportDialog": {
 		"title": "Export",

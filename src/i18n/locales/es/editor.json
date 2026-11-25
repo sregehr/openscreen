@@ -180,7 +180,11 @@
 		"noAudioTrack": "Sin pista de audio",
 		"noAudioTrackHint": "Este medio no tiene pista de audio: no hay nada que transcribir.",
 		"mediaUnreadableHint": "No se pudo leer el audio de este medio. Asegúrate de que Docebo Screen Recorder puede acceder a la carpeta que lo contiene y vuelve a generar.",
-		"noSpeechDetected": "No se detectó voz"
+		"noSpeechDetected": "No se detectó voz",
+		"removeFromProject": "Quitar del proyecto",
+		"confirmRemove": "¿Quitar este medio del proyecto? Los clips que lo usan salen de la línea de tiempo.",
+		"removed": "{{label}} quitado",
+		"couldNotRemove": "No se pudo quitar el medio"
 	},
 	"exportDialog": {
 		"title": "Exportar",

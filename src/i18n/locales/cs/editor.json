@@ -180,7 +180,11 @@
 		"noAudioTrack": "Žádná zvuková stopa",
 		"noAudioTrackHint": "Toto médium nemá zvukovou stopu, takže není co přepisovat.",
 		"mediaUnreadableHint": "Zvuk tohoto média se nepodařilo přečíst. Ověřte, že Docebo Screen Recorder má přístup ke složce, ve které je uloženo, a pak jej vygenerujte znovu.",
-		"noSpeechDetected": "Žádná řeč nezjištěna"
+		"noSpeechDetected": "Žádná řeč nezjištěna",
+		"removeFromProject": "Odebrat z projektu",
+		"confirmRemove": "Odebrat toto médium z projektu? Klipy, které ho používají, zmizí z časové osy.",
+		"removed": "{{label}} odebráno",
+		"couldNotRemove": "Médium se nepodařilo odebrat"
 	},
 	"exportDialog": {
 		"title": "Export",

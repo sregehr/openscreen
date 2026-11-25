@@ -34,7 +34,11 @@ import {
 	listOpenRouterModels,
 	probeMiniMaxModels,
 } from "../../ai-edition/llm-provider-auth";
-import { findProjectRecordings, removeRecordingSets } from "../../ai-edition/project-recordings";
+import {
+	findAssetRecordings,
+	findProjectRecordings,
+	removeRecordingSets,
+} from "../../ai-edition/project-recordings";
 import { PROVIDER_DEFINITIONS } from "../../ai-edition/provider-registry";
 import type { McpController } from "../../mcp/mcp-controller";
 import { forgetMediaLinks } from "../../media/mediaLinksRegistry";
@@ -261,7 +265,82 @@ export class AiEditionService {
 		return { assetId, document };
 	}
 
-	async removeAsset(projectId: string, assetId: string): Promise<AiEditionAssetResult> {
+	/** The recordings that deleting this asset could remove with it. */
+	async assetRecordings(
+		projectId: string,
+		assetId: string,
+	): Promise<AiEditionProjectRecordingsResult> {
+		const none = { count: 0, sizeBytes: 0, keptFor: [], unreadable: 0 };
+		const recordings = this.options.recordings;
+		if (!recordings) return { success: true, ...none };
+		try {
+			const found = await findAssetRecordings(
+				projectId,
+				assetId,
+				await this.options.documents.readAllProjectsReport(),
+				recordings.dirs(),
+			);
+			if (!found) return { success: true, ...none };
+			return {
+				success: true,
+				count: found.owned.length,
+				sizeBytes: found.owned.reduce((sum, set) => sum + set.sizeBytes, 0),
+				keptFor: found.keptFor,
+				unreadable: found.unreadable,
+			};
+		} catch (error) {
+			return {
+				success: false,
+				...none,
+				error: error instanceof Error ? error.message : String(error),
+			};
+		}
+	}
+
+	/**
+	 * Removes the asset from the project and, when asked, the recording files only it uses.
+	 * The files go first: when they cannot be removed nothing has changed, so the user can
+	 * retry or keep them. A file imported from elsewhere is never deleted.
+	 */
+	async removeAsset(
+		projectId: string,
+		assetId: string,
+		disposal: AiEditionRecordingsDisposal = "keep",
+	): Promise<AiEditionAssetResult> {
+		const recordings = this.options.recordings;
+		if (disposal !== "keep" && recordings) {
+			const found = await findAssetRecordings(
+				projectId,
+				assetId,
+				await this.options.documents.readAllProjectsReport(),
+				recordings.dirs(),
+			);
+			const owned = found?.owned ?? [];
+			try {
+				// Videos before sidecars: a video the OS refuses to move then leaves its take whole.
+				await removeRecordingSets(
+					owned.map((set) => ({
+						...set,
+						files: [...set.files].sort(
+							(a, b) => Number(a.endsWith(".json")) - Number(b.endsWith(".json")),
+						),
+					})),
+					disposal,
+					recordings.trashItem,
+				);
+			} catch (error) {
+				console.warn("[ai-edition] could not remove an asset's recordings:", error);
+				return {
+					assetId,
+					document: await this.options.documents.getProject(projectId),
+					trashFailed: true,
+				};
+			}
+			await forgetMediaLinks(
+				recordings.registryDir(),
+				owned.flatMap((set) => set.files),
+			).catch((error) => console.warn("[ai-edition] could not update media links:", error));
+		}
 		const document = await this.options.documents.removeAsset(projectId, assetId);
 		return { assetId, document };
 	}

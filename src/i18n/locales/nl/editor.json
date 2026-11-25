@@ -180,7 +180,11 @@
 		"noAudioTrack": "Geen audiospoor",
 		"noAudioTrackHint": "Deze media heeft geen audiospoor. Er valt niets te transcriberen.",
 		"mediaUnreadableHint": "Kon de audio van deze media niet lezen. Controleer of Docebo Screen Recorder toegang heeft tot de map waarin ze staat en genereer daarna opnieuw.",
-		"noSpeechDetected": "Geen spraak gedetecteerd"
+		"noSpeechDetected": "Geen spraak gedetecteerd",
+		"removeFromProject": "Uit project verwijderen",
+		"confirmRemove": "Dit medium uit het project verwijderen? Clips die het gebruiken verdwijnen van de tijdlijn.",
+		"removed": "{{label}} verwijderd",
+		"couldNotRemove": "Kan medium niet verwijderen"
 	},
 	"exportDialog": {
 		"title": "Exporteren",

@@ -36,7 +36,14 @@ function renderStage(overrides: Partial<Parameters<typeof ProjectsStage>[0]> = {
 		activeProjectId: "proj_a",
 		onOpen: vi.fn(),
 		onNew: vi.fn(),
-		onDelete: vi.fn(),
+		onDelete: vi.fn(async () => undefined),
+		loadRecordings: vi.fn(async () => ({
+			success: true,
+			count: 0,
+			sizeBytes: 0,
+			keptFor: [],
+			unreadable: 0,
+		})),
 		...overrides,
 	};
 	renderWithI18n(<ProjectsStage {...props} />);
@@ -94,7 +101,40 @@ describe("ProjectsStage", () => {
 		expect(onDelete).not.toHaveBeenCalled();
 
 		fireEvent.click(screen.getByRole("button", { name: "Delete" }));
-		await waitFor(() => expect(onDelete).toHaveBeenCalledWith("proj_b"));
+		await waitFor(() => expect(onDelete).toHaveBeenCalledWith("proj_b", "keep"));
+	});
+
+	it("moves a project's recordings to the Trash only when the toggle is on", async () => {
+		const { onDelete } = renderStage({
+			loadRecordings: vi.fn(async () => ({
+				success: true,
+				count: 1,
+				sizeBytes: 2048,
+				keptFor: [],
+				unreadable: 0,
+			})),
+		});
+		fireEvent.click(screen.getByRole("button", { name: /delete project: onboarding/i }));
+		fireEvent.click(await screen.findByRole("button", { name: /also move its recordings/i }));
+		fireEvent.click(screen.getByRole("button", { name: "Delete" }));
+
+		await waitFor(() => expect(onDelete).toHaveBeenCalledWith("proj_b", "trash"));
+	});
+
+	it("never offers to remove the open project's recordings", () => {
+		const { loadRecordings } = renderStage();
+		fireEvent.click(screen.getByRole("button", { name: /delete project: launch/i }));
+		expect(loadRecordings).not.toHaveBeenCalled();
+	});
+
+	it("offers a permanent delete when the Trash refuses", async () => {
+		const onDelete = vi.fn(async () => ({ trashFailed: true }));
+		renderStage({ onDelete });
+		fireEvent.click(screen.getByRole("button", { name: /delete project: onboarding/i }));
+		fireEvent.click(screen.getByRole("button", { name: "Delete" }));
+		fireEvent.click(await screen.findByRole("button", { name: /delete permanently/i }));
+
+		await waitFor(() => expect(onDelete).toHaveBeenLastCalledWith("proj_b", "permanent"));
 	});
 
 	it("cancelling the confirm deletes nothing", () => {

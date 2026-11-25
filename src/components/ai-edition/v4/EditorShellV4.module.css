@@ -1021,6 +1021,42 @@
 	cursor: default;
 }
 
+/* Media detail: remove the selected media from the project. */
+.mediaRemoveBtn {
+	width: 100%;
+	height: 34px;
+	/* The pane is a scrolling flex column: without this a short window squeezes the button. */
+	flex-shrink: 0;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 7px;
+	margin-bottom: 16px;
+	border: 1px solid var(--border);
+	border-radius: 9px;
+	background: transparent;
+	color: var(--danger);
+	font-size: 12.5px;
+	font-weight: 600;
+	cursor: pointer;
+}
+.mediaRemoveBtn:hover {
+	background: var(--surface-1);
+}
+.mediaRemoveConfirm {
+	flex-shrink: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	margin-bottom: 16px;
+	padding: 12px;
+	border: 1px solid var(--border);
+	border-radius: 9px;
+	color: var(--fg);
+	font-size: 12.5px;
+	line-height: 1.4;
+}
+
 /* ─── REC STAGE ────────────────────────────────────────────────────── */
 /* A settings panel sized for the editor's real estate — not a copy of the
    floating HUD's small draggable pill toolbar (no drag handle, orientation

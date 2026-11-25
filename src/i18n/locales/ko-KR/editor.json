@@ -180,7 +180,11 @@
 		"noAudioTrack": "오디오 트랙 없음",
 		"noAudioTrackHint": "이 미디어에는 오디오 트랙이 없어 받아쓸 내용이 없습니다.",
 		"mediaUnreadableHint": "이 미디어의 오디오를 읽을 수 없습니다. Docebo Screen Recorder이 파일이 있는 폴더에 접근할 수 있는지 확인한 후 다시 생성하세요.",
-		"noSpeechDetected": "음성이 감지되지 않음"
+		"noSpeechDetected": "음성이 감지되지 않음",
+		"removeFromProject": "프로젝트에서 제거",
+		"confirmRemove": "이 미디어를 프로젝트에서 제거할까요? 이 미디어를 사용하는 클립은 타임라인에서 빠집니다.",
+		"removed": "{{label}} 제거됨",
+		"couldNotRemove": "미디어를 제거할 수 없습니다"
 	},
 	"exportDialog": {
 		"title": "내보내기",
