@@ -627,6 +627,36 @@ final class AudioTrackMixerTests: XCTestCase {
 		}
 	}
 
+	// MARK: - Off-rate sources
+
+	/// An Apple Studio Display's microphone delivers 44.1 kHz. Each buffer used to be converted
+	/// on its own and placed at its own rounded timestamp, and 512 frames at 44.1 kHz are
+	/// 557.28 at 48 kHz: most boundaries came out a frame short, and the mixer filled the hole
+	/// with a zero. A steady signal must come through steady.
+	func testAnOffRateMicrophoneIsHeardWithoutHolesBetweenBuffers() {
+		let sourceRate = 44_100
+		let bufferFrames = 512
+		let sink = RecordingSink()
+		let clock = TestClock(.zero)
+		let mixer = makeMixer(sink: sink, clock: clock, includesMicrophone: true, microphoneGain: 1)
+		mixer.beginTimeline(at: clock.now)
+
+		let buffer = [Float](repeating: 0.5, count: bufferFrames * channelCount)
+		for index in 0..<43 {
+			let at = CMTime(value: CMTimeValue(index * bufferFrames), timescale: CMTimeScale(sourceRate))
+			mixer.ingest(makeSourceBuffer(buffer, at: at, nonInterleaved: false, rate: sourceRate), from: .microphone)
+			clock.advance(seconds: Double(bufferFrames) / Double(sourceRate))
+		}
+		mixer.finish(atSourceTime: clock.now)
+
+		let frames = mixedFrames(sink)
+		let first = Int(0.05 * Double(sampleRate))
+		let last = Int(0.45 * Double(sampleRate))
+		for frame in first..<last {
+			XCTAssertEqual(Int(frames[frame * channelCount]), 16_384, accuracy: 2, "frame \(frame)")
+		}
+	}
+
 	// MARK: - Fixtures
 
 	private func makeMixer(
@@ -662,8 +692,10 @@ final class AudioTrackMixerTests: XCTestCase {
 	private func makeSourceBuffer(
 		_ interleavedSamples: [Float],
 		at presentationTime: CMTime,
-		nonInterleaved: Bool
+		nonInterleaved: Bool,
+		rate: Int? = nil
 	) -> CMSampleBuffer {
+		let sampleRate = rate ?? self.sampleRate
 		let frameCount = interleavedSamples.count / channelCount
 		let bytesPerChannelSample = MemoryLayout<Float>.size
 		var asbd = AudioStreamBasicDescription(

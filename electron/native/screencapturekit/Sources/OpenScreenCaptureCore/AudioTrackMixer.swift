@@ -109,6 +109,11 @@ public final class AudioTrackMixer {
 	private let outputFormatDescription: CMAudioFormatDescription?
 
 	private var sources = [SourceTimeline](repeating: SourceTimeline(), count: Source.allCases.count)
+	/// Per source, the conversion to the mix rate for a device that delivers at another one.
+	private var resamplers = [StereoResampler](
+		repeating: StereoResampler(targetRate: Double(MixFormat.sampleRate)),
+		count: Source.allCases.count
+	)
 	/// Timeline origin: frame 0 of the mixed track, in the writer's time domain. Set once,
 	/// eagerly, to the writer's session start — never inferred from a buffer.
 	private var anchor: CMTime?
@@ -174,8 +179,8 @@ public final class AudioTrackMixer {
 		guard presentationTime.isValid, presentationTime.isNumeric else {
 			return
 		}
-		guard let frames = decodeInterleavedStereo(sampleBuffer, gain: gain(for: source)),
-			!frames.isEmpty
+		guard let decoded = decodeInterleavedStereo(sampleBuffer, gain: gain(for: source)),
+			!decoded.frames.isEmpty
 		else {
 			// A source whose buffers never decode contributes silence for the whole recording
 			// and looks exactly like a muted device, so say so once rather than fail quietly.
@@ -185,7 +190,17 @@ public final class AudioTrackMixer {
 
 		let now = clock()
 		discountQueueStall(until: now)
-		let startFrame = frameIndex(of: presentationTime, from: anchor)
+		var frames = decoded.frames
+		var startFrame = frameIndex(of: presentationTime, from: anchor)
+		if decoded.sampleRate == Double(MixFormat.sampleRate) {
+			resamplers[source.rawValue].reset()
+		} else {
+			(frames, startFrame) = resamplers[source.rawValue].process(
+				frames,
+				rate: decoded.sampleRate,
+				timestampFrame: startFrame
+			)
+		}
 		noteDelivery(source, from: startFrame, frameCount: Int64(frames.count / MixFormat.channelCount))
 		sources[source.rawValue].ingest(frames, atFrame: startFrame)
 		// Where the clock stood when this source last said anything — not where its samples
@@ -508,16 +523,20 @@ public final class AudioTrackMixer {
 
 	// MARK: - Sample conversion
 
-	/// Decodes one capture buffer into gain-applied 48 kHz interleaved-stereo Float.
+	/// Decodes one capture buffer into gain-applied interleaved-stereo Float, at the rate it
+	/// arrived in. Conversion to the mix rate is `StereoResampler`'s, because it has to carry
+	/// state from one buffer to the next and this function sees one buffer at a time.
 	///
 	/// Both SCStream audio outputs are configured for 48 kHz stereo, but only system audio
 	/// honours that reliably: the microphone output can arrive in the input device's own format
 	/// — 48 kHz mono 24-bit integer on a MacBook Pro's built-in and USB microphones (#709). So
 	/// the format-adaptive paths (integers of any width up to 32 bits, interleaved or not,
 	/// off-rate sources) are not defensive extras; the format is the stream's to choose, not
-	/// ours. A resampled source's rounding drift is absorbed by timeline placement rather than
-	/// accumulating, unlike in a FIFO mixer.
-	private func decodeInterleavedStereo(_ sampleBuffer: CMSampleBuffer, gain: Float) -> [Float]? {
+	/// ours.
+	private func decodeInterleavedStereo(
+		_ sampleBuffer: CMSampleBuffer,
+		gain: Float
+	) -> (frames: [Float], sampleRate: Double)? {
 		guard let formatDescription = CMSampleBufferGetFormatDescription(sampleBuffer),
 			let streamDescription = CMAudioFormatDescriptionGetStreamBasicDescription(formatDescription)
 		else {
@@ -577,7 +596,7 @@ public final class AudioTrackMixer {
 			return nil
 		}
 
-		return withExtendedLifetime(blockBuffer) { () -> [Float]? in
+		return withExtendedLifetime(blockBuffer) { () -> (frames: [Float], sampleRate: Double)? in
 			// `bufferList` is subscripted against its own count, not the format's channel
 			// count: indexing past `count` would trap rather than degrade.
 			guard bufferList.count > 0 else {
@@ -612,28 +631,14 @@ public final class AudioTrackMixer {
 				)
 			}
 
-			let targetFrames = asbd.mSampleRate == Double(MixFormat.sampleRate)
-				? sourceFrames
-				: max(
-					1,
-					Int(
-						(Double(sourceFrames) * Double(MixFormat.sampleRate) / asbd.mSampleRate)
-							.rounded()
-					)
-				)
-			let ratio = Double(sourceFrames) / Double(targetFrames)
-
-			var output = [Float](repeating: 0, count: targetFrames * MixFormat.channelCount)
-			for targetFrame in 0..<targetFrames {
-				let sourceFrame = targetFrames == sourceFrames
-					? targetFrame
-					: min(sourceFrames - 1, Int((Double(targetFrame) * ratio).rounded()))
+			var output = [Float](repeating: 0, count: sourceFrames * MixFormat.channelCount)
+			for frame in 0..<sourceFrames {
 				for channel in 0..<MixFormat.channelCount {
-					output[targetFrame * MixFormat.channelCount + channel] =
-						readers[channel].value(at: sourceFrame) * gain
+					output[frame * MixFormat.channelCount + channel] =
+						readers[channel].value(at: frame) * gain
 				}
 			}
-			return output
+			return (output, asbd.mSampleRate)
 		}
 	}
 
