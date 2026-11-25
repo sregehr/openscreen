@@ -180,7 +180,11 @@
 		"noAudioTrack": "Nessuna traccia audio",
 		"noAudioTrackHint": "Questo contenuto non ha una traccia audio: non c'è nulla da trascrivere.",
 		"mediaUnreadableHint": "Impossibile leggere l'audio di questo contenuto. Verifica che Docebo Screen Recorder possa accedere alla cartella che lo contiene, poi rigenera.",
-		"noSpeechDetected": "Nessun parlato rilevato"
+		"noSpeechDetected": "Nessun parlato rilevato",
+		"removeFromProject": "Rimuovi dal progetto",
+		"confirmRemove": "Rimuovere questo media dal progetto? Le clip che lo usano vengono tolte dalla timeline.",
+		"removed": "{{label}} rimosso",
+		"couldNotRemove": "Impossibile rimuovere il media"
 	},
 	"exportDialog": {
 		"title": "Esporta",

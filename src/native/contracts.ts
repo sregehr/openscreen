@@ -281,6 +281,8 @@ export interface AiEditionProjectSummary {
 export interface AiEditionAssetResult {
 	assetId: string;
 	document: unknown;
+	/** Removing an asset: its recordings could not go to the Trash, so nothing was removed. */
+	trashFailed?: boolean;
 }
 
 export interface AiEditionDocumentResult {
@@ -707,6 +709,12 @@ export type NativeBridgeRequest =
 	| {
 			domain: "aiEdition";
 			action: "document.removeAsset";
+			payload: { projectId: string; assetId: string; recordings?: AiEditionRecordingsDisposal };
+			requestId?: string;
+	  }
+	| {
+			domain: "aiEdition";
+			action: "document.assetRecordings";
 			payload: { projectId: string; assetId: string };
 			requestId?: string;
 	  }

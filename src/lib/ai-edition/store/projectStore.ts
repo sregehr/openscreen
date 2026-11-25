@@ -3,6 +3,7 @@ import { create } from "zustand";
 import { toFileUrl } from "@/components/video-editor/projectPersistence";
 import { toastText } from "@/i18n/toastText";
 import { nativeBridgeClient } from "@/native/client";
+import type { AiEditionRecordingsDisposal } from "@/native/contracts";
 import { placeAudioTrackInDocument } from "../document/audioTracks";
 import { createId } from "../document/ids";
 import { type Interval, replaceTimeline as replaceTimelineOp } from "../document/timeline";
@@ -193,7 +194,15 @@ export interface ProjectState {
 		},
 	) => Promise<string | null>;
 	setSelectedAudioTrackId: (id: string | null) => void;
-	removeAsset: (assetId: string) => Promise<void>;
+	/**
+	 * Removes the asset from the project. `recordings` also removes the recording files only
+	 * this asset uses; when they cannot go to the Trash nothing is removed and `trashFailed`
+	 * is true.
+	 */
+	removeAsset: (
+		assetId: string,
+		recordings?: AiEditionRecordingsDisposal,
+	) => Promise<{ trashFailed: boolean }>;
 	/**
 	 * Write the document to disk. Resolves `true` when it took effect, `false` when it
 	 * did not.
@@ -538,10 +547,11 @@ export const useProjectStore = create<ProjectState>((set, get) => ({
 		return asset;
 	},
 
-	async removeAsset(assetId) {
+	async removeAsset(assetId, recordings) {
 		const { projectId } = get();
 		if (!projectId) throw new Error("No project loaded");
-		const result = await nativeBridgeClient.aiEdition.removeAsset(projectId, assetId);
+		const result = await nativeBridgeClient.aiEdition.removeAsset(projectId, assetId, recordings);
+		if (result.trashFailed) return { trashFailed: true };
 		const document = parseDocument(result.document);
 		set({
 			document,
@@ -549,6 +559,7 @@ export const useProjectStore = create<ProjectState>((set, get) => ({
 			dirty: false,
 			lastSavedAt: new Date(),
 		});
+		return { trashFailed: false };
 	},
 
 	async saveDocument(document, opts) {

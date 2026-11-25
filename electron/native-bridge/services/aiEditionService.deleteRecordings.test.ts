@@ -129,3 +129,100 @@ describe("AiEditionService — deleting a project's recordings", () => {
 		await expect(documents.getProject(projectId)).rejects.toThrow();
 	});
 });
+
+describe("AiEditionService — removing one asset and its recording", () => {
+	let root: string;
+	let recordingsDir: string;
+	let documents: DocumentService;
+	let video: string;
+	let cursor: string;
+	let projectId: string;
+	let assetId: string;
+	let trashItem: ReturnType<typeof vi.fn<(filePath: string) => Promise<void>>>;
+
+	function service(): AiEditionService {
+		return new AiEditionService({
+			documents,
+			llmConfig: () => {
+				throw new Error("not used");
+			},
+			recordings: {
+				dirs: () => [recordingsDir],
+				registryDir: () => recordingsDir,
+				trashItem,
+			},
+		} as unknown as AiEditionServiceOptions);
+	}
+
+	beforeEach(async () => {
+		root = await fs.mkdtemp(path.join(os.tmpdir(), "openscreen-remove-asset-"));
+		recordingsDir = path.join(root, "recordings");
+		await fs.mkdir(recordingsDir);
+		documents = new DocumentService(path.join(root, "projects"), root);
+		video = path.join(recordingsDir, "recording-42.mp4");
+		cursor = `${video}.cursor.json`;
+		await fs.writeFile(video, "video");
+		await fs.writeFile(cursor, "{}");
+		const doc = await documents.createProject("Take");
+		const withAsset = await documents.addAsset(doc.project.id, {
+			path: video,
+			label: "recording-42.mp4",
+		});
+		projectId = doc.project.id;
+		assetId = withAsset.assets[0].id;
+		trashItem = vi.fn(async (filePath: string) => {
+			await fs.rm(filePath);
+		});
+	});
+
+	afterEach(async () => {
+		await fs.rm(root, { recursive: true, force: true });
+	});
+
+	it("reports what removing the asset could delete", async () => {
+		await expect(service().assetRecordings(projectId, assetId)).resolves.toEqual({
+			success: true,
+			count: 1,
+			sizeBytes: 5 + 2,
+			keptFor: [],
+			unreadable: 0,
+		});
+	});
+
+	it("keeps the files unless asked", async () => {
+		const result = await service().removeAsset(projectId, assetId);
+
+		expect(result.trashFailed).toBeUndefined();
+		expect(trashItem).not.toHaveBeenCalled();
+		await expect(fs.access(video)).resolves.toBeUndefined();
+		expect((await documents.getProject(projectId)).assets).toEqual([]);
+	});
+
+	it("moves the take to the Trash, video first, and removes the asset", async () => {
+		await service().removeAsset(projectId, assetId, "trash");
+
+		expect(trashItem.mock.calls.map(([filePath]) => filePath)).toEqual([video, cursor]);
+		expect((await documents.getProject(projectId)).assets).toEqual([]);
+	});
+
+	it("changes nothing when the Trash refuses, so the user can retry", async () => {
+		trashItem.mockRejectedValue(new Error("Trash is unavailable"));
+
+		const result = await service().removeAsset(projectId, assetId, "trash");
+
+		expect(result.trashFailed).toBe(true);
+		await expect(fs.access(video)).resolves.toBeUndefined();
+		expect((await documents.getProject(projectId)).assets).toHaveLength(1);
+	});
+
+	it("leaves a take another project still uses on disk", async () => {
+		const other = await documents.createProject("Other");
+		await documents.addAsset(other.project.id, { path: video, label: "recording-42.mp4" });
+
+		await service().removeAsset(projectId, assetId, "trash");
+
+		expect(trashItem).not.toHaveBeenCalled();
+		await expect(fs.access(video)).resolves.toBeUndefined();
+		expect((await documents.getProject(projectId)).assets).toEqual([]);
+	});
+});

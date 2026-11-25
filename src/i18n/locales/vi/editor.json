@@ -180,7 +180,11 @@
 		"noAudioTrack": "Không có bản âm thanh",
 		"noAudioTrackHint": "Media này không có bản âm thanh — không có gì để phiên âm.",
 		"mediaUnreadableHint": "Không thể đọc âm thanh của media này. Hãy đảm bảo Docebo Screen Recorder có quyền truy cập thư mục chứa nó, rồi tạo lại.",
-		"noSpeechDetected": "Không phát hiện giọng nói"
+		"noSpeechDetected": "Không phát hiện giọng nói",
+		"removeFromProject": "Xóa khỏi dự án",
+		"confirmRemove": "Xóa media này khỏi dự án? Các clip dùng nó sẽ bị gỡ khỏi dòng thời gian.",
+		"removed": "Đã xóa {{label}}",
+		"couldNotRemove": "Không thể xóa media"
 	},
 	"exportDialog": {
 		"title": "Xuất",

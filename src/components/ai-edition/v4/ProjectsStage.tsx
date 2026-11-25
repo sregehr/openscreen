@@ -5,8 +5,17 @@ import { Film, Plus, Search, Trash2 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { toFileUrl } from "@/components/video-editor/projectPersistence";
 import { useI18n, useScopedT } from "@/contexts/I18nContext";
-import type { AiEditionProjectSummary } from "@/native/contracts";
+import type {
+	AiEditionProjectRecordingsResult,
+	AiEditionProjectSummary,
+	AiEditionRecordingsDisposal,
+} from "@/native/contracts";
 import styles from "./EditorShellV4.module.css";
+import {
+	RecordingsDisposalOptions,
+	useRecordingsDisposal,
+	useTrashFailedText,
+} from "./RecordingsDisposal";
 
 const THUMB_GRADIENTS = [
 	"linear-gradient(135deg, #3b6cff 0%, #7a4dff 100%)",
@@ -88,8 +97,13 @@ export interface ProjectsStageProps {
 	activeProjectId: string | null;
 	onOpen: (id: string) => void;
 	onNew: () => void;
-	/** Deletes the project and keeps its recordings. */
-	onDelete: (id: string) => Promise<void> | void;
+	/** Deletes the project; `recordings` says what happens to the takes only it uses. */
+	onDelete: (
+		id: string,
+		recordings: AiEditionRecordingsDisposal,
+	) => Promise<{ trashFailed?: boolean } | undefined>;
+	/** The recordings deleting the project could remove with it. */
+	loadRecordings: (id: string) => Promise<AiEditionProjectRecordingsResult>;
 }
 
 export function ProjectsStage({
@@ -98,6 +112,7 @@ export function ProjectsStage({
 	onOpen,
 	onNew,
 	onDelete,
+	loadRecordings,
 }: ProjectsStageProps) {
 	const t = useScopedT("editor");
 	const tc = useScopedT("common");
@@ -106,6 +121,13 @@ export function ProjectsStage({
 	// Deleting cannot be undone, so the trash arms a confirm on its own card first.
 	const [confirmId, setConfirmId] = useState<string | null>(null);
 	const [deleting, setDeleting] = useState(false);
+	const disposal = useRecordingsDisposal();
+	const trashFailedText = useTrashFailedText();
+	const arm = (id: string | null) => {
+		setConfirmId(id);
+		// The open project's take is held by the preview, so its recordings are kept.
+		disposal.arm(id && id !== activeProjectId ? () => loadRecordings(id) : null);
+	};
 
 	const filtered = filterProjects(projects, query);
 	const dateFormat = new Intl.DateTimeFormat(locale, { dateStyle: "medium" });
@@ -117,8 +139,12 @@ export function ProjectsStage({
 	const confirmDelete = async (id: string) => {
 		setDeleting(true);
 		try {
-			await onDelete(id);
-			setConfirmId(null);
+			const result = await onDelete(id, disposal.disposal);
+			if (result?.trashFailed) {
+				disposal.setTrashFailed(true);
+				return;
+			}
+			arm(null);
 		} finally {
 			setDeleting(false);
 		}
@@ -182,13 +208,16 @@ export function ProjectsStage({
 									</button>
 									{confirming ? (
 										<div className={styles.projectConfirm} role="alertdialog">
-											<span>{t("openProjectDialog.confirmDelete")}</span>
+											<span>
+												{disposal.trashFailed
+													? trashFailedText
+													: disposal.recordings && disposal.recordings.count > 0
+														? t("openProjectDialog.confirmDeleteProject")
+														: t("openProjectDialog.confirmDelete")}
+											</span>
+											<RecordingsDisposalOptions state={disposal} />
 											<div className={styles.projectConfirmActions}>
-												<button
-													type="button"
-													onClick={() => setConfirmId(null)}
-													disabled={deleting}
-												>
+												<button type="button" onClick={() => arm(null)} disabled={deleting}>
 													{tc("actions.cancel")}
 												</button>
 												<button
@@ -197,7 +226,9 @@ export function ProjectsStage({
 													onClick={() => void confirmDelete(project.id)}
 													disabled={deleting}
 												>
-													{tc("actions.delete")}
+													{disposal.trashFailed
+														? t("openProjectDialog.deletePermanently")
+														: tc("actions.delete")}
 												</button>
 											</div>
 										</div>
@@ -207,7 +238,7 @@ export function ProjectsStage({
 											className={styles.projectDeleteBtn}
 											aria-label={`${t("openProjectDialog.deleteProject")}: ${project.title}`}
 											title={t("openProjectDialog.deleteProject")}
-											onClick={() => setConfirmId(project.id)}
+											onClick={() => arm(project.id)}
 										>
 											<Trash2 size={14} />
 										</button>

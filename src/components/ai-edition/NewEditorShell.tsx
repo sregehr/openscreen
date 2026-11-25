@@ -1866,9 +1866,8 @@ export function NewEditorShell() {
 							activeProjectId={projectId}
 							onOpen={(id) => void handleOpenFromProjectsPage(id)}
 							onNew={() => void requestProjectDialog("new")}
-							onDelete={async (id) => {
-								await handleDeleteProject(id, "keep");
-							}}
+							onDelete={handleDeleteProject}
+							loadRecordings={nativeBridgeClient.aiEdition.recordings}
 						/>
 					) : (
 						<RecStage

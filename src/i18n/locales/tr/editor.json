@@ -180,7 +180,11 @@
 		"noAudioTrack": "Ses parçası yok",
 		"noAudioTrackHint": "Bu medyada ses parçası yok — metne dökülecek bir şey bulunmuyor.",
 		"mediaUnreadableHint": "Bu medyanın sesi okunamadı. Docebo Screen Recorder'in bulunduğu klasöre erişebildiğinden emin olun, ardından yeniden oluşturun.",
-		"noSpeechDetected": "Konuşma algılanmadı"
+		"noSpeechDetected": "Konuşma algılanmadı",
+		"removeFromProject": "Projeden kaldır",
+		"confirmRemove": "Bu medya projeden kaldırılsın mı? Onu kullanan klipler zaman çizelgesinden çıkarılır.",
+		"removed": "{{label}} kaldırıldı",
+		"couldNotRemove": "Medya kaldırılamadı"
 	},
 	"exportDialog": {
 		"title": "Dışa Aktar",

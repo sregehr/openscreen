@@ -180,7 +180,11 @@
 		"noAudioTrack": "Brak ścieżki dźwiękowej",
 		"noAudioTrackHint": "Te multimedia nie mają ścieżki dźwiękowej — nie ma czego transkrybować.",
 		"mediaUnreadableHint": "Nie udało się odczytać dźwięku z tych multimediów. Upewnij się, że Docebo Screen Recorder ma dostęp do folderu, w którym się znajdują, a następnie wygeneruj ponownie.",
-		"noSpeechDetected": "Nie wykryto mowy"
+		"noSpeechDetected": "Nie wykryto mowy",
+		"removeFromProject": "Usuń z projektu",
+		"confirmRemove": "Usunąć to medium z projektu? Klipy, które go używają, znikną z osi czasu.",
+		"removed": "Usunięto {{label}}",
+		"couldNotRemove": "Nie udało się usunąć medium"
 	},
 	"exportDialog": {
 		"title": "Eksport",

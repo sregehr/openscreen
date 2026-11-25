@@ -180,7 +180,11 @@
 		"noAudioTrack": "لا يوجد مسار صوتي",
 		"noAudioTrackHint": "لا يحتوي هذا الملف على مسار صوتي — لا يوجد ما يمكن نسخه.",
 		"mediaUnreadableHint": "تعذّرت قراءة صوت هذا الملف. تأكد من أن Docebo Screen Recorder يمكنه الوصول إلى المجلد الذي يوجد فيه، ثم أعد الإنشاء.",
-		"noSpeechDetected": "لم يتم اكتشاف كلام"
+		"noSpeechDetected": "لم يتم اكتشاف كلام",
+		"removeFromProject": "إزالة من المشروع",
+		"confirmRemove": "هل تريد إزالة هذه الوسائط من المشروع؟ ستُزال المقاطع التي تستخدمها من المخطط الزمني.",
+		"removed": "تمت إزالة {{label}}",
+		"couldNotRemove": "تعذّرت إزالة الوسائط"
 	},
 	"exportDialog": {
 		"title": "تصدير",

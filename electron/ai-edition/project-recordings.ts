@@ -46,6 +46,15 @@ function recordingKey(filePath: string, recordingsDirs: readonly string[]): stri
 	return stem ? path.join(path.resolve(managedDir), stem) : null;
 }
 
+function assetMediaPaths(asset: AxcutDocument["assets"][number]): string[] {
+	return [
+		asset.originalPath,
+		asset.proxyPath,
+		asset.waveformPath,
+		asset.cameraTrack?.sourcePath,
+	].filter((p): p is string => typeof p === "string" && p.length > 0);
+}
+
 function documentRecordingKeys(doc: AxcutDocument, recordingsDirs: readonly string[]): Set<string> {
 	const keys = new Set<string>();
 	for (const mediaPath of documentMediaPaths(doc)) {
@@ -103,6 +112,52 @@ export async function findProjectRecordings(
 	for (const doc of documents) {
 		if (doc.project.id === projectId) continue;
 		const otherKeys = documentRecordingKeys(doc, recordingsDirs);
+		for (const key of keys) {
+			if (otherKeys.has(key)) {
+				keys.delete(key);
+				keptFor.add(doc.project.title);
+			}
+		}
+	}
+
+	const owned: RecordingSet[] = [];
+	for (const key of keys) {
+		const set = await readRecordingSet(key);
+		if (set) owned.push(set);
+	}
+	return { owned, keptFor: [...keptFor], unreadable: 0 };
+}
+
+/**
+ * The recordings one asset owns: takes in one of OpenScreen's recordings folders that no other
+ * asset of its project and no other project uses. `null` when the project or the asset is gone.
+ */
+export async function findAssetRecordings(
+	projectId: string,
+	assetId: string,
+	projects: { documents: readonly AxcutDocument[]; unreadable: readonly string[] },
+	recordingsDirs: readonly string[],
+): Promise<ProjectRecordings | null> {
+	const { documents } = projects;
+	const target = documents.find((doc) => doc.project.id === projectId);
+	const asset = target?.assets.find((candidate) => candidate.id === assetId);
+	if (!target || !asset) return null;
+
+	const keys = new Set<string>();
+	for (const mediaPath of assetMediaPaths(asset)) {
+		const key = recordingKey(mediaPath, recordingsDirs);
+		if (key) keys.add(key);
+	}
+	if (keys.size > 0 && projects.unreadable.length > 0) {
+		return { owned: [], keptFor: [], unreadable: projects.unreadable.length };
+	}
+	const keptFor = new Set<string>();
+	for (const doc of documents) {
+		const others =
+			doc.project.id === projectId
+				? { ...doc, assets: doc.assets.filter((candidate) => candidate.id !== assetId) }
+				: doc;
+		const otherKeys = documentRecordingKeys(others, recordingsDirs);
 		for (const key of keys) {
 			if (otherKeys.has(key)) {
 				keys.delete(key);

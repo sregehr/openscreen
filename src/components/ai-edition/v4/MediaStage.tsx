@@ -1,4 +1,4 @@
-import { ArrowDown, Film, Plus, RotateCw, Search, X } from "lucide-react";
+import { ArrowDown, Film, Plus, RotateCw, Search, Trash2, X } from "lucide-react";
 import { useMemo, useRef, useState } from "react";
 import { toast } from "sonner";
 import { Tooltip } from "@/components/ui/tooltip";
@@ -22,6 +22,7 @@ import {
 	transcriptHasSpeech,
 	transcriptionFailureHintKey,
 } from "@/lib/ai-edition/transcription/status";
+import { nativeBridgeClient } from "@/native/client";
 import { formatBytes } from "@/utils/formatBytes";
 import {
 	TranscriptionProgressBar,
@@ -29,6 +30,11 @@ import {
 	useTranscriptionLabel,
 } from "../TranscriptionStatus";
 import styles from "./EditorShellV4.module.css";
+import {
+	RecordingsDisposalOptions,
+	useRecordingsDisposal,
+	useTrashFailedText,
+} from "./RecordingsDisposal";
 
 const ASSET_MIME = "application/x-axcut-asset";
 const THUMB_GRADIENTS = [
@@ -65,10 +71,17 @@ export function MediaStage({
 	onAddToTimeline: (assetId: string) => Promise<void>;
 }) {
 	const t = useScopedT("editor");
+	const tc = useScopedT("common");
 	const { locale } = useI18n();
 	const projectId = useProjectStore((s) => s.projectId);
 	const document = useProjectStore((s) => s.document);
 	const addAsset = useProjectStore((s) => s.addAsset);
+	const removeAsset = useProjectStore((s) => s.removeAsset);
+	// Removing takes the media's clips off the timeline, so it is confirmed first.
+	const [confirmRemoveId, setConfirmRemoveId] = useState<string | null>(null);
+	const [removing, setRemoving] = useState(false);
+	const disposal = useRecordingsDisposal();
+	const trashFailedText = useTrashFailedText();
 	const saveDocument = useProjectStore((s) => s.saveDocument);
 	const vocabularySave = useRef<Promise<boolean>>(undefined);
 	// Transcripts are produced in the background as soon as a media lands here
@@ -134,9 +147,41 @@ export function MediaStage({
 		}
 	};
 
+	const armRemove = (assetId: string | null) => {
+		setConfirmRemoveId(assetId);
+		disposal.arm(
+			assetId && projectId
+				? () => nativeBridgeClient.aiEdition.assetRecordings(projectId, assetId)
+				: null,
+		);
+	};
+
 	const openDetail = (asset: AxcutAsset) => {
 		setSelectedId(asset.id);
 		setDetailOpen(true);
+		armRemove(null);
+	};
+
+	const confirmRemove = async (asset: AxcutAsset) => {
+		setRemoving(true);
+		try {
+			const result = await removeAsset(asset.id, disposal.disposal);
+			if (result.trashFailed) {
+				disposal.setTrashFailed(true);
+				return;
+			}
+			armRemove(null);
+			setDetailOpen(false);
+			toast.success(
+				t("mediaStage.removed", { label: asset.label || basename(asset.originalPath) }),
+			);
+		} catch (err) {
+			toast.error(t("mediaStage.couldNotRemove"), {
+				description: err instanceof Error ? err.message : String(err),
+			});
+		} finally {
+			setRemoving(false);
+		}
 	};
 
 	const addSelectedToTimeline = () => {
@@ -285,6 +330,7 @@ export function MediaStage({
 									fontSize: 12,
 									color: "var(--muted)",
 									marginBottom: 10,
+									flexShrink: 0,
 									whiteSpace: "nowrap",
 									overflow: "hidden",
 									textOverflow: "ellipsis",
@@ -298,11 +344,12 @@ export function MediaStage({
 								style={{
 									width: "100%",
 									height: 36,
+									flexShrink: 0,
 									display: "inline-flex",
 									alignItems: "center",
 									justifyContent: "center",
 									gap: 7,
-									marginBottom: 16,
+									marginBottom: 8,
 									borderRadius: 9,
 									border: "1px solid var(--accent)",
 									background: "var(--accent)",
@@ -315,6 +362,38 @@ export function MediaStage({
 								<Plus size={14} />
 								{t("mediaStage.addToTimeline")}
 							</button>
+							{confirmRemoveId === selected.id ? (
+								<div className={styles.mediaRemoveConfirm} role="alertdialog">
+									<span>
+										{disposal.trashFailed ? trashFailedText : t("mediaStage.confirmRemove")}
+									</span>
+									<RecordingsDisposalOptions state={disposal} />
+									<div className={styles.projectConfirmActions}>
+										<button type="button" onClick={() => armRemove(null)} disabled={removing}>
+											{tc("actions.cancel")}
+										</button>
+										<button
+											type="button"
+											data-danger
+											onClick={() => void confirmRemove(selected)}
+											disabled={removing}
+										>
+											{disposal.trashFailed
+												? t("openProjectDialog.deletePermanently")
+												: tc("actions.delete")}
+										</button>
+									</div>
+								</div>
+							) : (
+								<button
+									type="button"
+									className={styles.mediaRemoveBtn}
+									onClick={() => armRemove(selected.id)}
+								>
+									<Trash2 size={14} />
+									{t("mediaStage.removeFromProject")}
+								</button>
+							)}
 
 							<div style={{ marginBottom: 16 }}>
 								<span

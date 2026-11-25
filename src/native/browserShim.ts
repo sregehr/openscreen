@@ -587,6 +587,8 @@ function createShimBridgeClient() {
 				saveProjectsState();
 				return Promise.resolve({ assetId, document: next });
 			},
+			assetRecordings: (_projectId: string, _assetId: string) =>
+				Promise.resolve({ success: true, count: 0, sizeBytes: 0, keptFor: [], unreadable: 0 }),
 			llmGetSnapshot: () => Promise.resolve(buildLlmSnapshot()),
 			llmSetConfig: (config: ShimLlmConfig) => {
 				activeConfig = config;

@@ -3,7 +3,11 @@ import os from "node:os";
 import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { DocumentService } from "./document-service";
-import { findProjectRecordings, removeRecordingSets } from "./project-recordings";
+import {
+	findAssetRecordings,
+	findProjectRecordings,
+	removeRecordingSets,
+} from "./project-recordings";
 
 async function touch(filePath: string, content = "x"): Promise<string> {
 	await fs.writeFile(filePath, content);
@@ -136,5 +140,70 @@ describe("project recordings", () => {
 		await removeRecordingSets(owned, "permanent", trashItem);
 		await expect(fs.access(video)).rejects.toThrow();
 		await expect(fs.access(cursor)).rejects.toThrow();
+	});
+	describe("one asset", () => {
+		async function assetIdFor(projectId: string, videoPath: string): Promise<string> {
+			const doc = await documents.getProject(projectId);
+			const asset = doc.assets.find((candidate) => candidate.originalPath === videoPath);
+			if (!asset) throw new Error(`no asset for ${videoPath}`);
+			return asset.id;
+		}
+
+		it("owns its take and leaves the project's other takes alone", async () => {
+			const first = await touch(path.join(recordingsDir, "recording-1.mp4"), "12345");
+			const sidecar = await touch(`${first}.cursor.json`);
+			const second = await touch(path.join(recordingsDir, "recording-2.mp4"));
+			const id = await projectWith("Mine", first, second);
+
+			const found = await findAssetRecordings(
+				id,
+				await assetIdFor(id, first),
+				await documents.readAllProjectsReport(),
+				[recordingsDir],
+			);
+
+			expect(found?.owned).toHaveLength(1);
+			expect(found?.owned[0].files.sort()).toEqual([first, sidecar].sort());
+			expect(found?.keptFor).toEqual([]);
+		});
+
+		it("keeps a take another project uses, and names that project", async () => {
+			const shared = await touch(path.join(recordingsDir, "recording-1.mp4"));
+			const id = await projectWith("Mine", shared);
+			await projectWith("Demo v2", shared);
+
+			const found = await findAssetRecordings(
+				id,
+				await assetIdFor(id, shared),
+				await documents.readAllProjectsReport(),
+				[recordingsDir],
+			);
+
+			expect(found?.owned).toEqual([]);
+			expect(found?.keptFor).toEqual(["Demo v2"]);
+		});
+
+		it("never owns a video imported from outside the recordings folder", async () => {
+			const imported = await touch(path.join(elsewhere, "holiday.mp4"));
+			const id = await projectWith("Mine", imported);
+
+			const found = await findAssetRecordings(
+				id,
+				await assetIdFor(id, imported),
+				await documents.readAllProjectsReport(),
+				[recordingsDir],
+			);
+
+			expect(found).toEqual({ owned: [], keptFor: [], unreadable: 0 });
+		});
+
+		it("answers null for an asset the project does not have", async () => {
+			const id = await projectWith("Mine");
+			await expect(
+				findAssetRecordings(id, "asset_missing", await documents.readAllProjectsReport(), [
+					recordingsDir,
+				]),
+			).resolves.toBeNull();
+		});
 	});
 });

@@ -610,14 +610,38 @@ export function registerNativeBridgeHandlers(context: NativeBridgeContext) {
 									request.payload.kind,
 								),
 							);
-						case "document.removeAsset":
+						case "document.assetRecordings":
+							return createSuccessResponse(
+								requestId,
+								await aiEditionService.assetRecordings(
+									request.payload.projectId,
+									request.payload.assetId,
+								),
+							);
+						// Renderer input: anything but "trash" would take the permanent path.
+						case "document.removeAsset": {
+							const disposal: unknown = request.payload.recordings;
+							if (
+								disposal !== undefined &&
+								disposal !== "keep" &&
+								disposal !== "trash" &&
+								disposal !== "permanent"
+							) {
+								return createErrorResponse(
+									requestId,
+									"INVALID_REQUEST",
+									"Invalid recordings disposal.",
+								);
+							}
 							return createSuccessResponse(
 								requestId,
 								await aiEditionService.removeAsset(
 									request.payload.projectId,
 									request.payload.assetId,
+									disposal,
 								),
 							);
+						}
 						case "llm.getSnapshot":
 							return createSuccessResponse(requestId, await aiEditionService.llmGetSnapshot());
 						case "llm.setConfig":
