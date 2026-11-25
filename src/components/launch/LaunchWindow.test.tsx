@@ -144,10 +144,17 @@ vi.mock("../../lib/requestCameraAccess", () => ({
 	requestCameraAccess: vi.fn(async () => ({ success: true, granted: true, status: "granted" })),
 }));
 
+const projectListState = vi.hoisted(() => ({
+	value: [] as { id: string; title: string; updatedAt: string }[],
+}));
+
 vi.mock("@/native", () => ({
 	nativeBridgeClient: {
 		system: {
 			getPlatform: vi.fn(async () => platformState.value),
+		},
+		aiEdition: {
+			listProjects: vi.fn(async () => projectListState.value),
 		},
 	},
 }));
@@ -221,6 +228,8 @@ vi.mock("@/contexts/I18nContext", () => ({
 			"tooltips.closeApp": "Close App",
 			"tooltips.restartRecording": "Delete this recording and start a new one",
 			"tooltips.cancelRecording": "Stop and delete this recording",
+			"recordingProject.tooltip": "Add the recording to: {{project}}",
+			"recordingProject.newProject": "New project",
 			language: "Language",
 			languageWithName: "Language: {{language}}",
 			"systemLanguagePrompt.title": "Use your system language?",
@@ -2652,5 +2661,75 @@ describe("floating camera preview control", () => {
 		await waitFor(() =>
 			expect(screen.getByTestId("launch-camera-preview-button")).toBeInTheDocument(),
 		);
+	});
+});
+
+// A take used to become a project of its own every time. The bar now says where the take
+// about to be recorded goes, and lets the user change it. The choice lives in storage because
+// the bar and the editor that files the take never exist at the same moment.
+describe("recording project selector", () => {
+	const TARGET_KEY = "openscreen.recordingTargetProjectId";
+
+	beforeEach(() => {
+		window.localStorage.clear();
+		projectListState.value = [
+			{ id: "proj_a", title: "Launch demo", updatedAt: "2026-11-25T10:00:00.000Z" },
+			{ id: "proj_b", title: "Onboarding", updatedAt: "2026-11-24T10:00:00.000Z" },
+		];
+	});
+
+	afterEach(() => {
+		window.localStorage.clear();
+		projectListState.value = [];
+	});
+
+	it("starts on a new project when nothing was chosen", async () => {
+		renderLaunchWindow();
+
+		expect(
+			await screen.findByRole("button", { name: "Add the recording to: New project" }),
+		).toBeInTheDocument();
+	});
+
+	it("names the project the editor handed the take to", async () => {
+		window.localStorage.setItem(TARGET_KEY, "proj_b");
+		renderLaunchWindow();
+
+		expect(
+			await screen.findByRole("button", { name: "Add the recording to: Onboarding" }),
+		).toBeInTheDocument();
+	});
+
+	it("stores the project picked from the menu, and New project clears it", async () => {
+		renderLaunchWindow();
+		fireEvent.click(
+			await screen.findByRole("button", { name: "Add the recording to: New project" }),
+		);
+		const menu = await screen.findByTestId("hud-project-menu");
+		fireEvent.click(await within(menu).findByRole("menuitemradio", { name: "Launch demo" }));
+
+		expect(window.localStorage.getItem(TARGET_KEY)).toBe("proj_a");
+		expect(screen.queryByTestId("hud-project-menu")).not.toBeInTheDocument();
+		const button = await screen.findByRole("button", {
+			name: "Add the recording to: Launch demo",
+		});
+
+		fireEvent.click(button);
+		fireEvent.click(
+			within(await screen.findByTestId("hud-project-menu")).getByRole("menuitemradio", {
+				name: "New project",
+			}),
+		);
+		expect(window.localStorage.getItem(TARGET_KEY)).toBeNull();
+	});
+
+	it("falls back to a new project when the chosen one has been deleted", async () => {
+		window.localStorage.setItem(TARGET_KEY, "proj_gone");
+		renderLaunchWindow();
+
+		expect(
+			await screen.findByRole("button", { name: "Add the recording to: New project" }),
+		).toBeInTheDocument();
+		await waitFor(() => expect(window.localStorage.getItem(TARGET_KEY)).toBeNull());
 	});
 });

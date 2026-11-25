@@ -160,5 +160,9 @@
 			"screenRequired": "A gravação de tela é necessária para gravar.",
 			"ready": "Tudo pronto."
 		}
+	},
+	"recordingProject": {
+		"tooltip": "Adicionar a gravação a: {{project}}",
+		"newProject": "Novo projeto"
 	}
 }

@@ -160,5 +160,9 @@
 			"screenRequired": "Schermopname is nodig om op te nemen.",
 			"ready": "Je bent klaar."
 		}
+	},
+	"recordingProject": {
+		"tooltip": "Opname toevoegen aan: {{project}}",
+		"newProject": "Nieuw project"
 	}
 }

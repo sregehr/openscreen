@@ -35,6 +35,7 @@ import {
 } from "@/lib/ai-edition/timeline/apply-auto-zooms";
 import { probeVideoDuration } from "@/lib/ai-edition/timeline/duration";
 import type { RecordingSession } from "@/lib/recordingSession";
+import { takeRecordingTargetProject } from "@/lib/recordingTargetProject";
 import { nativeBridgeClient } from "@/native/client";
 
 // Fresh recordings used to get cursor-dwell zooms on load (legacy editor
@@ -88,6 +89,9 @@ async function reportReadyRecording(): Promise<void> {
 		console.warn("[recording] could not report saved project:", error);
 	}
 }
+
+// Re-exported for the editor shell, which says where a take it starts belongs.
+export { rememberRecordingTargetProject } from "@/lib/recordingTargetProject";
 
 export function markFreshRecordingAutoZoomPending(assetPath: string): void {
 	pendingFreshRecordingAutoZoom = true;
@@ -356,36 +360,6 @@ export async function maybeSaveFreshRecordingAutoZooms(
 		await reportReadyRecording();
 		return saved;
 	});
-}
-
-// Which project a take belongs in, across the gap where no editor exists.
-//
-// Starting a recording from the editor closes its window, and stopping the take opens a
-// new one: the store, and with it "the project that was open", does not survive. So the
-// editor leaves the id here on its way out and the next editor's import takes it. Storage
-// rather than a main-process slot because it needs no IPC and outlives exactly what it has
-// to: the window, not the user's intent. Every import empties it, including the one that
-// finds no recording waiting, so a take that was cancelled cannot steer a later one.
-const RECORDING_TARGET_KEY = "openscreen.recordingTargetProjectId";
-
-/** Remembers the open project as the home of the take about to be recorded. */
-export function rememberRecordingTargetProject(projectId: string | null): void {
-	try {
-		if (projectId) window.localStorage.setItem(RECORDING_TARGET_KEY, projectId);
-		else window.localStorage.removeItem(RECORDING_TARGET_KEY);
-	} catch {
-		// Storage can be unavailable; the take then gets a project of its own, as before.
-	}
-}
-
-function takeRecordingTargetProject(): string | null {
-	try {
-		const projectId = window.localStorage.getItem(RECORDING_TARGET_KEY);
-		window.localStorage.removeItem(RECORDING_TARGET_KEY);
-		return projectId;
-	} catch {
-		return null;
-	}
 }
 
 /** Opens the remembered project, or answers false when it cannot be: deleted, or unreadable. */
