@@ -51,7 +51,7 @@
 		"microphoneUnavailable": "Deze versie van macOS kan de microfoon niet opnemen. Opnemen zonder microfoon.",
 		"restartFailed": "De nieuwe opname kon niet starten. De vorige is verwijderd.",
 		"permissionDenied": "Opnamemachtiging geweigerd. Sta schermopname toe.",
-		"accessibilityAllowAndRetry": "Sta Toegankelijkheid toe voor OpenScreen en druk daarna opnieuw op opnemen om het aftellen te starten.",
+		"accessibilityAllowAndRetry": "Sta Toegankelijkheid toe voor Docebo Screen Recorder en druk daarna opnieuw op opnemen om het aftellen te starten.",
 		"cursorAccessibilityUnavailable": "Toegankelijkheid staat uit. De opname gaat verder, maar cursoreffecten zijn mogelijk beperkt. Schakel het in via Systeeminstellingen voor volledige cursoreffecten.",
 		"selectSource": "Kies een scherm of venster om op te nemen"
 	},
@@ -103,6 +103,7 @@
 		"changeLanguage": "Taal wijzigen",
 		"editorMode": "Editormodus",
 		"modes": {
+			"projects": "Projecten",
 			"media": "Media",
 			"edit": "Bewerken",
 			"rec": "Opnemen"
@@ -178,7 +179,7 @@
 		"detectedLanguage": "Gedetecteerde taal: {{language}}",
 		"noAudioTrack": "Geen audiospoor",
 		"noAudioTrackHint": "Deze media heeft geen audiospoor. Er valt niets te transcriberen.",
-		"mediaUnreadableHint": "Kon de audio van deze media niet lezen. Controleer of OpenScreen toegang heeft tot de map waarin ze staat en genereer daarna opnieuw.",
+		"mediaUnreadableHint": "Kon de audio van deze media niet lezen. Controleer of Docebo Screen Recorder toegang heeft tot de map waarin ze staat en genereer daarna opnieuw.",
 		"noSpeechDetected": "Geen spraak gedetecteerd"
 	},
 	"exportDialog": {
@@ -297,7 +298,7 @@
 			"disclaimer": "De transcriptie van je video wordt verstuurd naar de provider die je kiest. Er wordt niets gedeeld totdat je er een koppelt."
 		},
 		"authorUser": "Jij",
-		"authorAssistant": "OpenScreen",
+		"authorAssistant": "Docebo Screen Recorder",
 		"rewindToMessage": "Terugspoelen naar dit bericht",
 		"rewindTip": "Terugspoelen naar dit bericht. Latere wijzigingen worden ongedaan gemaakt.",
 		"copyMessage": "Bericht kopiëren",
@@ -373,6 +374,10 @@
 		"trashFailed": "Kon de opnames niet naar de Prullenmand verplaatsen. Definitief verwijderen?",
 		"recycleFailed": "Kon de opnames niet naar de Prullenbak verplaatsen. Definitief verwijderen?",
 		"deletePermanently": "Definitief verwijderen"
+	},
+	"projectsStage": {
+		"empty": "Nog geen projecten. Maak er een om te beginnen.",
+		"current": "Geopend"
 	},
 	"editClipDialog": {
 		"title": "Clip bewerken",
@@ -452,7 +457,7 @@
 	},
 	"mcpServer": {
 		"title": "MCP-server",
-		"description": "Laat MCP-clients die je zelf uitvoert, zoals Claude Code of Codex, de AI-bewerkingstools gebruiken op al je projecten, niet alleen op het project dat open staat in de editor. Ze melden zich aan met hun eigen accounts. OpenScreen ziet die nooit.",
+		"description": "Laat MCP-clients die je zelf uitvoert, zoals Claude Code of Codex, de AI-bewerkingstools gebruiken op al je projecten, niet alleen op het project dat open staat in de editor. Ze melden zich aan met hun eigen accounts. Docebo Screen Recorder ziet die nooit.",
 		"enableLabel": "Server",
 		"enable": "MCP-server inschakelen",
 		"editsLabel": "MCP-bewerkingen",

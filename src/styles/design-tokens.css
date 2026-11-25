@@ -1,6 +1,6 @@
 /* OpenScreen design system — light + dark.
  * Single source of truth for tokens used by the new editor shell.
- * Mint #10b981 is the sole chromatic accent. Red is reserved for
+ * Docebo indigo (#4b3fd8 light, #9a85f7 dark) is the sole chromatic accent. Red is reserved for
  * REC / cut / skip / trim / transcript-highlight only. */
 
 /* :root:root (doubled pseudo-class) deliberately outranks a plain `:root` —
@@ -40,18 +40,18 @@
 	--meta: #6b7a90;
 	--dim: #b6c2d1;
 
-	/* mint brand */
-	--brand: #10b981;
-	--brand-lo: #059669;
-	--brand-glow: rgba(16, 185, 129, 0.35);
-	--brand-soft: rgba(16, 185, 129, 0.10);
-	--accent: #10b981;
-	--accent-on: #04221a;
-	--accent-soft: rgba(16, 185, 129, 0.10);
-	--accent-wash: rgba(16, 185, 129, 0.06);
-	--accent-border: rgba(16, 185, 129, 0.26);
-	--accent-ring: rgba(16, 185, 129, 0.28);
-	--accent-stripe: rgba(16, 185, 129, 0.30);
+	/* Docebo indigo brand, taken from the logo tile */
+	--brand: #4b3fd8;
+	--brand-lo: #3a30b8;
+	--brand-glow: rgba(75, 63, 216, 0.35);
+	--brand-soft: rgba(75, 63, 216, 0.10);
+	--accent: #4b3fd8;
+	--accent-on: #ffffff;
+	--accent-soft: rgba(75, 63, 216, 0.10);
+	--accent-wash: rgba(75, 63, 216, 0.06);
+	--accent-border: rgba(75, 63, 216, 0.26);
+	--accent-ring: rgba(75, 63, 216, 0.28);
+	--accent-stripe: rgba(75, 63, 216, 0.30);
 
 	/* timeline playhead — deliberately NOT the mint accent. The scrub cursor
 	   crosses every lane, including the accent-coloured zoom pills, so it needs
@@ -177,7 +177,7 @@
 	--elev-card-soft: 0 1px 2px rgba(15, 23, 42, 0.03);
 	--elev-pop: 0 8px 24px -8px rgba(15, 23, 42, 0.10), 0 2px 4px rgba(15, 23, 42, 0.04);
 
-	--focus-ring: 0 0 0 3px rgba(16, 185, 129, 0.18);
+	--focus-ring: 0 0 0 3px rgba(75, 63, 216, 0.18);
 
 	--motion-fast: 120ms;
 	--motion-base: 180ms;
@@ -208,17 +208,17 @@
 	--meta: #7a8491;
 	--dim: #1c2029;
 
-	--brand: #10b981;
-	--brand-lo: #34d399;
-	--brand-glow: rgba(16, 185, 129, 0.40);
-	--brand-soft: rgba(16, 185, 129, 0.14);
-	--accent: #10b981;
+	--brand: #9a85f7;
+	--brand-lo: #b3a3fa;
+	--brand-glow: rgba(154, 133, 247, 0.40);
+	--brand-soft: rgba(154, 133, 247, 0.14);
+	--accent: #9a85f7;
 	--accent-on: #0a0d12;
-	--accent-soft: rgba(16, 185, 129, 0.14);
-	--accent-wash: rgba(16, 185, 129, 0.06);
-	--accent-border: rgba(16, 185, 129, 0.26);
-	--accent-ring: rgba(16, 185, 129, 0.32);
-	--accent-stripe: rgba(16, 185, 129, 0.34);
+	--accent-soft: rgba(154, 133, 247, 0.14);
+	--accent-wash: rgba(154, 133, 247, 0.06);
+	--accent-border: rgba(154, 133, 247, 0.26);
+	--accent-ring: rgba(154, 133, 247, 0.32);
+	--accent-stripe: rgba(154, 133, 247, 0.34);
 
 	--danger: #f87171;
 	--danger-lo: #ef4444;
@@ -266,5 +266,5 @@
 	--elev-card: 0 1px 2px rgba(0, 0, 0, 0.40), 0 4px 12px -4px rgba(0, 0, 0, 0.50);
 	--elev-card-soft: 0 1px 2px rgba(0, 0, 0, 0.30);
 	--elev-pop: 0 8px 24px -8px rgba(0, 0, 0, 0.60);
-	--focus-ring: 0 0 0 3px rgba(16, 185, 129, 0.30);
+	--focus-ring: 0 0 0 3px rgba(154, 133, 247, 0.30);
 }

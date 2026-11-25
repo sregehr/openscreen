@@ -51,7 +51,7 @@
 		"microphoneUnavailable": "Esta versão do macOS não consegue gravar o microfone. Gravando sem ele.",
 		"restartFailed": "Não foi possível iniciar a nova gravação. A anterior foi excluída.",
 		"permissionDenied": "Permissão de gravação negada. Por favor, permita a gravação de tela.",
-		"accessibilityAllowAndRetry": "Permita o acesso de Acessibilidade para o OpenScreen e pressione gravar novamente para iniciar a contagem regressiva.",
+		"accessibilityAllowAndRetry": "Permita o acesso de Acessibilidade para o Docebo Screen Recorder e pressione gravar novamente para iniciar a contagem regressiva.",
 		"cursorAccessibilityUnavailable": "O acesso à Acessibilidade está desativado. A gravação continuará, mas os efeitos do cursor podem ser limitados. Ative-o nos Ajustes do Sistema para usar todos os efeitos do cursor.",
 		"selectSource": "Por favor, selecione uma fonte para gravar"
 	},
@@ -103,6 +103,7 @@
 		"changeLanguage": "Mudar idioma",
 		"editorMode": "Modo do editor",
 		"modes": {
+			"projects": "Projetos",
 			"media": "Mídia",
 			"edit": "Editar",
 			"rec": "Gravar"
@@ -178,7 +179,7 @@
 		"detectedLanguage": "Idioma detectado: {{language}}",
 		"noAudioTrack": "Sem faixa de áudio",
 		"noAudioTrackHint": "Esta mídia não tem faixa de áudio — não há nada para transcrever.",
-		"mediaUnreadableHint": "Não foi possível ler o áudio desta mídia. Verifique se o OpenScreen tem acesso à pasta onde ela está e gere novamente.",
+		"mediaUnreadableHint": "Não foi possível ler o áudio desta mídia. Verifique se o Docebo Screen Recorder tem acesso à pasta onde ela está e gere novamente.",
 		"noSpeechDetected": "Nenhuma fala detectada"
 	},
 	"exportDialog": {
@@ -297,7 +298,7 @@
 			"disclaimer": "A transcrição do seu vídeo será enviada ao fornecedor que escolher. Nada é compartilhado até você conectar um."
 		},
 		"authorUser": "Você",
-		"authorAssistant": "OpenScreen",
+		"authorAssistant": "Docebo Screen Recorder",
 		"rewindToMessage": "Rebobinar até esta mensagem",
 		"rewindTip": "Rebobinar até esta mensagem. As alterações posteriores são desfeitas.",
 		"copyMessage": "Copiar mensagem",
@@ -373,6 +374,10 @@
 		"trashFailed": "Não foi possível mover as gravações para a Lixeira. Excluí-las permanentemente?",
 		"recycleFailed": "Não foi possível mover as gravações para a Lixeira. Excluí-las permanentemente?",
 		"deletePermanently": "Excluir permanentemente"
+	},
+	"projectsStage": {
+		"empty": "Ainda não há projetos. Crie um para começar.",
+		"current": "Aberto"
 	},
 	"editClipDialog": {
 		"title": "Editar clipe",
@@ -452,7 +457,7 @@
 	},
 	"mcpServer": {
 		"title": "Servidor MCP",
-		"description": "Permita que clientes MCP que você mesmo executa, como Claude Code ou Codex, usem as ferramentas de edição com IA em qualquer um dos seus projetos, não só no aberto no editor. Eles entram com as próprias contas; o OpenScreen nunca as vê.",
+		"description": "Permita que clientes MCP que você mesmo executa, como Claude Code ou Codex, usem as ferramentas de edição com IA em qualquer um dos seus projetos, não só no aberto no editor. Eles entram com as próprias contas; o Docebo Screen Recorder nunca as vê.",
 		"enableLabel": "Servidor",
 		"enable": "Ativar servidor MCP",
 		"editsLabel": "Edições via MCP",

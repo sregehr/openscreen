@@ -1,6 +1,6 @@
-const LATEST_RELEASE_API = "https://api.github.com/repos/getopenscreen/openscreen/releases/latest";
-const RELEASES_API = "https://api.github.com/repos/getopenscreen/openscreen/releases?per_page=30";
-const OFFICIAL_RELEASE_PREFIX = "/getopenscreen/openscreen/releases/tag/";
+const LATEST_RELEASE_API = "https://api.github.com/repos/sregehr/openscreen/releases/latest";
+const RELEASES_API = "https://api.github.com/repos/sregehr/openscreen/releases?per_page=30";
+const OFFICIAL_RELEASE_PREFIX = "/sregehr/openscreen/releases/tag/";
 
 interface ReleaseResponse {
 	ok: boolean;

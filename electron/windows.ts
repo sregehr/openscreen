@@ -640,7 +640,7 @@ export function createEditorWindow(query: Record<string, string> = {}): BrowserW
 		resizable: true,
 		alwaysOnTop: false,
 		skipTaskbar: false,
-		title: "OpenScreen",
+		title: "Docebo Screen Recorder",
 		backgroundColor: "#09090b",
 		show: false, // shown via ready-to-show to avoid white flash on first load
 		webPreferences: {
@@ -865,7 +865,7 @@ export function createPermissionsWindow(): BrowserWindow {
 		minimizable: false,
 		maximizable: false,
 		fullscreenable: false,
-		title: "OpenScreen",
+		title: "Docebo Screen Recorder",
 		backgroundColor: "#0b0c0f",
 		show: false,
 		webPreferences: {
@@ -913,7 +913,7 @@ export function createCameraPreviewWindow(): BrowserWindow {
 	};
 	const win = new BrowserWindow({
 		...initialBounds(),
-		title: "OpenScreen - Camera Preview",
+		title: "Docebo Screen Recorder - Camera Preview",
 		hasShadow: false,
 		frame: false,
 		transparent: true,
@@ -999,7 +999,7 @@ export function createNotesWindow(): BrowserWindow {
 		minWidth: min.width,
 		minHeight: min.height,
 		...(wayland ? {} : { maxWidth: max.width, maxHeight: max.height }),
-		title: "OpenScreen - Notes",
+		title: "Docebo Screen Recorder - Notes",
 		backgroundColor: "#09090b",
 		resizable: true,
 		alwaysOnTop: true,

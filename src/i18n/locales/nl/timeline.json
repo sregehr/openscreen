@@ -51,7 +51,7 @@
 		"zoomExistsAtLocation": "Er bestaat al een zoom op deze plek of er is onvoldoende ruimte.",
 		"zoomSuggestionUnavailable": "Zoomsuggestie-handler niet beschikbaar",
 		"noCursorTelemetry": "Geen cursorgegevens in deze opname",
-		"noCursorTelemetryDescription": "Neem je scherm op met OpenScreen om zooms te krijgen die de cursor volgen.",
+		"noCursorTelemetryDescription": "Neem je scherm op met Docebo Screen Recorder om zooms te krijgen die de cursor volgen.",
 		"noUsableTelemetry": "Onvoldoende cursorbeweging",
 		"noUsableTelemetryDescription": "De opname bevat onvoldoende gegevens over cursorbeweging.",
 		"noDwellMoments": "Geen duidelijke momenten gevonden waarop de cursor stilstaat",

@@ -40,9 +40,9 @@
 		"zoomOut": "Thu nhỏ",
 		"toggleFullScreen": "Bật/tắt toàn màn hình",
 		"recordingStatus": "Đang ghi: {{source}}",
-		"about": "Giới thiệu OpenScreen",
+		"about": "Giới thiệu Docebo Screen Recorder",
 		"services": "Dịch vụ",
-		"hide": "Ẩn OpenScreen",
+		"hide": "Ẩn Docebo Screen Recorder",
 		"hideOthers": "Ẩn ứng dụng khác",
 		"unhide": "Hiển thị tất cả",
 		"saveDiagnostics": "Lưu thông tin chẩn đoán",
@@ -51,11 +51,11 @@
 		"closeNotification": "Đóng thông báo"
 	},
 	"updates": {
-		"available": "Đã có OpenScreen {{latestVersion}}. Bạn đang dùng phiên bản {{currentVersion}}.",
-		"current": "OpenScreen đang ở phiên bản mới nhất ({{currentVersion}}).",
-		"readyToInstall": "Đã tải xuống OpenScreen {{latestVersion}}. Khởi động lại để hoàn tất cài đặt.",
+		"available": "Đã có Docebo Screen Recorder {{latestVersion}}. Bạn đang dùng phiên bản {{currentVersion}}.",
+		"current": "Docebo Screen Recorder đang ở phiên bản mới nhất ({{currentVersion}}).",
+		"readyToInstall": "Đã tải xuống Docebo Screen Recorder {{latestVersion}}. Khởi động lại để hoàn tất cài đặt.",
 		"blockedRecording": "Hãy kết thúc bản ghi trước khi cài đặt bản cập nhật.",
-		"blockedLocation": "Hãy chuyển OpenScreen vào thư mục Applications trước khi cập nhật.",
+		"blockedLocation": "Hãy chuyển Docebo Screen Recorder vào thư mục Applications trước khi cập nhật.",
 		"failed": "Không thể kiểm tra bản cập nhật.",
 		"downloadFailed": "Không thể tải xuống bản cập nhật."
 	},

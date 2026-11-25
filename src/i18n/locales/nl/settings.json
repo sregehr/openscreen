@@ -140,7 +140,7 @@
 	"stylePresets": {
 		"button": "Presets",
 		"menuLabel": "Stijlpresets",
-		"factoryName": "OpenScreen",
+		"factoryName": "Docebo Screen Recorder",
 		"factoryBadge": "Ingebouwd",
 		"empty": "Nog geen opgeslagen presets",
 		"create": "Nieuwe preset maken…",

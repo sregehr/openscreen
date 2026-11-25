@@ -291,6 +291,25 @@ describe("DocumentService", () => {
 	});
 
 	describe("listProjects", () => {
+		it("summarizes an empty project with no duration and no thumbnail", async () => {
+			const created = await service.createProject("Empty");
+			const [summary] = await service.listProjects();
+			expect(summary).toMatchObject({
+				id: created.project.id,
+				createdAt: created.project.createdAt,
+				durationSec: 0,
+				thumbnailPath: null,
+			});
+		});
+
+		it("points the thumbnail at the project's video", async () => {
+			const created = await service.createProject("With footage");
+			const withAsset = await service.addAsset(created.project.id, { path: "recording.webm" });
+			const [summary] = await service.listProjects();
+			expect(summary?.thumbnailPath).toBe(withAsset.assets[0]?.originalPath);
+			expect(summary?.assetCount).toBe(1);
+		});
+
 		it("returns summaries sorted by updatedAt desc", async () => {
 			const a = await service.createProject("A");
 			await new Promise((r) => setTimeout(r, 5));

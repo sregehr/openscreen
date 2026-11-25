@@ -125,7 +125,7 @@ export function PermissionsWindow() {
 							className="rounded-xl border border-[#20232a] bg-[#121419] px-4 py-3"
 						>
 							<div className="flex items-center gap-3">
-								<Icon className="h-5 w-5 shrink-0 text-[#10b981]" aria-hidden />
+								<Icon className="h-5 w-5 shrink-0 text-[#9a85f7]" aria-hidden />
 								<div className="min-w-0 flex-1">
 									<div className="flex items-center gap-2">
 										<span className="text-[13px] font-medium">
@@ -165,7 +165,7 @@ export function PermissionsWindow() {
 						type="button"
 						data-testid="permissions-relaunch"
 						onClick={() => void window.electronAPI.permissions.relaunch()}
-						className="h-9 shrink-0 rounded-[9px] bg-[#10b981] px-5 text-[13px] font-semibold text-[#08090d] hover:bg-[#10b981]/85"
+						className="h-9 shrink-0 rounded-[9px] bg-[#9a85f7] px-5 text-[13px] font-semibold text-[#08090d] hover:bg-[#9a85f7]/85"
 					>
 						{t("permissions.actions.restart")}
 					</button>
@@ -175,7 +175,7 @@ export function PermissionsWindow() {
 						data-testid="permissions-start"
 						disabled={!screenReady}
 						onClick={() => void window.electronAPI.permissions.close()}
-						className="h-9 shrink-0 rounded-[9px] bg-[#10b981] px-5 text-[13px] font-semibold text-[#08090d] hover:bg-[#10b981]/85 disabled:cursor-not-allowed disabled:opacity-50"
+						className="h-9 shrink-0 rounded-[9px] bg-[#9a85f7] px-5 text-[13px] font-semibold text-[#08090d] hover:bg-[#9a85f7]/85 disabled:cursor-not-allowed disabled:opacity-50"
 					>
 						{t("permissions.actions.start")}
 					</button>
@@ -202,7 +202,7 @@ function PermissionAction({
 }) {
 	if (status === "granted") {
 		return (
-			<span className="flex shrink-0 items-center gap-1 text-[13px] font-medium text-[#10b981]">
+			<span className="flex shrink-0 items-center gap-1 text-[13px] font-medium text-[#9a85f7]">
 				<Check className="h-4 w-4" aria-hidden />
 				{t("permissions.status.granted")}
 			</span>

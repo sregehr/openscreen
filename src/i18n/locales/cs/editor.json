@@ -51,7 +51,7 @@
 		"microphoneUnavailable": "Tato verze macOS neumí nahrávat mikrofon. Nahrávání probíhá bez něj.",
 		"restartFailed": "Novou nahrávku se nepodařilo spustit. Předchozí byla smazána.",
 		"permissionDenied": "Oprávnění k nahrávání odepřeno. Povolte prosím záznam obrazovky.",
-		"accessibilityAllowAndRetry": "Povolte přístup k usnadnění pro OpenScreen a poté znovu stiskněte tlačítko nahrávání pro zahájení odpočítávání.",
+		"accessibilityAllowAndRetry": "Povolte přístup k usnadnění pro Docebo Screen Recorder a poté znovu stiskněte tlačítko nahrávání pro zahájení odpočítávání.",
 		"cursorAccessibilityUnavailable": "Přístup k usnadnění není povolen. Nahrávání bude pokračovat, ale efekty kurzoru mohou být omezené. Pro plné efekty kurzoru jej povolte v Nastavení systému.",
 		"selectSource": "Vyberte prosím zdroj pro nahrávání"
 	},
@@ -103,6 +103,7 @@
 		"changeLanguage": "Změnit jazyk",
 		"editorMode": "Režim editoru",
 		"modes": {
+			"projects": "Projekty",
 			"media": "Média",
 			"edit": "Upravit",
 			"rec": "Nahrávání"
@@ -178,7 +179,7 @@
 		"detectedLanguage": "Zjištěný jazyk: {{language}}",
 		"noAudioTrack": "Žádná zvuková stopa",
 		"noAudioTrackHint": "Toto médium nemá zvukovou stopu, takže není co přepisovat.",
-		"mediaUnreadableHint": "Zvuk tohoto média se nepodařilo přečíst. Ověřte, že OpenScreen má přístup ke složce, ve které je uloženo, a pak jej vygenerujte znovu.",
+		"mediaUnreadableHint": "Zvuk tohoto média se nepodařilo přečíst. Ověřte, že Docebo Screen Recorder má přístup ke složce, ve které je uloženo, a pak jej vygenerujte znovu.",
 		"noSpeechDetected": "Žádná řeč nezjištěna"
 	},
 	"exportDialog": {
@@ -297,7 +298,7 @@
 			"disclaimer": "Přepis vašeho videa bude odeslán vámi zvolenému poskytovateli. Nic není sdíleno, dokud ho nepřipojíte."
 		},
 		"authorUser": "Vy",
-		"authorAssistant": "OpenScreen",
+		"authorAssistant": "Docebo Screen Recorder",
 		"rewindToMessage": "Přetočit na tuto zprávu",
 		"rewindTip": "Přetočit na tuto zprávu. Pozdější změny se vrátí zpět.",
 		"copyMessage": "Kopírovat zprávu",
@@ -373,6 +374,10 @@
 		"trashFailed": "Nahrávky se nepodařilo přesunout do koše. Smazat je trvale?",
 		"recycleFailed": "Nahrávky se nepodařilo přesunout do koše. Smazat je trvale?",
 		"deletePermanently": "Smazat trvale"
+	},
+	"projectsStage": {
+		"empty": "Zatím žádné projekty. Začněte vytvořením nového.",
+		"current": "Otevřeno"
 	},
 	"editClipDialog": {
 		"title": "Upravit klip",
@@ -452,7 +457,7 @@
 	},
 	"mcpServer": {
 		"title": "MCP server",
-		"description": "Umožněte MCP klientům, které sami spouštíte, například Claude Code nebo Codex, používat nástroje pro úpravy s AI na kterémkoli z vašich projektů, nejen na tom otevřeném v editoru. Přihlašují se vlastními účty; OpenScreen je nikdy nevidí.",
+		"description": "Umožněte MCP klientům, které sami spouštíte, například Claude Code nebo Codex, používat nástroje pro úpravy s AI na kterémkoli z vašich projektů, nejen na tom otevřeném v editoru. Přihlašují se vlastními účty; Docebo Screen Recorder je nikdy nevidí.",
 		"enableLabel": "Server",
 		"enable": "Zapnout MCP server",
 		"editsLabel": "Úpravy přes MCP",

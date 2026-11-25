@@ -51,7 +51,7 @@
 		"microphoneUnavailable": "Diese macOS-Version kann das Mikrofon nicht aufnehmen. Die Aufnahme läuft ohne Mikrofon.",
 		"restartFailed": "Die neue Aufnahme konnte nicht starten. Die vorherige wurde gelöscht.",
 		"permissionDenied": "Aufnahmeberechtigung verweigert. Bitte erlaube die Bildschirmaufnahme.",
-		"accessibilityAllowAndRetry": "Erlaube OpenScreen den Zugriff auf die Bedienungshilfen und drücke dann erneut auf Aufnehmen, um den Countdown zu starten.",
+		"accessibilityAllowAndRetry": "Erlaube Docebo Screen Recorder den Zugriff auf die Bedienungshilfen und drücke dann erneut auf Aufnehmen, um den Countdown zu starten.",
 		"cursorAccessibilityUnavailable": "Der Bedienungshilfen-Zugriff ist deaktiviert. Die Aufnahme wird fortgesetzt, aber Cursoreffekte können eingeschränkt sein. Aktiviere ihn in den Systemeinstellungen für alle Cursoreffekte.",
 		"selectSource": "Bitte wähle eine Quelle für die Aufnahme"
 	},
@@ -103,6 +103,7 @@
 		"changeLanguage": "Sprache ändern",
 		"editorMode": "Editor-Modus",
 		"modes": {
+			"projects": "Projekte",
 			"media": "Medien",
 			"edit": "Schnitt",
 			"rec": "Aufnahme"
@@ -178,7 +179,7 @@
 		"detectedLanguage": "Erkannte Sprache: {{language}}",
 		"noAudioTrack": "Keine Audiospur",
 		"noAudioTrackHint": "Dieses Medium hat keine Audiospur — es gibt nichts zu transkribieren.",
-		"mediaUnreadableHint": "Der Ton dieses Mediums konnte nicht gelesen werden. Stelle sicher, dass OpenScreen auf den Ordner zugreifen darf, in dem es liegt, und generiere dann neu.",
+		"mediaUnreadableHint": "Der Ton dieses Mediums konnte nicht gelesen werden. Stelle sicher, dass Docebo Screen Recorder auf den Ordner zugreifen darf, in dem es liegt, und generiere dann neu.",
 		"noSpeechDetected": "Keine Sprache erkannt"
 	},
 	"exportDialog": {
@@ -297,7 +298,7 @@
 			"disclaimer": "Das Transkript deines Videos wird an den Anbieter gesendet, den du wählst. Es wird nichts geteilt, bevor du einen verbindest."
 		},
 		"authorUser": "Du",
-		"authorAssistant": "OpenScreen",
+		"authorAssistant": "Docebo Screen Recorder",
 		"rewindToMessage": "Zu dieser Nachricht zurückspulen",
 		"rewindTip": "Zu dieser Nachricht zurückspulen. Spätere Änderungen werden zurückgenommen.",
 		"copyMessage": "Nachricht kopieren",
@@ -373,6 +374,10 @@
 		"trashFailed": "Die Aufnahmen konnten nicht in den Papierkorb gelegt werden. Endgültig löschen?",
 		"recycleFailed": "Die Aufnahmen konnten nicht in den Papierkorb verschoben werden. Endgültig löschen?",
 		"deletePermanently": "Endgültig löschen"
+	},
+	"projectsStage": {
+		"empty": "Noch keine Projekte. Erstelle eines, um loszulegen.",
+		"current": "Geöffnet"
 	},
 	"editClipDialog": {
 		"title": "Clip bearbeiten",
@@ -452,7 +457,7 @@
 	},
 	"mcpServer": {
 		"title": "MCP-Server",
-		"description": "Erlaube MCP-Clients, die du selbst ausführst, etwa Claude Code oder Codex, die KI-Bearbeitungswerkzeuge für jedes deiner Projekte zu nutzen, nicht nur für das im Editor geöffnete. Sie melden sich mit ihren eigenen Konten an; OpenScreen sieht diese nie.",
+		"description": "Erlaube MCP-Clients, die du selbst ausführst, etwa Claude Code oder Codex, die KI-Bearbeitungswerkzeuge für jedes deiner Projekte zu nutzen, nicht nur für das im Editor geöffnete. Sie melden sich mit ihren eigenen Konten an; Docebo Screen Recorder sieht diese nie.",
 		"enableLabel": "Server",
 		"enable": "MCP-Server aktivieren",
 		"editsLabel": "MCP-Änderungen",

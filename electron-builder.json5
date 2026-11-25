@@ -1,9 +1,9 @@
 // @see - https://www.electron.build/configuration/configuration
 {
   "$schema": "https://raw.githubusercontent.com/electron-userland/electron-builder/master/packages/app-builder-lib/scheme.json",
-  "appId": "com.etiennelescot.openscreen",
+  "appId": "com.docebo.screenrecorder",
   "asar": true,
-  "productName": "Openscreen",
+  "productName": "Docebo Screen Recorder",
   // There is deliberately no `electronVersion` here. electron-builder needs an EXACT
   // version because it downloads the binaries for one release, and it takes that from
   // package.json's `electron` devDependency, which is pinned without a caret for this
@@ -38,7 +38,7 @@
   "publish": [
     {
       "provider": "github",
-      "owner": "getopenscreen",
+      "owner": "sregehr",
       "repo": "openscreen"
     }
   ],
@@ -217,10 +217,10 @@
       }
     ],
     "extendInfo": {
-      "NSAudioCaptureUsageDescription": "OpenScreen needs audio capture permission to record system audio.",
-      "NSMicrophoneUsageDescription": "OpenScreen needs microphone access to record voice audio.",
-      "NSCameraUsageDescription": "OpenScreen needs camera access to record webcam video.",
-      "NSScreenCaptureUsageDescription": "OpenScreen needs screen recording permission to detect and capture windows.",
+      "NSAudioCaptureUsageDescription": "Docebo Screen Recorder needs audio capture permission to record system audio.",
+      "NSMicrophoneUsageDescription": "Docebo Screen Recorder needs microphone access to record voice audio.",
+      "NSCameraUsageDescription": "Docebo Screen Recorder needs camera access to record webcam video.",
+      "NSScreenCaptureUsageDescription": "Docebo Screen Recorder needs screen recording permission to detect and capture windows.",
       "NSCameraUseContinuityCameraDeviceType": true
     }
   },

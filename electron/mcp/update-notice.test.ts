@@ -33,7 +33,7 @@ function release(tag: string) {
 		status: 200,
 		json: async () => ({
 			tag_name: tag,
-			html_url: `https://github.com/getopenscreen/openscreen/releases/tag/${tag}`,
+			html_url: `https://github.com/sregehr/openscreen/releases/tag/${tag}`,
 			draft: false,
 			prerelease: false,
 		}),

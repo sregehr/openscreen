@@ -96,8 +96,7 @@
 	gap: 9px;
 	flex-shrink: 0;
 }
-/* Transparent aperture mark: no plate behind it, so it needs a touch more box
-   than a filled tile would to hold the same optical weight next to the wordmark. */
+/* The Docebo tile: a filled rounded square, drawn edge to edge. */
 .brand img {
 	width: 24px;
 	height: 24px;
@@ -111,6 +110,7 @@
 	font-weight: 600;
 	letter-spacing: -0.015em;
 	color: var(--fg-emphasis);
+	white-space: nowrap;
 }
 /* The brand doubles as the app-menu trigger, so it has to read as a button on hover without
    gaining any width: .modeSwitch is the only flex-shrink:1 element in the bar, so every pixel
@@ -351,11 +351,11 @@
    intrinsically-sized grid all take the width of the widest one, so the trio
    stays symmetrical in every locale — English "Rec" next to "Media", French
    "Enregistrement" next to "Médias" — and the hover/selected plate is the same
-   box on all three. */
+   box on all four. */
 .modeSwitch {
 	margin: 0 auto;
 	display: inline-grid;
-	grid-template-columns: repeat(3, minmax(0, 1fr));
+	grid-template-columns: repeat(4, minmax(0, 1fr));
 	align-items: center;
 	gap: 2px;
 	padding: 3px;
@@ -841,6 +841,184 @@
 	overflow-y: auto;
 	scrollbar-width: thin;
 	scrollbar-color: var(--border-hi) transparent;
+}
+
+/* ─── PROJECTS STAGE ───────────────────────────────────────────────── */
+/* Shares .mediaStage / .mediaInner / .mediaSearchRow with the Media stage; the grid and the
+   cards are its own — a project card is taller, shows a real frame, and is not draggable. */
+.projectsNewBtn {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	flex-shrink: 0;
+	padding: 10px 14px;
+	border: 1px solid transparent;
+	border-radius: 10px;
+	background: var(--accent);
+	color: #fff;
+	font-size: 13px;
+	font-weight: 600;
+	cursor: pointer;
+	transition: filter var(--motion-fast) var(--ease);
+}
+.projectsNewBtn:hover {
+	filter: brightness(1.08);
+}
+.projectsGrid {
+	overflow-y: auto;
+	min-height: 0;
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+	align-content: start;
+	gap: 16px;
+	/* Room for the hover lift and its shadow, which the scroll container would clip. */
+	padding: 4px 4px 16px;
+	scrollbar-width: thin;
+	scrollbar-color: var(--border-hi) transparent;
+}
+.projectCard {
+	position: relative;
+	border: 1.5px solid var(--border);
+	border-radius: 12px;
+	background: var(--surface);
+	overflow: hidden;
+	transition: border-color var(--motion-fast) var(--ease), transform var(--motion-base) var(--ease),
+		box-shadow var(--motion-base) var(--ease);
+}
+.projectCard:hover,
+.projectCard:focus-within {
+	border-color: var(--border-hi);
+	transform: translateY(-2px);
+	box-shadow: var(--elev-pop);
+}
+.projectCard.selected {
+	border-color: var(--accent);
+}
+.projectOpenBtn {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	padding: 0;
+	border: 0;
+	background: transparent;
+	color: inherit;
+	text-align: left;
+	cursor: pointer;
+}
+.projectThumb {
+	position: relative;
+	width: 100%;
+	aspect-ratio: 16 / 9;
+	display: grid;
+	place-items: center;
+	color: rgba(255, 255, 255, 0.9);
+	overflow: hidden;
+}
+.projectThumb video {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	pointer-events: none;
+	background: #000;
+}
+.projectBadges {
+	position: absolute;
+	top: 8px;
+	left: 8px;
+	display: flex;
+	gap: 6px;
+}
+.projectDuration,
+.projectBadge {
+	padding: 2px 7px;
+	border-radius: 6px;
+	font-size: 11px;
+	font-weight: 600;
+	line-height: 1.5;
+	color: #fff;
+}
+.projectDuration {
+	background: rgba(0, 0, 0, 0.62);
+	font-variant-numeric: tabular-nums;
+}
+.projectBadge {
+	background: var(--accent);
+}
+.projectMeta {
+	min-width: 0;
+	/* The right padding clears the delete button, which sits over this row. */
+	padding: 10px 40px 11px 12px;
+}
+.projectDate {
+	margin-top: 2px;
+	font-size: 11.5px;
+	color: var(--muted);
+}
+.projectDeleteBtn {
+	position: absolute;
+	right: 8px;
+	bottom: 10px;
+	display: grid;
+	place-items: center;
+	width: 26px;
+	height: 26px;
+	border: 0;
+	border-radius: 7px;
+	background: transparent;
+	color: var(--muted);
+	cursor: pointer;
+	opacity: 0;
+	transition: opacity var(--motion-fast) var(--ease), background var(--motion-fast) var(--ease),
+		color var(--motion-fast) var(--ease);
+}
+.projectCard:hover .projectDeleteBtn,
+.projectDeleteBtn:focus-visible {
+	opacity: 1;
+}
+.projectDeleteBtn:hover {
+	background: var(--danger-soft);
+	color: var(--danger);
+}
+.projectConfirm {
+	position: absolute;
+	inset: 0;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 12px;
+	padding: 14px;
+	background: var(--surface);
+	color: var(--fg);
+	font-size: 12.5px;
+	line-height: 1.4;
+	text-align: center;
+}
+.projectConfirmActions {
+	display: flex;
+	gap: 8px;
+}
+.projectConfirmActions button {
+	padding: 6px 12px;
+	border: 1px solid var(--border);
+	border-radius: 8px;
+	background: var(--surface-1);
+	color: var(--fg);
+	font-size: 12px;
+	font-weight: 600;
+	cursor: pointer;
+}
+.projectConfirmActions button[data-danger] {
+	border-color: transparent;
+	background: var(--danger);
+	color: #fff;
+}
+.projectConfirmActions button:disabled {
+	opacity: 0.6;
+	cursor: default;
 }
 
 /* ─── REC STAGE ────────────────────────────────────────────────────── */

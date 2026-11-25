@@ -51,7 +51,7 @@
 		"microphoneUnavailable": "Ta wersja macOS nie może nagrywać mikrofonu. Nagrywanie bez niego.",
 		"restartFailed": "Nie udało się rozpocząć nowego nagrania. Poprzednie zostało usunięte.",
 		"permissionDenied": "Odmówiono uprawnienia do nagrywania. Zezwól na nagrywanie ekranu.",
-		"accessibilityAllowAndRetry": "Zezwól OpenScreen na dostęp do Dostępności, a następnie ponownie naciśnij nagrywanie, aby uruchomić odliczanie.",
+		"accessibilityAllowAndRetry": "Zezwól Docebo Screen Recorder na dostęp do Dostępności, a następnie ponownie naciśnij nagrywanie, aby uruchomić odliczanie.",
 		"cursorAccessibilityUnavailable": "Dostępność jest wyłączona. Nagrywanie będzie kontynuowane, ale efekty kursora mogą być ograniczone. Włącz ją w Ustawieniach systemowych, aby korzystać z pełnych efektów kursora.",
 		"selectSource": "Wybierz ekran lub okno do nagrania"
 	},
@@ -103,6 +103,7 @@
 		"changeLanguage": "Zmień język",
 		"editorMode": "Tryb edytora",
 		"modes": {
+			"projects": "Projekty",
 			"media": "Multimedia",
 			"edit": "Edycja",
 			"rec": "Nagrywanie"
@@ -178,7 +179,7 @@
 		"detectedLanguage": "Wykryty język: {{language}}",
 		"noAudioTrack": "Brak ścieżki dźwiękowej",
 		"noAudioTrackHint": "Te multimedia nie mają ścieżki dźwiękowej — nie ma czego transkrybować.",
-		"mediaUnreadableHint": "Nie udało się odczytać dźwięku z tych multimediów. Upewnij się, że OpenScreen ma dostęp do folderu, w którym się znajdują, a następnie wygeneruj ponownie.",
+		"mediaUnreadableHint": "Nie udało się odczytać dźwięku z tych multimediów. Upewnij się, że Docebo Screen Recorder ma dostęp do folderu, w którym się znajdują, a następnie wygeneruj ponownie.",
 		"noSpeechDetected": "Nie wykryto mowy"
 	},
 	"exportDialog": {
@@ -297,7 +298,7 @@
 			"disclaimer": "Transkrypcja Twojego wideo zostanie wysłana do wybranego dostawcy. Dane nie będą udostępniane, dopóki żaden dostawca nie zostanie połączony."
 		},
 		"authorUser": "Ty",
-		"authorAssistant": "OpenScreen",
+		"authorAssistant": "Docebo Screen Recorder",
 		"rewindToMessage": "Cofnij do tej wiadomości",
 		"rewindTip": "Cofnij do tej wiadomości. Późniejsze zmiany zostaną cofnięte.",
 		"copyMessage": "Kopiuj wiadomość",
@@ -373,6 +374,10 @@
 		"trashFailed": "Nie udało się przenieść nagrań do Kosza. Usunąć je trwale?",
 		"recycleFailed": "Nie udało się przenieść nagrań do Kosza. Usunąć je trwale?",
 		"deletePermanently": "Usuń trwale"
+	},
+	"projectsStage": {
+		"empty": "Nie ma jeszcze projektów. Utwórz pierwszy, aby zacząć.",
+		"current": "Otwarty"
 	},
 	"editClipDialog": {
 		"title": "Edytuj klip",
@@ -452,7 +457,7 @@
 	},
 	"mcpServer": {
 		"title": "Serwer MCP",
-		"description": "Pozwól klientom MCP uruchamianym przez Ciebie, takim jak Claude Code lub Codex, używać narzędzi edycji AI w dowolnym z Twoich projektów, nie tylko w tym otwartym w edytorze. Logują się własnymi kontami; OpenScreen ich nie widzi.",
+		"description": "Pozwól klientom MCP uruchamianym przez Ciebie, takim jak Claude Code lub Codex, używać narzędzi edycji AI w dowolnym z Twoich projektów, nie tylko w tym otwartym w edytorze. Logują się własnymi kontami; Docebo Screen Recorder ich nie widzi.",
 		"enableLabel": "Serwer",
 		"enable": "Włącz serwer MCP",
 		"editsLabel": "Zmiany przez MCP",

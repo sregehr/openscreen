@@ -40,9 +40,9 @@
 		"zoomOut": "Oddálit",
 		"toggleFullScreen": "Přepnout celou obrazovku",
 		"recordingStatus": "Nahrávání: {{source}}",
-		"about": "O aplikaci OpenScreen",
+		"about": "O aplikaci Docebo Screen Recorder",
 		"services": "Služby",
-		"hide": "Skrýt OpenScreen",
+		"hide": "Skrýt Docebo Screen Recorder",
 		"hideOthers": "Skrýt ostatní",
 		"unhide": "Zobrazit vše",
 		"saveDiagnostics": "Uložit diagnostiku",
@@ -51,11 +51,11 @@
 		"closeNotification": "Zavřít oznámení"
 	},
 	"updates": {
-		"available": "OpenScreen {{latestVersion}} je k dispozici. Používáte verzi {{currentVersion}}.",
-		"current": "OpenScreen je aktuální ({{currentVersion}}).",
-		"readyToInstall": "OpenScreen {{latestVersion}} byl stažen. Restartujte aplikaci pro dokončení instalace.",
+		"available": "Docebo Screen Recorder {{latestVersion}} je k dispozici. Používáte verzi {{currentVersion}}.",
+		"current": "Docebo Screen Recorder je aktuální ({{currentVersion}}).",
+		"readyToInstall": "Docebo Screen Recorder {{latestVersion}} byl stažen. Restartujte aplikaci pro dokončení instalace.",
 		"blockedRecording": "Před instalací aktualizace dokončete nahrávání.",
-		"blockedLocation": "Před aktualizací přesuňte OpenScreen do složky Aplikace.",
+		"blockedLocation": "Před aktualizací přesuňte Docebo Screen Recorder do složky Aplikace.",
 		"failed": "Nepodařilo se zkontrolovat aktualizace.",
 		"downloadFailed": "Nepodařilo se stáhnout aktualizaci."
 	},

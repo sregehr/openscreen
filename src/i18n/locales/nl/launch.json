@@ -9,7 +9,7 @@
 	"tooltips": {
 		"hideHUD": "Opnamebalk verbergen",
 		"hideHUDTip": "Verberg de opnamebalk. Toon hem opnieuw via het tray-pictogram.",
-		"closeApp": "OpenScreen afsluiten",
+		"closeApp": "Docebo Screen Recorder afsluiten",
 		"restartRecording": "Deze opname verwijderen en een nieuwe starten",
 		"cancelRecording": "Deze opname stoppen en verwijderen",
 		"pauseRecording": "Opname pauzeren",
@@ -69,8 +69,8 @@
 		"screens": "Schermen ({{count}})",
 		"windows": "Vensters ({{count}})",
 		"emptyTitle": "Geen schermen of vensters gevonden",
-		"emptyDescription": "Als je zonet toestemming voor schermopname hebt gegeven, laad deze kiezer dan opnieuw. Op macOS moet je OpenScreen mogelijk opnieuw openen.",
-		"loadFailedDescription": "OpenScreen kon je schermen en vensters niet laden. Laad deze kiezer opnieuw en probeer het nogmaals.",
+		"emptyDescription": "Als je zonet toestemming voor schermopname hebt gegeven, laad deze kiezer dan opnieuw. Op macOS moet je Docebo Screen Recorder mogelijk opnieuw openen.",
+		"loadFailedDescription": "Docebo Screen Recorder kon je schermen en vensters niet laden. Laad deze kiezer opnieuw en probeer het nogmaals.",
 		"defaultSourceName": "Scherm"
 	},
 	"recording": {
@@ -84,13 +84,13 @@
 	"languageWithName": "Taal: {{language}}",
 	"systemLanguagePrompt": {
 		"title": "Je systeemtaal gebruiken?",
-		"description": "We hebben {{language}} gedetecteerd als je systeemtaal. Wil je OpenScreen overschakelen naar {{language}}?",
+		"description": "We hebben {{language}} gedetecteerd als je systeemtaal. Wil je Docebo Screen Recorder overschakelen naar {{language}}?",
 		"switch": "Overschakelen naar {{language}}",
 		"keepDefault": "Huidige taal behouden"
 	},
 	"softwareEncoderFallback": {
 		"title": "Overgeschakeld op een back-upencoder",
-		"description": "De encoder van je grafische kaart is niet gestart, dus OpenScreen is overgeschakeld op een back-up. Je opname is in orde, al kan je computer iets harder werken.",
+		"description": "De encoder van je grafische kaart is niet gestart, dus Docebo Screen Recorder is overgeschakeld op een back-up. Je opname is in orde, al kan je computer iets harder werken.",
 		"dismiss": "Begrepen",
 		"dontShowAgain": "Niet meer tonen"
 	},
@@ -107,7 +107,7 @@
 		"checkingForUpdates": "Controleren…"
 	},
 	"permissions": {
-		"title": "OpenScreen heeft enkele machtigingen nodig",
+		"title": "Docebo Screen Recorder heeft enkele machtigingen nodig",
 		"subtitle": "macOS vraagt je om elke machtiging één keer te verlenen. Je kunt ze op elk moment wijzigen in Systeeminstellingen.",
 		"level": {
 			"required": "Vereist",
@@ -144,17 +144,17 @@
 			"continue": "Doorgaan",
 			"allow": "Toestaan",
 			"openSettings": "Instellingen openen",
-			"restart": "OpenScreen herstarten",
+			"restart": "Docebo Screen Recorder herstarten",
 			"start": "Aan de slag"
 		},
 		"help": {
-			"screenPrompt": "macOS vraagt je daarna om OpenScreen in te schakelen in Systeeminstellingen.",
-			"screenSettings": "Schakel OpenScreen in via Systeeminstellingen. Als macOS aanbiedt om de app af te sluiten en opnieuw te openen, ga dan akkoord: dit venster komt terug.",
-			"screenNotListed": "Staat OpenScreen niet in de lijst? Klik op + en kies OpenScreen in Programma’s.",
-			"screenRestart": "Toegestaan. OpenScreen moet herstarten voordat het dit kan gebruiken.",
-			"screenRecurring": "Bij je eerste opname vraagt macOS of OpenScreen rechtstreeks toegang mag krijgen tot je scherm, zonder de systeemkiezer. Klik op Toestaan. macOS vraagt dit af en toe opnieuw. Dat is normaal.",
-			"systemAudioPrompt": "macOS vraagt je om OpenScreen toe te staan het geluid op te nemen dat je Mac afspeelt.",
-			"systemAudioRequested": "Als je nee hebt gezegd, schakel OpenScreen dan in onder “Alleen systeemaudio opnemen” in Systeeminstellingen."
+			"screenPrompt": "macOS vraagt je daarna om Docebo Screen Recorder in te schakelen in Systeeminstellingen.",
+			"screenSettings": "Schakel Docebo Screen Recorder in via Systeeminstellingen. Als macOS aanbiedt om de app af te sluiten en opnieuw te openen, ga dan akkoord: dit venster komt terug.",
+			"screenNotListed": "Staat Docebo Screen Recorder niet in de lijst? Klik op + en kies Docebo Screen Recorder in Programma’s.",
+			"screenRestart": "Toegestaan. Docebo Screen Recorder moet herstarten voordat het dit kan gebruiken.",
+			"screenRecurring": "Bij je eerste opname vraagt macOS of Docebo Screen Recorder rechtstreeks toegang mag krijgen tot je scherm, zonder de systeemkiezer. Klik op Toestaan. macOS vraagt dit af en toe opnieuw. Dat is normaal.",
+			"systemAudioPrompt": "macOS vraagt je om Docebo Screen Recorder toe te staan het geluid op te nemen dat je Mac afspeelt.",
+			"systemAudioRequested": "Als je nee hebt gezegd, schakel Docebo Screen Recorder dan in onder “Alleen systeemaudio opnemen” in Systeeminstellingen."
 		},
 		"footer": {
 			"screenRequired": "Schermopname is nodig om op te nemen.",

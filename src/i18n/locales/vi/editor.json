@@ -51,7 +51,7 @@
 		"microphoneUnavailable": "Phiên bản macOS này không thể ghi micrô. Đang ghi mà không có micrô.",
 		"restartFailed": "Không thể bắt đầu bản ghi hình mới. Bản trước đã bị xóa.",
 		"permissionDenied": "Quyền ghi hình bị từ chối. Vui lòng cho phép ghi màn hình.",
-		"accessibilityAllowAndRetry": "Cho phép OpenScreen truy cập Trợ năng, sau đó nhấn ghi lại để bắt đầu đếm ngược.",
+		"accessibilityAllowAndRetry": "Cho phép Docebo Screen Recorder truy cập Trợ năng, sau đó nhấn ghi lại để bắt đầu đếm ngược.",
 		"cursorAccessibilityUnavailable": "Quyền Trợ năng đang tắt. Quá trình ghi vẫn tiếp tục nhưng hiệu ứng con trỏ có thể bị hạn chế. Hãy bật quyền này trong Cài đặt hệ thống để dùng đầy đủ hiệu ứng con trỏ.",
 		"selectSource": "Vui lòng chọn một nguồn để ghi"
 	},
@@ -103,6 +103,7 @@
 		"changeLanguage": "Đổi ngôn ngữ",
 		"editorMode": "Chế độ trình chỉnh sửa",
 		"modes": {
+			"projects": "Dự án",
 			"media": "Media",
 			"edit": "Chỉnh sửa",
 			"rec": "Ghi hình"
@@ -178,7 +179,7 @@
 		"detectedLanguage": "Ngôn ngữ phát hiện: {{language}}",
 		"noAudioTrack": "Không có bản âm thanh",
 		"noAudioTrackHint": "Media này không có bản âm thanh — không có gì để phiên âm.",
-		"mediaUnreadableHint": "Không thể đọc âm thanh của media này. Hãy đảm bảo OpenScreen có quyền truy cập thư mục chứa nó, rồi tạo lại.",
+		"mediaUnreadableHint": "Không thể đọc âm thanh của media này. Hãy đảm bảo Docebo Screen Recorder có quyền truy cập thư mục chứa nó, rồi tạo lại.",
 		"noSpeechDetected": "Không phát hiện giọng nói"
 	},
 	"exportDialog": {
@@ -297,7 +298,7 @@
 			"disclaimer": "Bản chép lời video sẽ được gửi đến nhà cung cấp bạn chọn. Không có gì được chia sẻ cho đến khi bạn kết nối một nhà cung cấp."
 		},
 		"authorUser": "Bạn",
-		"authorAssistant": "OpenScreen",
+		"authorAssistant": "Docebo Screen Recorder",
 		"rewindToMessage": "Tua lại đến tin nhắn này",
 		"rewindTip": "Tua lại đến tin nhắn này. Các thay đổi sau đó sẽ được hoàn tác.",
 		"copyMessage": "Sao chép tin nhắn",
@@ -373,6 +374,10 @@
 		"trashFailed": "Không thể chuyển các bản ghi vào Thùng rác. Xóa vĩnh viễn?",
 		"recycleFailed": "Không thể chuyển các bản ghi vào Thùng rác. Xóa vĩnh viễn?",
 		"deletePermanently": "Xóa vĩnh viễn"
+	},
+	"projectsStage": {
+		"empty": "Chưa có dự án nào. Hãy tạo một dự án để bắt đầu.",
+		"current": "Đang mở"
 	},
 	"editClipDialog": {
 		"title": "Chỉnh sửa clip",
@@ -452,7 +457,7 @@
 	},
 	"mcpServer": {
 		"title": "Máy chủ MCP",
-		"description": "Cho phép các ứng dụng khách MCP do bạn tự chạy, như Claude Code hoặc Codex, dùng công cụ chỉnh sửa bằng AI trên bất kỳ dự án nào của bạn, không chỉ dự án đang mở trong trình chỉnh sửa. Chúng đăng nhập bằng tài khoản riêng; OpenScreen không bao giờ thấy các tài khoản đó.",
+		"description": "Cho phép các ứng dụng khách MCP do bạn tự chạy, như Claude Code hoặc Codex, dùng công cụ chỉnh sửa bằng AI trên bất kỳ dự án nào của bạn, không chỉ dự án đang mở trong trình chỉnh sửa. Chúng đăng nhập bằng tài khoản riêng; Docebo Screen Recorder không bao giờ thấy các tài khoản đó.",
 		"enableLabel": "Máy chủ",
 		"enable": "Bật máy chủ MCP",
 		"editsLabel": "Chỉnh sửa qua MCP",

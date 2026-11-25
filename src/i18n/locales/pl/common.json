@@ -40,9 +40,9 @@
 		"zoomOut": "Pomniejsz",
 		"toggleFullScreen": "Przełącz pełny ekran",
 		"recordingStatus": "Nagrywanie: {{source}}",
-		"about": "O programie OpenScreen",
+		"about": "O programie Docebo Screen Recorder",
 		"services": "Usługi",
-		"hide": "Ukryj OpenScreen",
+		"hide": "Ukryj Docebo Screen Recorder",
 		"hideOthers": "Ukryj inne",
 		"unhide": "Pokaż wszystko",
 		"saveDiagnostics": "Zapisz diagnostykę",
@@ -51,11 +51,11 @@
 		"closeNotification": "Zamknij powiadomienie"
 	},
 	"updates": {
-		"available": "Dostępna jest wersja OpenScreen {{latestVersion}}. Używasz wersji {{currentVersion}}.",
-		"current": "OpenScreen jest aktualny ({{currentVersion}}).",
-		"readyToInstall": "Pobrano OpenScreen {{latestVersion}}. Uruchom ponownie, aby dokończyć instalację.",
+		"available": "Dostępna jest wersja Docebo Screen Recorder {{latestVersion}}. Używasz wersji {{currentVersion}}.",
+		"current": "Docebo Screen Recorder jest aktualny ({{currentVersion}}).",
+		"readyToInstall": "Pobrano Docebo Screen Recorder {{latestVersion}}. Uruchom ponownie, aby dokończyć instalację.",
 		"blockedRecording": "Zakończ nagrywanie przed instalacją aktualizacji.",
-		"blockedLocation": "Przenieś OpenScreen do folderu Aplikacje przed aktualizacją.",
+		"blockedLocation": "Przenieś Docebo Screen Recorder do folderu Aplikacje przed aktualizacją.",
 		"failed": "Nie udało się sprawdzić aktualizacji.",
 		"downloadFailed": "Nie udało się pobrać aktualizacji."
 	},
