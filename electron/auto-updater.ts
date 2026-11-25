@@ -92,7 +92,7 @@ export async function downloadSelfUpdate(): Promise<UpdateOutcome> {
 
 /** Where electron-builder's NSIS installer records an install: `Software\<UUID v5 of appId>`,
  *  under HKLM per machine and HKCU per user. auto-updater.test.ts pins it to the appId. */
-export const NSIS_INSTALL_KEY = "Software\\5b412b41-8d8b-5faf-b557-de4fe681e5fc";
+export const NSIS_INSTALL_KEY = "Software\\fca50647-9247-58e9-9fae-84417d40e964";
 
 function nsisInstallStatus(hive: "HKLM" | "HKCU"): number | null {
 	const key = `${hive}\\${NSIS_INSTALL_KEY}`;
