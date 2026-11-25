@@ -1,7 +1,15 @@
 import { webcamBitrateForStream } from "./webcamCaptureTarget";
 
-/** VP8 holds 30 fps up to this frame on Apple Silicon; at 2160p it drops ~40 % of frames. */
-const MAX_VP8_PIXELS = 1920 * 1080;
+/**
+ * VP8 holds 30 fps up to this frame on Apple Silicon; at 2160p it drops ~40 % of frames.
+ *
+ * 1088 lines, not 1080: the cap is a 1080p-class frame, and cameras deliver that class in
+ * other shapes. An Apple Studio Display Camera asked for 2160p answers 1664x1248 -- 0.15 %
+ * more pixels than 1920x1080 -- which sent it to the H.264 encoder this exists to avoid, and
+ * a 20 s take held 23 frames with one 13.7 s freeze. 1920x1088 is the frame a 1080p encoder
+ * works on anyway (macroblocks are 16 px), so the VP8 measurement covers it.
+ */
+const MAX_VP8_PIXELS = 1920 * 1088;
 
 /** Keep webcam encoding independent of the screen recorder's codec preference. */
 export function webcamRecorderOptions(

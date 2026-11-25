@@ -13,6 +13,12 @@ describe("webcam recorder options", () => {
 		);
 	});
 
+	it("keeps a 1080p-class frame in another shape on VP8 (Studio Display Camera, 1664x1248)", () => {
+		expect(webcamRecorderOptions(camera(1664, 1248), "darwin", () => true).mimeType).toBe(
+			"video/webm;codecs=vp8",
+		);
+	});
+
 	it.each([
 		[2560, 1440],
 		[3840, 2160],
