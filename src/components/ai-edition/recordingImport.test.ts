@@ -1,8 +1,11 @@
 // @vitest-environment jsdom
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { CursorTelemetryPoint } from "@/components/video-editor/types";
-import { replaceTimeline as replaceTimelineOp } from "@/lib/ai-edition/document/timeline";
-import { type AxcutDocument, createEmptyDocument } from "@/lib/ai-edition/schema";
+import {
+	insertAssetClip,
+	replaceTimeline as replaceTimelineOp,
+} from "@/lib/ai-edition/document/timeline";
+import { type AxcutDocument, assetSchema, createEmptyDocument } from "@/lib/ai-edition/schema";
 import { useProjectStore } from "@/lib/ai-edition/store/projectStore";
 import { undo } from "@/lib/ai-edition/store/undo";
 import { clearHistory, past } from "@/lib/ai-edition/store/undoStack";
@@ -12,7 +15,15 @@ import {
 	importPendingRecording,
 	markFreshRecordingAutoZoomPending,
 	maybeSaveFreshRecordingAutoZooms,
+	rememberRecordingTargetProject,
 } from "./recordingImport";
+
+// jsdom never loads media, so the real probe would sit out its whole timeout.
+const probeVideoDuration = vi.hoisted(() => vi.fn(async (): Promise<number | null> => 12.5));
+vi.mock("@/lib/ai-edition/timeline/duration", async (importOriginal) => ({
+	...(await importOriginal<typeof import("@/lib/ai-edition/timeline/duration")>()),
+	probeVideoDuration,
+}));
 
 // The first describe stubs the store actions, so the bridge is never reached
 // there. The second one runs the REAL store against these, which is the only way
@@ -176,6 +187,128 @@ describe("importPendingRecording", () => {
 			"Auto-imported recording",
 			{ history: false },
 		);
+	});
+});
+
+// Recording from the editor closes its window, and the take used to come back as a project
+// of its own every time: three takes for one video meant three projects to stitch together
+// by hand. A take started from an open project belongs in that project.
+describe("a take started from an open project", () => {
+	const TAKE = "/recordings/recording-2.mp4";
+
+	function existingProject(): AxcutDocument {
+		const base = createEmptyDocument({ projectId: "proj_open", title: "Launch demo" });
+		const first = assetSchema.parse({
+			id: "asset_first",
+			label: "recording-1.mp4",
+			originalPath: "/recordings/recording-1.mp4",
+			durationSec: 30,
+		});
+		return insertAssetClip(
+			{ ...base, assets: [first], project: { ...base.project, primaryAssetId: first.id } },
+			0,
+			{
+				id: "clip_first",
+				assetId: first.id,
+				sourceStartSec: 0,
+				sourceEndSec: 30,
+				origin: "user",
+				reason: "test",
+			},
+		);
+	}
+
+	const loadProject = vi.fn(async (projectId: string) => {
+		if (projectId !== "proj_open") {
+			useProjectStore.setState({ status: "error", error: "Failed to load project" });
+			return;
+		}
+		useProjectStore.setState({ projectId, document: existingProject(), status: "ready" });
+	});
+	const addTake = vi.fn(async (path: string, label?: string) => {
+		const asset = assetSchema.parse({ id: "asset_take", label, originalPath: path });
+		const document = useProjectStore.getState().document;
+		if (document) {
+			useProjectStore.setState({ document: { ...document, assets: [...document.assets, asset] } });
+		}
+		return asset;
+	});
+	const saveDocument = vi.fn(async (document: AxcutDocument) => {
+		useProjectStore.setState({ document });
+		return true;
+	});
+
+	beforeEach(() => {
+		vi.clearAllMocks();
+		consumeFreshRecordingAutoZoomPending();
+		window.localStorage.clear();
+		probeVideoDuration.mockResolvedValue(12.5);
+		useProjectStore.setState({
+			projectId: null,
+			document: null,
+			status: "idle",
+			loadProject,
+			createProject,
+			addAsset: addTake,
+			replaceTimeline,
+			saveDocument,
+		});
+	});
+
+	it("lands at the end of that project's timeline, at its measured length", async () => {
+		stubElectronApi(TAKE);
+		rememberRecordingTargetProject("proj_open");
+		const onAdded = vi.fn();
+
+		await expect(importPendingRecording(undefined, onAdded)).resolves.toBe(true);
+
+		expect(createProject).not.toHaveBeenCalled();
+		expect(loadProject).toHaveBeenCalledWith("proj_open");
+		const document = useProjectStore.getState().document;
+		expect(document?.timeline.clips.map((clip) => clip.assetId)).toEqual([
+			"asset_first",
+			"asset_take",
+		]);
+		expect(document?.timeline.clips[1]).toMatchObject({ sourceStartSec: 0, sourceEndSec: 12.5 });
+		expect(document?.assets.find((asset) => asset.id === "asset_take")?.durationSec).toBe(12.5);
+		// The seed builds its clip on the primary asset, which here is the OTHER video.
+		expect(replaceTimeline).not.toHaveBeenCalled();
+		expect(saveDocument).toHaveBeenCalledWith(expect.anything(), { history: false });
+		expect(onAdded).toHaveBeenCalledWith("Launch demo");
+	});
+
+	it("gets a project of its own when the remembered one is gone", async () => {
+		stubElectronApi(TAKE);
+		rememberRecordingTargetProject("proj_deleted");
+		const onAdded = vi.fn();
+
+		await expect(importPendingRecording(undefined, onAdded)).resolves.toBe(true);
+
+		expect(createProject).toHaveBeenCalledTimes(1);
+		expect(onAdded).not.toHaveBeenCalled();
+	});
+
+	it("gets a project of its own when it was started from the recording bar", async () => {
+		stubElectronApi(TAKE);
+
+		await importPendingRecording();
+
+		expect(loadProject).not.toHaveBeenCalled();
+		expect(createProject).toHaveBeenCalledTimes(1);
+	});
+
+	it("forgets the project once an editor opens with no take waiting", async () => {
+		// Started from the editor, then cancelled: the next take, from the recording bar, must
+		// not be steered into the project the cancelled one was meant for.
+		rememberRecordingTargetProject("proj_open");
+		stubElectronApi(null);
+		await expect(importPendingRecording()).resolves.toBe(false);
+
+		stubElectronApi(TAKE);
+		await importPendingRecording();
+
+		expect(loadProject).not.toHaveBeenCalled();
+		expect(createProject).toHaveBeenCalledTimes(1);
 	});
 });
 

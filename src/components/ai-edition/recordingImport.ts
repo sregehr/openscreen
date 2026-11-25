@@ -14,9 +14,14 @@
 // derived `currentVideoPath`); the only renderer that still needs the session
 // after this point is the CLI runner, which lives in its own process.
 
+import { toFileUrl } from "@/components/video-editor/projectPersistence";
 import type { CursorTelemetryPoint } from "@/components/video-editor/types";
 import { createId } from "@/lib/ai-edition/document/ids";
-import { clipAwaitsProbedDuration } from "@/lib/ai-edition/document/timeline";
+import {
+	clipAwaitsProbedDuration,
+	insertAssetClip,
+	PLACEHOLDER_DURATION_SEC,
+} from "@/lib/ai-edition/document/timeline";
 import type { AxcutDocument } from "@/lib/ai-edition/schema";
 import {
 	DOCUMENT_SAVES_WAIT_TIMEOUT_MS,
@@ -28,6 +33,7 @@ import {
 	appendAutoZoomSuggestions,
 	collectAutoZoomSuggestionsForLatestDocument,
 } from "@/lib/ai-edition/timeline/apply-auto-zooms";
+import { probeVideoDuration } from "@/lib/ai-edition/timeline/duration";
 import type { RecordingSession } from "@/lib/recordingSession";
 import { nativeBridgeClient } from "@/native/client";
 
@@ -352,9 +358,82 @@ export async function maybeSaveFreshRecordingAutoZooms(
 	});
 }
 
+// Which project a take belongs in, across the gap where no editor exists.
+//
+// Starting a recording from the editor closes its window, and stopping the take opens a
+// new one: the store, and with it "the project that was open", does not survive. So the
+// editor leaves the id here on its way out and the next editor's import takes it. Storage
+// rather than a main-process slot because it needs no IPC and outlives exactly what it has
+// to: the window, not the user's intent. Every import empties it, including the one that
+// finds no recording waiting, so a take that was cancelled cannot steer a later one.
+const RECORDING_TARGET_KEY = "openscreen.recordingTargetProjectId";
+
+/** Remembers the open project as the home of the take about to be recorded. */
+export function rememberRecordingTargetProject(projectId: string | null): void {
+	try {
+		if (projectId) window.localStorage.setItem(RECORDING_TARGET_KEY, projectId);
+		else window.localStorage.removeItem(RECORDING_TARGET_KEY);
+	} catch {
+		// Storage can be unavailable; the take then gets a project of its own, as before.
+	}
+}
+
+function takeRecordingTargetProject(): string | null {
+	try {
+		const projectId = window.localStorage.getItem(RECORDING_TARGET_KEY);
+		window.localStorage.removeItem(RECORDING_TARGET_KEY);
+		return projectId;
+	} catch {
+		return null;
+	}
+}
+
+/** Opens the remembered project, or answers false when it cannot be: deleted, or unreadable. */
+async function openRecordingTargetProject(projectId: string | null): Promise<boolean> {
+	if (!projectId) return false;
+	await useProjectStore.getState().loadProject(projectId);
+	const state = useProjectStore.getState();
+	return state.status === "ready" && state.projectId === projectId && state.document != null;
+}
+
 /**
- * Imports the recording the HUD handed over into a new project, and consumes the
- * hand-off so it is imported exactly once.
+ * Puts the new take at the end of a project that already has a timeline.
+ *
+ * Measured first rather than seeded at the placeholder length: the preview only loads the
+ * media under the playhead, so nothing would ever come back to correct a clip appended
+ * behind it. `history: false` for the reason the seed below gives.
+ */
+async function appendRecordingClip(assetId: string, screenPath: string): Promise<void> {
+	const durationSec = await probeVideoDuration(toFileUrl(screenPath));
+	const state = useProjectStore.getState();
+	const doc = state.document;
+	if (!doc?.assets.some((asset) => asset.id === assetId)) return;
+	const measured: AxcutDocument =
+		durationSec == null
+			? doc
+			: {
+					...doc,
+					assets: doc.assets.map((asset) =>
+						asset.id === assetId && !asset.durationSec ? { ...asset, durationSec } : asset,
+					),
+				};
+	await state.saveDocument(
+		insertAssetClip(measured, measured.timeline.clips.length, {
+			id: createId("clip"),
+			assetId,
+			sourceStartSec: 0,
+			sourceEndSec: durationSec ?? PLACEHOLDER_DURATION_SEC,
+			origin: "user",
+			reason: "Auto-imported recording",
+		}),
+		{ history: false },
+	);
+}
+
+/**
+ * Imports the recording the HUD handed over, and consumes the hand-off so it is imported
+ * exactly once. It goes into the project that was open when the take was started from the
+ * editor, and into a new project otherwise.
  *
  * Returns false when there is nothing pending — the caller then falls back to
  * reopening the most recent project. Throws if the import itself fails, leaving
@@ -367,8 +446,11 @@ export async function importPendingRecording(
 	 * the editor is the only window left to say it.
 	 */
 	onWarning?: (message: string) => void,
+	/** Called once the import succeeded, with the project an existing one took it into. */
+	onAddedToExistingProject?: (projectTitle: string) => void,
 ): Promise<boolean> {
 	const api = window.electronAPI;
+	const targetProjectId = takeRecordingTargetProject();
 	if (!api) return false;
 
 	const result = await api.getCurrentRecordingSession();
@@ -383,11 +465,13 @@ export async function importPendingRecording(
 		const warning = result.success ? result.warning : undefined;
 
 		const label = screenPath.split(/[\\/]/).pop() || "Recording";
-		const created = await useProjectStore
-			.getState()
-			.createProject(`Recording ${new Date().toLocaleString()}`);
-		if (pending) pending.projectId = created.project.id;
-		await useProjectStore.getState().addAsset(screenPath, label);
+		const intoExisting = await openRecordingTargetProject(targetProjectId);
+		if (!intoExisting) {
+			await useProjectStore.getState().createProject(`Recording ${new Date().toLocaleString()}`);
+		}
+		const projectId = useProjectStore.getState().projectId;
+		if (pending) pending.projectId = projectId;
+		const asset = await useProjectStore.getState().addAsset(screenPath, label);
 		// Mark before the video element can fire `loadedmetadata`. The asset path is
 		// already on the document; waiting until the 60s seed finished let the first
 		// metadata pass consume nothing and the second never arrive.
@@ -411,7 +495,11 @@ export async function importPendingRecording(
 		// on "No clips yet" the moment the user lands in the project. Real duration
 		// overwrites this when handleLoadedMetadata fires with a finite value.
 		const doc = useProjectStore.getState().document;
-		if (doc && doc.timeline.clips.length === 0 && doc.assets.length > 0) {
+		if (intoExisting && asset) {
+			// Not the seed below: `replaceTimeline` builds its clip on the PRIMARY asset, which
+			// in a project that already holds media is some other video.
+			await appendRecordingClip(asset.id, screenPath);
+		} else if (doc && doc.timeline.clips.length === 0 && doc.assets.length > 0) {
 			// `history: false`. Nothing here is an edit: the user finished a recording and the
 			// editor built them a project around it, unattended, on mount. Recording it left a
 			// brand-new project sitting at `past.length === 1` before the user had touched
@@ -429,6 +517,9 @@ export async function importPendingRecording(
 		}
 		if (warning) {
 			onWarning?.(warning);
+		}
+		if (intoExisting) {
+			onAddedToExistingProject?.(useProjectStore.getState().document?.project.title ?? "");
 		}
 		return true;
 	} catch (error) {

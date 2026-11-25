@@ -72,7 +72,11 @@ import {
 	type UnsavedChoice,
 } from "./Modals";
 import { Preview } from "./Preview";
-import { importPendingRecording, maybeSaveFreshRecordingAutoZooms } from "./recordingImport";
+import {
+	importPendingRecording,
+	maybeSaveFreshRecordingAutoZooms,
+	rememberRecordingTargetProject,
+} from "./recordingImport";
 import { AddAudioLayerDialog } from "./v4/AddAudioLayerDialog";
 import v4 from "./v4/EditorShellV4.module.css";
 import { type EditorMode, EditorTopBar } from "./v4/EditorTopBar";
@@ -439,8 +443,20 @@ export function NewEditorShell() {
 		void (async () => {
 			if (!window.electronAPI) return;
 			try {
-				if (await importPendingRecording((warning) => toast.warning(warning))) {
-					toast.success("Recording added to a new project");
+				let existingTitle: string | null = null;
+				if (
+					await importPendingRecording(
+						(warning) => toast.warning(warning),
+						(title) => {
+							existingTitle = title;
+						},
+					)
+				) {
+					toast.success(
+						existingTitle === null
+							? "Recording added to a new project"
+							: `Recording added to ${existingTitle || "this project"}`,
+					);
 					return;
 				}
 			} catch (err) {
@@ -1061,6 +1077,8 @@ export function NewEditorShell() {
 	const handleNewRecording = useCallback(async () => {
 		const choice = await promptUnsaved("record");
 		if (choice !== "cancel") {
+			// This window closes for the take: say where the take belongs before it does.
+			rememberRecordingTargetProject(useProjectStore.getState().projectId);
 			void window.electronAPI?.startNewRecording?.().catch((err) => {
 				console.warn("[editor] failed to start a new recording:", err);
 			});
