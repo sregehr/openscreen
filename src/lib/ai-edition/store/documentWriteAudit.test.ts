@@ -140,6 +140,10 @@ const DECLARED: WritePath[] = [
 		"save",
 		"gesture",
 	),
+	// A take started from an open project, appended to that project's timeline as the editor
+	// reopens. Not an edit: the user recorded, and the editor filed the take where they were
+	// working. Recording it would make their first Ctrl+Z remove the clip they just recorded.
+	w("src/components/ai-edition/recordingImport.ts", "appendRecordingClip", "save", "automatic"),
 	// Renaming the project from the title field.
 	w("src/components/ai-edition/NewEditorShell.tsx", "handleRenameProject", "save", "gesture"),
 	// Ctrl+S / File > Save.

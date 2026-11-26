@@ -160,5 +160,9 @@
 			"screenRequired": "Kayıt için ekran kaydı gereklidir.",
 			"ready": "Her şey hazır."
 		}
+	},
+	"recordingProject": {
+		"tooltip": "Kaydı şuraya ekle: {{project}}",
+		"newProject": "Yeni proje"
 	}
 }

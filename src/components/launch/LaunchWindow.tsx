@@ -3,6 +3,10 @@ import { useI18n, useScopedT } from "@/contexts/I18nContext";
 import { getAvailableLocales, getLocaleName } from "@/i18n/loader";
 import { offersEditableCursor } from "@/lib/editableCursorAvailability";
 import { canTurnMicrophoneOn } from "@/lib/microphoneAvailability";
+import {
+	readRecordingTargetProject,
+	rememberRecordingTargetProject,
+} from "@/lib/recordingTargetProject";
 import { loadUserPreferences, saveUserPreferences } from "@/lib/userPreferences";
 import { nativeBridgeClient } from "@/native";
 import { canRecordMicrophone, getPlatform } from "@/utils/platformUtils";
@@ -33,6 +37,8 @@ import {
 	HudMicButton,
 	HudNotesButton,
 	HudNotice,
+	HudProjectButton,
+	HudProjectMenu,
 	HudRecordButton,
 	HudRecordingControls,
 	HudSettingsButton,
@@ -171,6 +177,11 @@ export function LaunchWindow() {
 	// camera on take two clicks.
 	const [isDeviceSettingsOpen, setIsDeviceSettingsOpen] = useState(false);
 	const [isLanguageMenuOpen, setIsLanguageMenuOpen] = useState(false);
+	// Where the take about to be recorded goes: a project picked here, the one the editor
+	// handed over when the take was started from it, or null for a new project.
+	const [isProjectMenuOpen, setIsProjectMenuOpen] = useState(false);
+	const [targetProjectId, setTargetProjectId] = useState<string | null>(readRecordingTargetProject);
+	const [targetProjects, setTargetProjects] = useState<{ id: string; title: string }[]>([]);
 	const [trayLayout, setTrayLayout] = useState<"horizontal" | "vertical">(
 		() => loadUserPreferences().trayLayout,
 	);
@@ -194,11 +205,15 @@ export function LaunchWindow() {
 	const portalOwnsSource = usePortalOwnsSource();
 
 	const isVertical = trayLayout === "vertical";
-	const isPopoverOpen = isLanguageMenuOpen || isDeviceSettingsOpen;
+	const targetProjectName =
+		targetProjects.find((project) => project.id === targetProjectId)?.title ??
+		t("recordingProject.newProject");
+	const isPopoverOpen = isLanguageMenuOpen || isDeviceSettingsOpen || isProjectMenuOpen;
 	const controlsLocked = recording || saving;
 
 	const settingsTriggerRef = useRef<HTMLButtonElement | null>(null);
 	const languageTriggerRef = useRef<HTMLButtonElement | null>(null);
+	const projectTriggerRef = useRef<HTMLButtonElement | null>(null);
 	const hudAnchorRef = useRef<HTMLDivElement | null>(null);
 	const hudBarRef = useRef<HTMLDivElement | null>(null);
 	const popoverRef = useRef<HTMLDivElement | null>(null);
@@ -356,7 +371,33 @@ export function LaunchWindow() {
 	const closePopovers = useCallback(() => {
 		setIsDeviceSettingsOpen(false);
 		setIsLanguageMenuOpen(false);
+		setIsProjectMenuOpen(false);
 	}, []);
+
+	// The projects a take can go into. Asked for when the bar appears, to name the choice in
+	// force, and again each time the menu opens, so a project made since is in the list.
+	// biome-ignore lint/correctness/useExhaustiveDependencies: the menu opening only re-triggers the fetch
+	useEffect(() => {
+		let cancelled = false;
+		void nativeBridgeClient.aiEdition
+			.listProjects()
+			.then((projects) => {
+				if (cancelled) return;
+				setTargetProjects(projects.map(({ id, title }) => ({ id, title })));
+				// A project deleted since it was chosen: the editor would fall back to a new
+				// project anyway, so say so here rather than name a project that is gone.
+				const chosen = readRecordingTargetProject();
+				if (chosen && !projects.some((project) => project.id === chosen)) {
+					rememberRecordingTargetProject(null);
+					setTargetProjectId(null);
+				}
+			})
+			// Without the list the bar still records; the take goes where the choice says.
+			.catch(() => undefined);
+		return () => {
+			cancelled = true;
+		};
+	}, [isProjectMenuOpen]);
 
 	useEffect(() => {
 		if (!isPopoverOpen) return;
@@ -365,7 +406,8 @@ export function LaunchWindow() {
 			const target = event.target as Node;
 			const insideTrigger =
 				settingsTriggerRef.current?.contains(target) ||
-				languageTriggerRef.current?.contains(target);
+				languageTriggerRef.current?.contains(target) ||
+				projectTriggerRef.current?.contains(target);
 			if (!insideTrigger && !popoverRef.current?.contains(target)) {
 				closePopovers();
 			}
@@ -375,7 +417,12 @@ export function LaunchWindow() {
 			if (event.key === "Escape") {
 				// Back to the control that opened it, as the editor's menus do: with focus inside
 				// the popover, unmounting it would drop focus to <body>.
-				(isLanguageMenuOpen ? languageTriggerRef : settingsTriggerRef).current?.focus();
+				(isLanguageMenuOpen
+					? languageTriggerRef
+					: isProjectMenuOpen
+						? projectTriggerRef
+						: settingsTriggerRef
+				).current?.focus();
 				closePopovers();
 			}
 		};
@@ -398,7 +445,7 @@ export function LaunchWindow() {
 			window.removeEventListener("keydown", handleEscape);
 			window.removeEventListener("blur", closePopovers);
 		};
-	}, [closePopovers, isPopoverOpen, isLanguageMenuOpen]);
+	}, [closePopovers, isPopoverOpen, isLanguageMenuOpen, isProjectMenuOpen]);
 
 	// ---------------------------------------------------------------------------
 	// Overlay window sizing
@@ -1075,8 +1122,22 @@ export function LaunchWindow() {
 	const toggleDeviceSettings = useCallback(() => {
 		if (controlsLocked) return;
 		setIsLanguageMenuOpen(false);
+		setIsProjectMenuOpen(false);
 		setIsDeviceSettingsOpen((open) => !open);
 	}, [controlsLocked]);
+
+	const toggleProjectMenu = useCallback(() => {
+		if (controlsLocked) return;
+		setIsLanguageMenuOpen(false);
+		setIsDeviceSettingsOpen(false);
+		setIsProjectMenuOpen((open) => !open);
+	}, [controlsLocked]);
+
+	const handleSelectTargetProject = useCallback((projectId: string | null) => {
+		rememberRecordingTargetProject(projectId);
+		setTargetProjectId(projectId);
+		setIsProjectMenuOpen(false);
+	}, []);
 
 	const closeDeviceSettings = useCallback(() => {
 		setIsDeviceSettingsOpen(false);
@@ -1085,6 +1146,7 @@ export function LaunchWindow() {
 	const toggleLanguageMenu = useCallback(() => {
 		if (saving) return;
 		setIsDeviceSettingsOpen(false);
+		setIsProjectMenuOpen(false);
 		setIsLanguageMenuOpen((open) => !open);
 	}, [saving]);
 
@@ -1420,6 +1482,16 @@ export function LaunchWindow() {
 								/>
 							)}
 
+							<HudProjectButton
+								buttonRef={projectTriggerRef}
+								vertical={isVertical}
+								name={targetProjectName}
+								label={t("recordingProject.tooltip", { project: targetProjectName })}
+								disabled={controlsLocked}
+								expanded={isProjectMenuOpen}
+								onClick={toggleProjectMenu}
+							/>
+
 							<HudLanguageButton
 								buttonRef={languageTriggerRef}
 								vertical={isVertical}
@@ -1472,6 +1544,17 @@ export function LaunchWindow() {
 								onCheckForUpdates={handleCheckForUpdates}
 								onClose={closeDeviceSettings}
 								panelRef={setPopoverEl}
+							/>
+						)}
+
+						{isProjectMenuOpen && (
+							<HudProjectMenu
+								projects={targetProjects}
+								activeProjectId={targetProjectId}
+								newProjectLabel={t("recordingProject.newProject")}
+								onSelect={handleSelectTargetProject}
+								panelRef={setPopoverEl}
+								onEnsureInteractive={enableHudMouseEvents}
 							/>
 						)}
 

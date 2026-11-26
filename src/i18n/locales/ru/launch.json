@@ -160,5 +160,9 @@
 			"screenRequired": "Для записи нужна запись экрана.",
 			"ready": "Всё готово."
 		}
+	},
+	"recordingProject": {
+		"tooltip": "Добавить запись в: {{project}}",
+		"newProject": "Новый проект"
 	}
 }

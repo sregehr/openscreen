@@ -160,5 +160,9 @@
 			"screenRequired": "Cần quyền ghi màn hình để ghi.",
 			"ready": "Mọi thứ đã sẵn sàng."
 		}
+	},
+	"recordingProject": {
+		"tooltip": "Thêm bản ghi vào: {{project}}",
+		"newProject": "Dự án mới"
 	}
 }

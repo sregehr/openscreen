@@ -3,6 +3,7 @@ import {
 	CircleArrowDown,
 	Eye,
 	EyeOff,
+	FolderOpen,
 	Languages,
 	NotepadText,
 	Settings,
@@ -676,6 +677,109 @@ export const HudLanguageButton = memo(function HudLanguageButton({
 				</span>
 			</button>
 		</HudTooltip>
+	);
+});
+
+/** Where the next take goes: the chosen project's name, or "New project". */
+export const HudProjectButton = memo(function HudProjectButton({
+	vertical,
+	name,
+	label,
+	disabled,
+	expanded,
+	onClick,
+	buttonRef,
+}: {
+	vertical: boolean;
+	name: string;
+	label: string;
+	disabled: boolean;
+	expanded: boolean;
+	onClick: () => void;
+	buttonRef: React.MutableRefObject<HTMLButtonElement | null>;
+}) {
+	return (
+		<HudTooltip content={label}>
+			<button
+				ref={buttonRef}
+				type="button"
+				data-testid="hud-project-button"
+				aria-label={label}
+				aria-expanded={expanded}
+				aria-haspopup="menu"
+				disabled={disabled}
+				onClick={onClick}
+				className={`flex h-[34px] items-center rounded-[10px] border-0 bg-transparent text-[#828c99] transition-all duration-150 hover:bg-white/[0.08] hover:text-[#e9edf3] ${
+					vertical ? "w-[34px] justify-center px-0" : "gap-1.5 px-2.5"
+				} ${hudDisabledClasses} ${hudFocusClasses} ${styles.electronNoDrag}`}
+			>
+				<FolderOpen size={16} className="shrink-0" />
+				<span
+					className={`${vertical ? "sr-only" : "max-w-[120px] truncate"} text-[12px] font-semibold text-[#f5f7fa]`}
+				>
+					{name}
+				</span>
+			</button>
+		</HudTooltip>
+	);
+});
+
+/** The projects a take can go into, "New project" first. `null` is the new project. */
+export const HudProjectMenu = memo(function HudProjectMenu({
+	projects,
+	activeProjectId,
+	newProjectLabel,
+	onSelect,
+	panelRef,
+	onEnsureInteractive,
+}: {
+	projects: readonly { id: string; title: string }[];
+	activeProjectId: string | null;
+	newProjectLabel: string;
+	onSelect: (projectId: string | null) => void;
+	panelRef: (el: HTMLDivElement | null) => void;
+	onEnsureInteractive: () => void;
+}) {
+	// Into the list as it opens, on the choice in force, so the arrows work straight away.
+	const activeItemRef = useRef<HTMLButtonElement>(null);
+	useEffect(() => {
+		activeItemRef.current?.focus();
+	}, []);
+	const items: { id: string | null; title: string }[] = [
+		{ id: null, title: newProjectLabel },
+		...projects,
+	];
+
+	return (
+		<div
+			ref={panelRef}
+			data-hud-interactive="true"
+			data-testid="hud-project-menu"
+			role="menu"
+			onKeyDown={moveMenuFocus}
+			className={`${styles.hudPopover} ${styles.hudPopoverScroll} ${styles.hudScrollbar} animate-mic-panel-in ${styles.electronNoDrag}`}
+			onPointerDown={(event) => event.stopPropagation()}
+			onPointerEnter={onEnsureInteractive}
+			onWheel={(event) => {
+				onEnsureInteractive();
+				event.stopPropagation();
+			}}
+		>
+			{items.map((item) => (
+				<button
+					key={item.id ?? "new-project"}
+					ref={item.id === activeProjectId ? activeItemRef : undefined}
+					type="button"
+					role="menuitemradio"
+					aria-checked={item.id === activeProjectId}
+					onClick={() => onSelect(item.id)}
+					className={`${styles.languageMenuItem} ${item.id === activeProjectId ? styles.languageMenuItemActive : ""}`}
+				>
+					<span className="truncate">{item.title}</span>
+					{item.id === activeProjectId ? <Check size={14} className="text-white/85" /> : null}
+				</button>
+			))}
+		</div>
 	);
 });
 

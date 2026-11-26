@@ -160,5 +160,9 @@
 			"screenRequired": "录制需要屏幕录制权限。",
 			"ready": "一切就绪。"
 		}
+	},
+	"recordingProject": {
+		"tooltip": "将录制添加到：{{project}}",
+		"newProject": "新建项目"
 	}
 }

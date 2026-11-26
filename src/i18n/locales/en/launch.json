@@ -160,5 +160,9 @@
 			"screenRequired": "Screen recording is needed to record.",
 			"ready": "You're all set."
 		}
+	},
+	"recordingProject": {
+		"tooltip": "Add the recording to: {{project}}",
+		"newProject": "New project"
 	}
 }

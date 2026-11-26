@@ -160,5 +160,9 @@
 			"screenRequired": "تسجيل الشاشة مطلوب للتسجيل.",
 			"ready": "كل شيء جاهز."
 		}
+	},
+	"recordingProject": {
+		"tooltip": "إضافة التسجيل إلى: {{project}}",
+		"newProject": "مشروع جديد"
 	}
 }

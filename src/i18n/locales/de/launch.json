@@ -160,5 +160,9 @@
 			"screenRequired": "Zum Aufnehmen ist die Bildschirmaufnahme erforderlich.",
 			"ready": "Alles bereit."
 		}
+	},
+	"recordingProject": {
+		"tooltip": "Aufnahme hinzufügen zu: {{project}}",
+		"newProject": "Neues Projekt"
 	}
 }

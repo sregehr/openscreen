@@ -160,5 +160,9 @@
 			"screenRequired": "録画には画面収録が必要です。",
 			"ready": "準備が整いました。"
 		}
+	},
+	"recordingProject": {
+		"tooltip": "録画の追加先: {{project}}",
+		"newProject": "新規プロジェクト"
 	}
 }

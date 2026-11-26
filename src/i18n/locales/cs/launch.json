@@ -160,5 +160,9 @@
 			"screenRequired": "K nahrávání je potřeba nahrávání obrazovky.",
 			"ready": "Vše je připraveno."
 		}
+	},
+	"recordingProject": {
+		"tooltip": "Přidat nahrávku do: {{project}}",
+		"newProject": "Nový projekt"
 	}
 }

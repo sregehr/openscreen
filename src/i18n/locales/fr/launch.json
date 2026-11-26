@@ -160,5 +160,9 @@
 			"screenRequired": "L'enregistrement de l'écran est nécessaire pour enregistrer.",
 			"ready": "Tout est prêt."
 		}
+	},
+	"recordingProject": {
+		"tooltip": "Ajouter l'enregistrement à : {{project}}",
+		"newProject": "Nouveau projet"
 	}
 }
