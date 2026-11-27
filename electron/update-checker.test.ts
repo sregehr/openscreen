@@ -32,39 +32,38 @@ describe("compareVersions", () => {
 });
 
 describe("checkLatestRelease", () => {
-	it("reports a newer official stable release", async () => {
-		const fetchLatest = vi.fn().mockResolvedValue(
-			releaseResponse({
-				tag_name: "v1.10.0",
-				html_url: "https://github.com/sregehr/openscreen/releases/tag/v1.10.0",
-				draft: false,
-				prerelease: false,
-			}),
-		);
+	const FEED = "https://raw.githubusercontent.com/sregehr/openscreen/update-feed/latest.json";
+
+	it("reports a newer version and links to its GitLab release page", async () => {
+		const fetchLatest = vi.fn().mockResolvedValue(releaseResponse({ version: "1.10.0" }));
 
 		await expect(checkLatestRelease({ currentVersion: "1.9.0", fetchLatest })).resolves.toEqual({
 			kind: "available",
 			currentVersion: "1.9.0",
 			latestVersion: "1.10.0",
-			releaseUrl: "https://github.com/sregehr/openscreen/releases/tag/v1.10.0",
+			releaseUrl: "https://gitlab.com/stefan.regehr/screen-recorder/-/releases/v1.10.0",
 		});
 		expect(fetchLatest).toHaveBeenCalledWith(
-			"https://api.github.com/repos/sregehr/openscreen/releases/latest",
+			FEED,
 			expect.objectContaining({
-				headers: expect.objectContaining({ Accept: "application/vnd.github+json" }),
+				headers: expect.objectContaining({ Accept: "application/json" }),
 			}),
 		);
 	});
 
+	it("accepts a marker version written with a leading v", async () => {
+		const fetchLatest = vi.fn().mockResolvedValue(releaseResponse({ version: "v2.0.0" }));
+
+		await expect(
+			checkLatestRelease({ currentVersion: "1.9.0", fetchLatest }),
+		).resolves.toMatchObject({
+			latestVersion: "2.0.0",
+			releaseUrl: "https://gitlab.com/stefan.regehr/screen-recorder/-/releases/v2.0.0",
+		});
+	});
+
 	it("reports current when the installed version is equal or newer", async () => {
-		const fetchLatest = vi.fn().mockResolvedValue(
-			releaseResponse({
-				tag_name: "v1.9.0",
-				html_url: "https://github.com/sregehr/openscreen/releases/tag/v1.9.0",
-				draft: false,
-				prerelease: false,
-			}),
-		);
+		const fetchLatest = vi.fn().mockResolvedValue(releaseResponse({ version: "1.9.0" }));
 
 		await expect(checkLatestRelease({ currentVersion: "1.9.1", fetchLatest })).resolves.toEqual({
 			kind: "current",
@@ -79,14 +78,7 @@ describe("checkLatestRelease", () => {
 	});
 
 	it("forwards the cancellation signal", async () => {
-		const fetchLatest = vi.fn().mockResolvedValue(
-			releaseResponse({
-				tag_name: "v1.9.0",
-				html_url: "https://github.com/sregehr/openscreen/releases/tag/v1.9.0",
-				draft: false,
-				prerelease: false,
-			}),
-		);
+		const fetchLatest = vi.fn().mockResolvedValue(releaseResponse({ version: "1.9.0" }));
 		const controller = new AbortController();
 
 		await checkLatestRelease({
@@ -96,135 +88,47 @@ describe("checkLatestRelease", () => {
 		});
 
 		expect(fetchLatest).toHaveBeenCalledWith(
-			"https://api.github.com/repos/sregehr/openscreen/releases/latest",
+			FEED,
 			expect.objectContaining({ signal: controller.signal }),
 		);
 	});
 
-	it.each([
-		{ draft: true, prerelease: false },
-		{ draft: false, prerelease: true },
-	])("rejects draft and prerelease payloads: %o", async ({ draft, prerelease }) => {
-		const fetchLatest = vi.fn().mockResolvedValue(
-			releaseResponse({
-				tag_name: "v2.0.0",
-				html_url: "https://github.com/sregehr/openscreen/releases/tag/v2.0.0",
-				draft,
-				prerelease,
-			}),
-		);
+	// The page is built from the version, so nothing in the marker can name another site.
+	it("ignores a URL in the marker", async () => {
+		const fetchLatest = vi
+			.fn()
+			.mockResolvedValue(releaseResponse({ version: "9.9.9", url: "https://example.com/app.dmg" }));
 
-		await expect(checkLatestRelease({ currentVersion: "1.9.0", fetchLatest })).rejects.toThrow(
-			"invalid GitHub release response",
-		);
-	});
-
-	it("rejects a release URL outside the official repository", async () => {
-		const fetchLatest = vi.fn().mockResolvedValue(
-			releaseResponse({
-				tag_name: "v9.9.9",
-				html_url: "https://example.com/openscreen-9.9.9.exe",
-				draft: false,
-				prerelease: false,
-			}),
-		);
-
-		await expect(checkLatestRelease({ currentVersion: "1.9.0", fetchLatest })).rejects.toThrow(
-			"untrusted release URL",
-		);
+		await expect(
+			checkLatestRelease({ currentVersion: "1.9.0", fetchLatest }),
+		).resolves.toMatchObject({
+			releaseUrl: "https://gitlab.com/stefan.regehr/screen-recorder/-/releases/v9.9.9",
+		});
 	});
 
 	it.each([
-		"https://github.com/sregehr/openscreen/releases/download/v9.9.9/app.zip",
-		"https://github.com/sregehr/openscreen/releases/tag/v9.9.8",
-		"https://github.com/sregehr/openscreen/releases/tag/v9.9.9?download=1",
-		"https://github.com/sregehr/openscreen/releases/tag/v9.9.9#notes",
-	])("rejects an invalid official-repository URL: %s", async (htmlUrl) => {
-		const fetchLatest = vi.fn().mockResolvedValue(
-			releaseResponse({
-				tag_name: "v9.9.9",
-				html_url: htmlUrl,
-				draft: false,
-				prerelease: false,
-			}),
-		);
+		"9.9.9/../../../evil",
+		"9.9.9?x=1",
+		"latest",
+	])("rejects a marker version that is not a version: %s", async (version) => {
+		const fetchLatest = vi.fn().mockResolvedValue(releaseResponse({ version }));
 
 		await expect(checkLatestRelease({ currentVersion: "1.9.0", fetchLatest })).rejects.toThrow(
-			"untrusted release URL",
+			"invalid semantic version",
 		);
 	});
 
-	// releases/latest never returns a prerelease, so an RC read it and never saw the next RC (#1447).
-	describe("on a release candidate", () => {
-		const release = (tag: string, prerelease: boolean) => ({
-			tag_name: tag,
-			html_url: `https://github.com/sregehr/openscreen/releases/tag/${tag}`,
-			draft: false,
-			prerelease,
-		});
-		const releases = [
-			release("v2.1.2", false),
-			release("v2.2.0-rc.2", true),
-			release("v2.2.0-rc.1", true),
-		];
-
-		it("offers the next RC from the release list", async () => {
-			const fetchLatest = vi.fn().mockResolvedValue(releaseResponse(releases));
-
-			await expect(
-				checkLatestRelease({ currentVersion: "2.2.0-rc.1", fetchLatest }),
-			).resolves.toEqual({
-				kind: "available",
-				currentVersion: "2.2.0-rc.1",
-				latestVersion: "2.2.0-rc.2",
-				releaseUrl: "https://github.com/sregehr/openscreen/releases/tag/v2.2.0-rc.2",
-			});
-			expect(fetchLatest).toHaveBeenCalledWith(
-				"https://api.github.com/repos/sregehr/openscreen/releases?per_page=30",
-				expect.anything(),
-			);
-		});
-
-		it("offers the stable release that supersedes it", async () => {
-			const fetchLatest = vi
-				.fn()
-				.mockResolvedValue(releaseResponse([release("v2.2.0", false), ...releases]));
-
-			await expect(
-				checkLatestRelease({ currentVersion: "2.2.0-rc.2", fetchLatest }),
-			).resolves.toMatchObject({ kind: "available", latestVersion: "2.2.0" });
-		});
-
-		it("reports current on the newest RC", async () => {
-			const fetchLatest = vi.fn().mockResolvedValue(releaseResponse(releases));
-
-			await expect(
-				checkLatestRelease({ currentVersion: "2.2.0-rc.2", fetchLatest }),
-			).resolves.toMatchObject({ kind: "current", latestVersion: "2.2.0-rc.2" });
-		});
-
-		it.each([
-			[[]],
-			[release("v2.2.0-rc.2", true)],
-			[[{ ...release("v9.9.9", true), draft: true }]],
-		])("rejects an empty, non-list or draft response: %o", async (payload) => {
-			const fetchLatest = vi.fn().mockResolvedValue(releaseResponse(payload));
-
-			await expect(
-				checkLatestRelease({ currentVersion: "2.2.0-rc.1", fetchLatest }),
-			).rejects.toThrow("invalid GitHub release response");
-		});
-	});
-
-	it("rejects unsuccessful or malformed GitHub responses", async () => {
+	it("rejects unsuccessful or malformed responses", async () => {
 		const unavailable = vi.fn().mockResolvedValue(releaseResponse({}, 503));
 		await expect(
 			checkLatestRelease({ currentVersion: "1.9.0", fetchLatest: unavailable }),
-		).rejects.toThrow("GitHub release check failed (503)");
+		).rejects.toThrow("Update check failed (503)");
 
-		const malformed = vi.fn().mockResolvedValue(releaseResponse({ tag_name: "v2.0.0" }));
-		await expect(
-			checkLatestRelease({ currentVersion: "1.9.0", fetchLatest: malformed }),
-		).rejects.toThrow("invalid GitHub release response");
+		for (const payload of [{}, null, [], "2.0.0", { version: 2 }]) {
+			const malformed = vi.fn().mockResolvedValue(releaseResponse(payload));
+			await expect(
+				checkLatestRelease({ currentVersion: "1.9.0", fetchLatest: malformed }),
+			).rejects.toThrow("invalid update feed response");
+		}
 	});
 });

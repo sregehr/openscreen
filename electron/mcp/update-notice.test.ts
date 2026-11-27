@@ -31,12 +31,7 @@ function release(tag: string) {
 	return vi.fn(async () => ({
 		ok: true,
 		status: 200,
-		json: async () => ({
-			tag_name: tag,
-			html_url: `https://github.com/sregehr/openscreen/releases/tag/${tag}`,
-			draft: false,
-			prerelease: false,
-		}),
+		json: async () => ({ version: tag }),
 	}));
 }
 
