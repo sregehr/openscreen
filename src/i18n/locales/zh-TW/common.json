@@ -11,7 +11,6 @@
 		"checkForUpdates": "檢查更新",
 		"update": "更新",
 		"updateTo": "更新至 {{version}}",
-		"usagePing": "傳送匿名使用計數",
 		"viewRelease": "檢視版本",
 		"downloadUpdate": "下載更新",
 		"restartNow": "立即重新啟動",

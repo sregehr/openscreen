@@ -7,7 +7,6 @@ import os from "node:os";
 import path from "node:path";
 import { app } from "electron";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { sendUsagePing, setUsagePingEnabled } from "../usage-ping";
 import { runCli } from "./cliMain";
 
 const mocks = vi.hoisted(() => ({
@@ -118,34 +117,11 @@ async function runMcp() {
 	await new Promise((resolve) => setTimeout(resolve, 0));
 }
 
-describe("openscreen mcp usage ping", () => {
-	it("pings once, as the mcp surface, and writes nothing to stdout", async () => {
+describe("openscreen mcp usage data", () => {
+	it("sends none", async () => {
 		await runMcp();
-		expect(fetchMock).toHaveBeenCalledTimes(1);
-		const body = JSON.parse(String(fetchMock.mock.calls[0][1].body));
-		expect(body.properties).toMatchObject({
-			version: "2.1.0",
-			channel: "nsis",
-			surface: "mcp",
-		});
+		expect(fetchMock).not.toHaveBeenCalled();
 		expect(stdoutWrite).not.toHaveBeenCalled();
-	});
-
-	it("honours the tray toggle and DO_NOT_TRACK", async () => {
-		setUsagePingEnabled(mocks.userData, false);
-		await runMcp();
-		setUsagePingEnabled(mocks.userData, true);
-		vi.stubEnv("DO_NOT_TRACK", "1");
-		await runMcp();
-		expect(fetchMock).not.toHaveBeenCalled();
-	});
-
-	it("counts a day the app already counted only once", async () => {
-		const facts = { version: "2.1.0", os: "linux", arch: "x64", channel: "nsis" } as const;
-		await sendUsagePing(mocks.userData, { ...facts, surface: "app" });
-		fetchMock.mockClear();
-		await runMcp();
-		expect(fetchMock).not.toHaveBeenCalled();
 	});
 });
 
