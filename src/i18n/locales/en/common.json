@@ -1,6 +1,7 @@
 {
 	"actions": {
 		"cancel": "Cancel",
+		"tryAgain": "Try Again",
 		"save": "Save",
 		"delete": "Delete",
 		"close": "Close",

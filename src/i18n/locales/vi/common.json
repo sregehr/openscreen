@@ -1,6 +1,7 @@
 {
 	"actions": {
 		"cancel": "Hủy",
+		"tryAgain": "Thử lại",
 		"save": "Lưu",
 		"delete": "Xóa",
 		"close": "Đóng",

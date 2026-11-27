@@ -1,6 +1,7 @@
 {
 	"actions": {
 		"cancel": "Annuleren",
+		"tryAgain": "Opnieuw proberen",
 		"save": "Opslaan",
 		"delete": "Verwijderen",
 		"close": "Sluiten",

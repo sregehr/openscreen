@@ -1,6 +1,7 @@
 {
 	"actions": {
 		"cancel": "İptal",
+		"tryAgain": "Tekrar dene",
 		"save": "Kaydet",
 		"delete": "Sil",
 		"close": "Kapat",
