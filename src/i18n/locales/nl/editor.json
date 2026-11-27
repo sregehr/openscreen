@@ -69,7 +69,7 @@
 		"dropOverlay": "Laat het projectbestand los om te openen",
 		"dropErrors": {
 			"unsupportedFormatTitle": "Niet-ondersteund bestand",
-			"unsupportedFormatMessage": "Alleen opgeslagen projecten (.openscreen) kunnen hier worden neergezet. Gebruik de importknop op dit scherm om een video toe te voegen.",
+			"unsupportedFormatMessage": "Alleen opgeslagen projecten kunnen hier worden neergezet. Gebruik de importknop op dit scherm om een video toe te voegen.",
 			"couldNotOpenTitle": "Kon dit project niet openen",
 			"couldNotOpenMessage": "Het projectbestand kon niet worden geopend. De video waarnaar het verwijst is mogelijk verplaatst of verwijderd."
 		}
@@ -215,9 +215,6 @@
 		"exportedVideo": "Video geëxporteerd",
 		"exportedVideoOf": "aan video geëxporteerd in",
 		"showInFolder": "Tonen in map",
-		"starPrompt": "OpenScreen is gratis en heeft een MIT-licentie. Een ster op GitHub helpt anderen het te vinden.",
-		"starPromptNoThanks": "Nee, bedankt",
-		"rateOnStore": "Beoordelen in de Microsoft Store",
 		"exportFailed": "Export mislukt",
 		"failedToWriteFile": "Kon het bestand niet schrijven",
 		"qualityUpscaleWarning": "Opschalen",

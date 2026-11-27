@@ -65,11 +65,11 @@
 		"importVideoButton": "Importa video",
 		"loadProjectButton": "Apri progetto",
 		"supportedFormats": "Formati supportati: MP4, MOV, WebM, MKV, AVI, M4V, WMV",
-		"dragDropHint": "oppure trascina qui un file di progetto .openscreen",
+		"dragDropHint": "oppure trascina qui un file di progetto",
 		"dropOverlay": "Rilascia il file di progetto per aprirlo",
 		"dropErrors": {
 			"unsupportedFormatTitle": "Formato non supportato",
-			"unsupportedFormatMessage": "Qui è possibile rilasciare solo file di progetto .openscreen. Per importare un video, usa il pulsante \"Importa file video…\" in questa schermata.",
+			"unsupportedFormatMessage": "Qui è possibile rilasciare solo file di progetto. Per importare un video, usa il pulsante \"Importa file video…\" in questa schermata.",
 			"couldNotOpenTitle": "Impossibile aprire il file",
 			"couldNotOpenMessage": "Il file di progetto non può essere aperto. Il video a cui fa riferimento potrebbe essere stato spostato o eliminato."
 		}
@@ -214,9 +214,6 @@
 		"exportedGif": "GIF esportata",
 		"exportedVideo": "Video esportato",
 		"showInFolder": "Mostra nella cartella",
-		"starPrompt": "OpenScreen è gratuito e con licenza MIT. Una stella su GitHub aiuta altre persone a trovarlo.",
-		"starPromptNoThanks": "No, grazie",
-		"rateOnStore": "Valuta su Microsoft Store",
 		"exportFailed": "Esportazione non riuscita",
 		"failedToWriteFile": "Impossibile scrivere il file",
 		"qualityUpscaleWarning": "Upscaling",

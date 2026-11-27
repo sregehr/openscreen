@@ -69,7 +69,7 @@
 		"dropOverlay": "Upuść plik projektu, aby go otworzyć",
 		"dropErrors": {
 			"unsupportedFormatTitle": "Nieobsługiwany plik",
-			"unsupportedFormatMessage": "Tutaj można upuścić tylko zapisane projekty (.openscreen). Aby dodać wideo, użyj przycisku importu na tym ekranie.",
+			"unsupportedFormatMessage": "Tutaj można upuścić tylko zapisane projekty. Aby dodać wideo, użyj przycisku importu na tym ekranie.",
 			"couldNotOpenTitle": "Nie udało się otworzyć tego projektu",
 			"couldNotOpenMessage": "Nie udało się otworzyć pliku projektu. Wideo, do którego się odwołuje, mogło zostać przeniesione lub usunięte."
 		}
@@ -215,9 +215,6 @@
 		"exportedVideo": "Wyeksportowano wideo",
 		"exportedVideoOf": "wideo wyeksportowane w",
 		"showInFolder": "Pokaż w folderze",
-		"starPrompt": "OpenScreen jest darmowy i na licencji MIT. Gwiazdka na GitHubie pomaga innym go znaleźć.",
-		"starPromptNoThanks": "Nie, dziękuję",
-		"rateOnStore": "Oceń w Microsoft Store",
 		"exportFailed": "Eksport nie powiódł się",
 		"failedToWriteFile": "Nie udało się zapisać pliku",
 		"qualityUpscaleWarning": "Powiększenie",

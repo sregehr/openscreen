@@ -10,15 +10,15 @@ import { nativeBridgeClient } from "@/native/client";
 import type { AiEditionMcpStatus } from "@/native/contracts";
 import styles from "./NewEditorShell.module.css";
 
-const CODEX_TOKEN_ENV = "OPENSCREEN_MCP_TOKEN";
+const CODEX_TOKEN_ENV = "SCREEN_RECORDER_MCP_TOKEN";
 const MASKED_TOKEN = "••••••••";
 
 export function claudeCodeCommand(url: string, token: string): string {
-	return `claude mcp add --transport http openscreen ${url} --header "Authorization: Bearer ${token}"`;
+	return `claude mcp add --transport http screen-recorder ${url} --header "Authorization: Bearer ${token}"`;
 }
 
 export function codexCommand(url: string): string {
-	return `codex mcp add openscreen --url ${url} --bearer-token-env-var ${CODEX_TOKEN_ENV}`;
+	return `codex mcp add screen-recorder --url ${url} --bearer-token-env-var ${CODEX_TOKEN_ENV}`;
 }
 
 // Commands and the token wrap onto as many lines as they need. `nowrap` here made

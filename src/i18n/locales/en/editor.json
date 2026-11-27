@@ -69,7 +69,7 @@
 		"dropOverlay": "Drop project file to open",
 		"dropErrors": {
 			"unsupportedFormatTitle": "Unsupported file",
-			"unsupportedFormatMessage": "Only saved projects (.openscreen) can be dropped here. To add a video, use the import button on this screen.",
+			"unsupportedFormatMessage": "Only saved projects can be dropped here. To add a video, use the import button on this screen.",
 			"couldNotOpenTitle": "Couldn't open this project",
 			"couldNotOpenMessage": "The project file could not be opened. The video it references may have been moved or deleted."
 		}
@@ -215,9 +215,6 @@
 		"exportedVideo": "Video exported",
 		"exportedVideoOf": "of video exported in",
 		"showInFolder": "Show in folder",
-		"starPrompt": "OpenScreen is free and MIT licensed. A star on GitHub helps other people find it.",
-		"starPromptNoThanks": "No thanks",
-		"rateOnStore": "Rate on the Microsoft Store",
 		"exportFailed": "Export failed",
 		"failedToWriteFile": "Failed to write file",
 		"qualityUpscaleWarning": "Upscale",

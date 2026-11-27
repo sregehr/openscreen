@@ -199,7 +199,7 @@ export function createAppRecorder(deps: AppRecorderDeps): AppRecorder {
 			await sleep(timing.pollMs);
 		}
 		throw new Error(
-			`The take was saved to ${videoPath}, but the OpenScreen editor did not open it within ${seconds(timing.openMs)} s.`,
+			`The take was saved to ${videoPath}, but the Docebo Screen Recorder editor did not open it within ${seconds(timing.openMs)} s.`,
 		);
 	}
 
@@ -209,7 +209,7 @@ export function createAppRecorder(deps: AppRecorderDeps): AppRecorder {
 			const videoPath = await within(take.saved.promise, timing.saveMs);
 			if (videoPath === null) {
 				throw new Error(
-					`The recording failed: OpenScreen did not hand the take to its editor within ${seconds(timing.saveMs)} s. The recording bar says why.`,
+					`The recording failed: Docebo Screen Recorder did not hand the take to its editor within ${seconds(timing.saveMs)} s. The recording bar says why.`,
 				);
 			}
 			const opened = await openedInEditor(videoPath);
@@ -255,10 +255,11 @@ export function createAppRecorder(deps: AppRecorderDeps): AppRecorder {
 			if (current?.phase === "saving") current.saved.resolve(videoPath);
 		},
 		async start(request): Promise<RunningTake> {
-			if (current || deps.isRecording()) throw new Error("OpenScreen is already recording a take.");
+			if (current || deps.isRecording())
+				throw new Error("Docebo Screen Recorder is already recording a take.");
 			if (deps.editorHasUnsavedChanges()) {
 				throw new Error(
-					"the OpenScreen editor has changes it has not saved yet, and the take closes it. Ask the user to save them, then try again.",
+					"the Docebo Screen Recorder editor has changes it has not saved yet, and the take closes it. Ask the user to save them, then try again.",
 				);
 			}
 			const restoreSettings = await deps.prepare(request);
@@ -288,7 +289,7 @@ export function createAppRecorder(deps: AppRecorderDeps): AppRecorder {
 				current = null;
 				take.restore();
 				throw new Error(
-					`capture had not started after ${seconds(timing.startMs)} s. OpenScreen's recording bar says why.`,
+					`capture had not started after ${seconds(timing.startMs)} s. Docebo Screen Recorder's recording bar says why.`,
 				);
 			}
 			return { startedAt, stop: (title) => stop(take, title) };

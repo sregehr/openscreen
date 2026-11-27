@@ -65,11 +65,11 @@
 		"importVideoButton": "動画をインポート",
 		"loadProjectButton": "プロジェクトを開く",
 		"supportedFormats": "対応フォーマット：MP4、MOV、WebM、MKV、AVI、M4V、WMV",
-		"dragDropHint": ".openscreen プロジェクトファイルをここにドラッグ＆ドロップ",
+		"dragDropHint": "プロジェクトファイルをここにドラッグ＆ドロップ",
 		"dropOverlay": "プロジェクトファイルをドロップして開く",
 		"dropErrors": {
 			"unsupportedFormatTitle": "非対応フォーマット",
-			"unsupportedFormatMessage": "ここにドロップできるのは .openscreen プロジェクトファイルのみです。動画をインポートするには「動画ファイルをインポート...」ボタンをご使用ください。",
+			"unsupportedFormatMessage": "ここにドロップできるのはプロジェクトファイルのみです。動画をインポートするには「動画ファイルをインポート...」ボタンをご使用ください。",
 			"couldNotOpenTitle": "ファイルを開けませんでした",
 			"couldNotOpenMessage": "プロジェクトファイルを開けませんでした。参照している動画が移動または削除された可能性があります。"
 		}
@@ -214,9 +214,6 @@
 		"exportedGif": "GIFをエクスポートしました",
 		"exportedVideo": "動画をエクスポートしました",
 		"showInFolder": "フォルダーで表示",
-		"starPrompt": "OpenScreen は無料で、MIT ライセンスです。GitHub でスターを付けると、他の人が見つけやすくなります。",
-		"starPromptNoThanks": "結構です",
-		"rateOnStore": "Microsoft Store で評価する",
 		"exportFailed": "エクスポートに失敗しました",
 		"failedToWriteFile": "ファイルの書き込みに失敗しました",
 		"qualityUpscaleWarning": "アップスケール",

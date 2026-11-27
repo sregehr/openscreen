@@ -65,11 +65,11 @@
 		"importVideoButton": "Importovat video",
 		"loadProjectButton": "Otevřít projekt",
 		"supportedFormats": "Podporované formáty: MP4, MOV, WebM, MKV, AVI, M4V, WMV",
-		"dragDropHint": "nebo přetáhněte soubor projektu .openscreen sem",
+		"dragDropHint": "nebo přetáhněte soubor projektu sem",
 		"dropOverlay": "Přetáhněte soubor projektu pro otevření",
 		"dropErrors": {
 			"unsupportedFormatTitle": "Nepodporovaný formát",
-			"unsupportedFormatMessage": "Sem lze přetáhnout pouze soubory projektů .openscreen. Pro import video souboru použijte tlačítko „Importovat video soubor…” na této obrazovce.",
+			"unsupportedFormatMessage": "Sem lze přetáhnout pouze soubory projektů. Pro import video souboru použijte tlačítko „Importovat video soubor…” na této obrazovce.",
 			"couldNotOpenTitle": "Soubor nelze otevřít",
 			"couldNotOpenMessage": "Soubor projektu nelze otevřít. Video, na které odkazuje, mohlo být přesunuto nebo smazáno."
 		}
@@ -215,9 +215,6 @@
 		"exportedVideo": "Video exportováno",
 		"exportedVideoOf": "z videa exportováno za",
 		"showInFolder": "Zobrazit ve složce",
-		"starPrompt": "OpenScreen je zdarma a pod licencí MIT. Hvězda na GitHubu pomůže ostatním ho najít.",
-		"starPromptNoThanks": "Ne, děkuji",
-		"rateOnStore": "Ohodnotit v Microsoft Store",
 		"exportFailed": "Export selhal",
 		"failedToWriteFile": "Nepodařilo se zapsat soubor",
 		"qualityUpscaleWarning": "Zvýšení rozlišení",

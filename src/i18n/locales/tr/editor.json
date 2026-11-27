@@ -65,11 +65,11 @@
 		"importVideoButton": "Video içe aktar",
 		"loadProjectButton": "Proje aç",
 		"supportedFormats": "Desteklenen formatlar: MP4, MOV, WebM, MKV, AVI, M4V, WMV",
-		"dragDropHint": "veya bir .openscreen proje dosyasını buraya sürükleyip bırakın",
+		"dragDropHint": "veya bir proje dosyasını buraya sürükleyip bırakın",
 		"dropOverlay": "Açmak için proje dosyasını bırakın",
 		"dropErrors": {
 			"unsupportedFormatTitle": "Desteklenmeyen Format",
-			"unsupportedFormatMessage": "Buraya yalnızca .openscreen proje dosyaları bırakılabilir. Video içe aktarmak için \"Video Dosyası İçe Aktar...\" düğmesini kullanın.",
+			"unsupportedFormatMessage": "Buraya yalnızca proje dosyaları bırakılabilir. Video içe aktarmak için \"Video Dosyası İçe Aktar...\" düğmesini kullanın.",
 			"couldNotOpenTitle": "Dosya Açılamadı",
 			"couldNotOpenMessage": "Proje dosyası açılamadı. Başvurulan video taşınmış veya silinmiş olabilir."
 		}
@@ -214,9 +214,6 @@
 		"exportedGif": "GIF dışa aktarıldı",
 		"exportedVideo": "Video dışa aktarıldı",
 		"showInFolder": "Klasörde göster",
-		"starPrompt": "OpenScreen ücretsizdir ve MIT lisanslıdır. GitHub'da bir yıldız, başkalarının onu bulmasına yardımcı olur.",
-		"starPromptNoThanks": "Hayır, teşekkürler",
-		"rateOnStore": "Microsoft Store'da değerlendir",
 		"exportFailed": "Dışa aktarma başarısız oldu",
 		"failedToWriteFile": "Dosya yazılamadı",
 		"qualityUpscaleWarning": "Upscale",

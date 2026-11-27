@@ -52,7 +52,7 @@ describe("webcam recorder options", () => {
 
 	it("uses the delivered camera dimensions for bitrate", () => {
 		expect(webcamRecorderOptions(camera(1920, 1080), "darwin", () => true).videoBitsPerSecond).toBe(
-			16_000_000,
+			5_000_000,
 		);
 	});
 });

@@ -867,6 +867,30 @@ pub struct VideoEncoder {
     nv12: *mut crate::ffi::AVFrame,
 }
 
+/// VideoToolbox quality (1-100) for exports. VideoToolbox spends an average bitrate in full,
+/// whatever the picture needs: a 1882x1080/30 screen recording with a camera, asked for
+/// 9.1 Mb/s, came out at 8.6 Mb/s and 444 MB for 6.7 minutes. In quality mode, 90 s of that
+/// same recording exported at the same size, SSIM against the quality-95 export:
+///
+///     quality 50   0.79 Mb/s   0.9784
+///     quality 55   1.03 Mb/s   0.9846
+///     quality 60   1.29 Mb/s   0.9894
+///     quality 65   1.55 Mb/s   0.9925
+///     quality 70   2.06 Mb/s   0.9955
+///
+/// The yardstick is the x264 re-encode people were making by hand to shrink these files
+/// (HandBrake, 1.0 Mb/s): 0.9885 against the export it was made from. 60 matches it.
+const VT_EXPORT_QUALITY: i32 = 60;
+
+/// `OPENSCREEN_EXPORT_QUALITY=<1-100>` overrides it: that is how the table above was measured.
+fn vt_export_quality() -> i32 {
+    std::env::var("OPENSCREEN_EXPORT_QUALITY")
+        .ok()
+        .and_then(|v| v.parse::<i32>().ok())
+        .filter(|q| (1..=100).contains(q))
+        .unwrap_or(VT_EXPORT_QUALITY)
+}
+
 impl VideoEncoder {
     /// Ouvre l'encodeur pour `codec` sur la cible `w`x`h` à `fps` fps et `bit_rate` bits/s.
     /// Essaie chaque candidate retournée par `ExportCodec::candidates()` (honorant
@@ -894,7 +918,18 @@ impl VideoEncoder {
             if forced.as_deref().is_some_and(|f| f != candidate.name) {
                 continue;
             }
-            match unsafe { Self::try_open(candidate, w, h, fps, bit_rate) } {
+            // VideoToolbox: constant quality first, the target bitrate only if that mode is
+            // refused (Intel Macs have no quality mode; ffmpeg fails the open there).
+            let opened = if candidate.name.ends_with("_videotoolbox") {
+                unsafe { Self::try_open(candidate, w, h, fps, bit_rate, Some(vt_export_quality())) }
+                    .or_else(|e| {
+                        eprintln!("[pipeline] {} : mode qualité refusé ({e}), débit cible", candidate.name);
+                        unsafe { Self::try_open(candidate, w, h, fps, bit_rate, None) }
+                    })
+            } else {
+                unsafe { Self::try_open(candidate, w, h, fps, bit_rate, None) }
+            };
+            match opened {
                 Ok(encoder) => {
                     eprintln!(
                         "[pipeline] encodeur vidéo : {} ({}{})",
@@ -935,6 +970,7 @@ impl VideoEncoder {
         h: i32,
         fps: i32,
         bit_rate: i64,
+        quality: Option<i32>,
     ) -> Result<VideoEncoder> {
         let cname = std::ffi::CString::new(candidate.name)?;
         let enc = crate::ffi::avcodec_find_encoder_by_name(cname.as_ptr());
@@ -950,7 +986,16 @@ impl VideoEncoder {
         (*ctx).pix_fmt = candidate.pix_fmt;
         (*ctx).time_base = crate::ffi::AVRational { num: 1, den: fps };
         (*ctx).framerate = crate::ffi::AVRational { num: fps, den: 1 };
-        (*ctx).bit_rate = bit_rate;
+        match quality {
+            // Constant quality; `global_quality` is in lambda units. No `rc_max_rate` beside
+            // it: with a data-rate limit set VideoToolbox ignores the quality outright
+            // (measured: quality 45 and 80 under a 9 Mb/s limit gave the same bytes).
+            Some(q) => {
+                (*ctx).flags |= crate::ffi::AV_CODEC_FLAG_QSCALE as i32;
+                (*ctx).global_quality = q * crate::ffi::FF_QP2LAMBDA as i32;
+            }
+            None => (*ctx).bit_rate = bit_rate,
+        }
         (*ctx).flags |= crate::ffi::AV_CODEC_FLAG_GLOBAL_HEADER as i32;
         // `rgb2y` / `rgb2uv` de `shaders.metal` : BT.709 limité.
         crate::ffi::tag_export_color(ctx, crate::ffi::AVColorSpace::AVCOL_SPC_BT709);

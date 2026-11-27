@@ -54,9 +54,9 @@ describe("updateNotice", () => {
 	// The user updates, not the agent: the line hands them the news and keeps the agent off it.
 	it("names both versions and leaves the update to the user", () => {
 		const notice = updateNotice("2.1.2", { latestVersion: "2.2.0", checkedAt: 0 });
-		expect(notice).toContain("OpenScreen 2.2.0 is available; this is 2.1.2.");
-		expect(notice).toContain("the OpenScreen app shows an update button");
-		expect(notice).toContain("Never update OpenScreen yourself.");
+		expect(notice).toContain("Docebo Screen Recorder 2.2.0 is available; this is 2.1.2.");
+		expect(notice).toContain("the Docebo Screen Recorder app shows an update button");
+		expect(notice).toContain("Never update Docebo Screen Recorder yourself.");
 	});
 
 	// Through the server itself, as a client receives it in the initialize answer: a dropped
@@ -67,7 +67,7 @@ describe("updateNotice", () => {
 			transport: "stdio",
 			editsAllowed: () => true,
 			version: "2.1.2",
-			updateNotice: "OpenScreen 2.2.0 is available.",
+			updateNotice: "Docebo Screen Recorder 2.2.0 is available.",
 		} as McpToolDeps;
 		const server = createOpenScreenMcpServer(deps, vi.fn());
 		const [clientSide, serverSide] = InMemoryTransport.createLinkedPair();
@@ -75,7 +75,9 @@ describe("updateNotice", () => {
 		const client = new Client({ name: "test", version: "1" });
 		await client.connect(clientSide);
 		try {
-			expect(client.getInstructions()?.startsWith("OpenScreen 2.2.0 is available.\n")).toBe(true);
+			expect(
+				client.getInstructions()?.startsWith("Docebo Screen Recorder 2.2.0 is available.\n"),
+			).toBe(true);
 		} finally {
 			await client.close();
 		}
@@ -85,9 +87,9 @@ describe("updateNotice", () => {
 		const instructions = mcpInstructions({
 			transport: "stdio",
 			editsAllowed: true,
-			updateNotice: "OpenScreen 2.2.0 is available.",
+			updateNotice: "Docebo Screen Recorder 2.2.0 is available.",
 		});
-		expect(instructions.startsWith("OpenScreen 2.2.0 is available.\n")).toBe(true);
+		expect(instructions.startsWith("Docebo Screen Recorder 2.2.0 is available.\n")).toBe(true);
 		expect(mcpInstructions({ transport: "stdio", editsAllowed: true })).not.toContain(
 			"is available",
 		);

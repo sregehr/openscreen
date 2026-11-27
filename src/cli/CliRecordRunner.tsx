@@ -307,7 +307,7 @@ export function CliRecordRunner() {
 		if (phaseRef.current === "done" || recordingStartedAtRef.current !== null) return;
 		void fail(
 			new Error(
-				"The camera could not be opened: another app is using it (OpenScreen itself, when it is running), or it was disconnected",
+				"The camera could not be opened: another app is using it (Docebo Screen Recorder itself, when it is running), or it was disconnected",
 			),
 		);
 	}, [requestReady, recorder.webcamEnabled]);

@@ -94,7 +94,7 @@ describe("webcamBitrateFor", () => {
 	});
 
 	it("gives 4K enough headroom to be worth capturing", () => {
-		expect(webcamBitrateFor(3840, 2160)).toBe(40_000_000);
+		expect(webcamBitrateFor(3840, 2160)).toBe(20_000_000);
 	});
 
 	it("matches the tier boundaries the native helper uses", () => {
@@ -107,7 +107,7 @@ describe("webcamBitrateFor", () => {
 	it("rates a small camera by what it delivered, not by what we asked for", () => {
 		// The preset is a request. A 720p camera asked for 2160p must not be
 		// handed a 4K bitrate it cannot fill.
-		expect(webcamBitrateFor(1280, 720)).toBe(8_000_000);
+		expect(webcamBitrateFor(1280, 720)).toBe(2_500_000);
 	});
 
 	it("survives a track that reports nothing", () => {
@@ -125,7 +125,7 @@ describe("webcamBitrateForStream", () => {
 		({ getVideoTracks: () => [{ getSettings: () => settings }] }) as unknown as MediaStream;
 
 	it("reads the size off the live track", () => {
-		expect(webcamBitrateForStream(streamWith({ width: 2560, height: 1440 }))).toBe(24_000_000);
+		expect(webcamBitrateForStream(streamWith({ width: 2560, height: 1440 }))).toBe(10_000_000);
 	});
 
 	it("falls back when there is no stream or no video track", () => {

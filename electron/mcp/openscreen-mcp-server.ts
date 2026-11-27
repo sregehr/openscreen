@@ -201,28 +201,28 @@ const transcribeArgs = z.object({
 });
 
 const TRANSCRIBE_DESCRIPTION =
-	"Transcribe one asset's speech with OpenScreen's on-device Whisper, as the editor does when it opens a project, and store the transcript in the project: getTranscript, getTranscriptWords, setWordText, removeWords and the captions all read it. A take from stopRecording has none until this runs. Without `language`, an asset that already has a transcript keeps it, and a transcription the editor is already running is waited for rather than run twice; with `language`, the asset is transcribed again in it (a run of the editor already in that language is waited for instead), and the word corrections that still match are carried over. The project's vocabulary (setVocabulary) primes Whisper. It runs on this computer and can take minutes on a long recording, more the first time, when the speech model downloads. Media with no audio fails with failure.kind `no-audio`, which the asset then remembers (assets[].transcriptionFailure in getCurrentDocument). The result gives the language and the word count; it needs no checkpoint, and restoreCheckpoint keeps a transcript made after its checkpoint.";
+	"Transcribe one asset's speech with Docebo Screen Recorder's on-device Whisper, as the editor does when it opens a project, and store the transcript in the project: getTranscript, getTranscriptWords, setWordText, removeWords and the captions all read it. A take from stopRecording has none until this runs. Without `language`, an asset that already has a transcript keeps it, and a transcription the editor is already running is waited for rather than run twice; with `language`, the asset is transcribed again in it (a run of the editor already in that language is waited for instead), and the word corrections that still match are carried over. The project's vocabulary (setVocabulary) primes Whisper. It runs on this computer and can take minutes on a long recording, more the first time, when the speech model downloads. Media with no audio fails with failure.kind `no-audio`, which the asset then remembers (assets[].transcriptionFailure in getCurrentDocument). The result gives the language and the word count; it needs no checkpoint, and restoreCheckpoint keeps a transcript made after its checkpoint.";
 
 const TRANSCRIBE_NOTE =
-	"Speech: transcribe makes an asset's transcript with OpenScreen's on-device Whisper. Everything that reads speech needs it (getTranscript, getTranscriptWords, removeWords, the captions); a fresh take has none until you call it.";
+	"Speech: transcribe makes an asset's transcript with Docebo Screen Recorder's on-device Whisper. Everything that reads speech needs it (getTranscript, getTranscriptWords, removeWords, the captions); a fresh take has none until you call it.";
 
 /** The in-app server's edit switch, as AI settings label it (`mcpServer.editsLabel`). */
 export const MCP_EDITS_SETTING = "'MCP edits' under MCP server in AI settings";
 
 const LIST_PROJECTS_DESCRIPTION =
-	"List every OpenScreen project: id, title, last update, asset count, and `open`: whether the OpenScreen editor has it open, in which case an edit to it goes through the editor, shows there live and the user can undo it with Ctrl/Cmd+Z. Pass a project's id as `projectId` to any other tool to read or edit that project.";
+	"List every Docebo Screen Recorder project: id, title, last update, asset count, and `open`: whether the Docebo Screen Recorder editor has it open, in which case an edit to it goes through the editor, shows there live and the user can undo it with Ctrl/Cmd+Z. Pass a project's id as `projectId` to any other tool to read or edit that project.";
 
 const PROJECT_ID_DESCRIPTIONS: Record<McpTransport, string> = {
 	http: "The project to act on, from listProjects. Omit it for the project open in the editor.",
 	stdio:
-		"The project to act on, from listProjects. Omit it only for the project open in the OpenScreen editor, which works only while the app runs.",
+		"The project to act on, from listProjects. Omit it only for the project open in the Docebo Screen Recorder editor, which works only while the app runs.",
 };
 
 // stdio's are only met on its own, with no app to forward to (app-channel.ts).
 const NO_PROJECT_MESSAGES: Record<McpTransport, string> = {
-	http: "No project is open in the OpenScreen editor. Call listProjects and pass a projectId, or ask the user to open one in OpenScreen.",
+	http: "No project is open in the Docebo Screen Recorder editor. Call listProjects and pass a projectId, or ask the user to open one in Docebo Screen Recorder.",
 	stdio:
-		"Pass a projectId: OpenScreen is not running (or not answering), so there is no project open in its editor to act on. Call listProjects for the ids.",
+		"Pass a projectId: Docebo Screen Recorder is not running (or not answering), so there is no project open in its editor to act on. Call listProjects for the ids.",
 };
 
 // The editor would overwrite a file edit with its own copy on its next save, so a
@@ -233,7 +233,7 @@ const PROJECT_CHANGED_MESSAGE =
 const CHECKPOINT_REQUIRED_MESSAGES: Record<McpTransport, string> = {
 	http: "The edit was NOT applied: this project is not open in the editor, so the user cannot undo an edit to it with Ctrl/Cmd+Z. Call createCheckpoint with this projectId first, so restoreCheckpoint can take your edits back in one step, then retry.",
 	stdio:
-		"The edit was NOT applied: OpenScreen is not running (or not answering), so this server saves each edit straight to the project's file, where Ctrl/Cmd+Z cannot reach it. Call createCheckpoint with this projectId first, so restoreCheckpoint can take your edits back in one step, then retry.",
+		"The edit was NOT applied: Docebo Screen Recorder is not running (or not answering), so this server saves each edit straight to the project's file, where Ctrl/Cmd+Z cannot reach it. Call createCheckpoint with this projectId first, so restoreCheckpoint can take your edits back in one step, then retry.",
 };
 
 // ponytail: kept in memory, last 20 only. In the app one store serves the in-app server
@@ -242,20 +242,20 @@ const CHECKPOINT_REQUIRED_MESSAGES: Record<McpTransport, string> = {
 const MAX_CHECKPOINTS = 20;
 
 const CHECKPOINT_LIFETIMES: Record<McpTransport, string> = {
-	http: `Checkpoints live in OpenScreen's memory: only the ${MAX_CHECKPOINTS} most recent are kept, and all of them are lost when OpenScreen quits.`,
-	stdio: `Checkpoints live in OpenScreen's memory while the app runs, and in this server's when it does not: only the ${MAX_CHECKPOINTS} most recent are kept, they are lost when the one holding them exits (OpenScreen quitting, or this server when the client disconnects), and neither knows the other's.`,
+	http: `Checkpoints live in Docebo Screen Recorder's memory: only the ${MAX_CHECKPOINTS} most recent are kept, and all of them are lost when Docebo Screen Recorder quits.`,
+	stdio: `Checkpoints live in Docebo Screen Recorder's memory while the app runs, and in this server's when it does not: only the ${MAX_CHECKPOINTS} most recent are kept, they are lost when the one holding them exits (Docebo Screen Recorder quitting, or this server when the client disconnects), and neither knows the other's.`,
 };
 
 const APPLY_FAILURE_MESSAGES: Record<Exclude<McpApplyResult, "applied">, string> = {
 	conflict:
 		"The edit was NOT applied: the project changed in the editor while this call ran. Call getCurrentDocument to re-read it, then retry.",
-	"save-failed": "The edit was NOT applied: OpenScreen could not save the project.",
+	"save-failed": "The edit was NOT applied: Docebo Screen Recorder could not save the project.",
 	// Only the in-app server has an editor to apply through.
 	"no-live-document": NO_PROJECT_MESSAGES.http,
 	"no-editor": NO_PROJECT_MESSAGES.http,
 	// Not "NOT applied": the editor may have saved it and only the answer was lost.
 	timeout:
-		"OpenScreen did not confirm this edit in time. Call getCurrentDocument to see whether it landed before retrying.",
+		"Docebo Screen Recorder did not confirm this edit in time. Call getCurrentDocument to see whether it landed before retrying.",
 };
 
 const DESTRUCTIVE_TOOLS: ReadonlySet<string> = new Set([
@@ -268,11 +268,11 @@ const DESTRUCTIVE_TOOLS: ReadonlySet<string> = new Set([
 /** What both servers say about projects and checkpoints, each in its own terms. */
 const CORE_PREAMBLES: Record<McpTransport, readonly string[]> = {
 	http: [
-		"These tools act on the user's OpenScreen projects. Without a projectId they act on the project open in the editor; call listProjects to find any other project and pass its id as projectId. Every edit is saved straight away. An edit to the open project appears in the editor, where the user can undo it with Ctrl/Cmd+Z; an edit to any other project is saved to its file and is not on the editor's undo stack.",
+		"These tools act on the user's Docebo Screen Recorder projects. Without a projectId they act on the project open in the editor; call listProjects to find any other project and pass its id as projectId. Every edit is saved straight away. An edit to the open project appears in the editor, where the user can undo it with Ctrl/Cmd+Z; an edit to any other project is saved to its file and is not on the editor's undo stack.",
 		"Before a series of edits, call createCheckpoint with the same projectId. Undo is one step per call, so if the result is not what the user wanted, restoreCheckpoint takes the project back in one step instead of many. A project that is not open in the editor cannot be edited until it has a checkpoint, since restoreCheckpoint is its only undo.",
 	],
 	stdio: [
-		"These tools act on the user's OpenScreen projects: call listProjects for their ids, and pass one as projectId. Every edit is saved straight away. While the OpenScreen app runs, this server hands each call to it: an edit to the project open in its editor appears there, where the user can undo it with Ctrl/Cmd+Z, and any other project is saved to its file. When the app is not running, every project is read from and saved to its file, and Ctrl/Cmd+Z cannot reach the edit.",
+		"These tools act on the user's Docebo Screen Recorder projects: call listProjects for their ids, and pass one as projectId. Every edit is saved straight away. While the Docebo Screen Recorder app runs, this server hands each call to it: an edit to the project open in its editor appears there, where the user can undo it with Ctrl/Cmd+Z, and any other project is saved to its file. When the app is not running, every project is read from and saved to its file, and Ctrl/Cmd+Z cannot reach the edit.",
 		"Before a series of edits, call createCheckpoint with the same projectId. Undo is one step per call, so if the result is not what the user wanted, restoreCheckpoint takes the project back in one step instead of many. A project that is not open in the editor cannot be edited until it has a checkpoint, since restoreCheckpoint is its only undo.",
 	],
 };
@@ -438,7 +438,7 @@ export function createToolRunner(deps: McpToolDeps): McpToolRunner {
 		if (!editsAllowed) {
 			return {
 				ok: false,
-				resultJson: `Edits by MCP clients are turned off in OpenScreen, so the checkpoint was NOT restored. Ask the user to turn on ${MCP_EDITS_SETTING}, or to undo the edits themselves.`,
+				resultJson: `Edits by MCP clients are turned off in Docebo Screen Recorder, so the checkpoint was NOT restored. Ask the user to turn on ${MCP_EDITS_SETTING}, or to undo the edits themselves.`,
 			};
 		}
 		const id = (args as { checkpointId?: unknown } | null)?.checkpointId;
@@ -806,7 +806,7 @@ function editorTranscription(
 ): CallToolResult {
 	if (outcome === "timeout") {
 		return textResult(
-			"OpenScreen did not finish this transcription in time; it may still be running in the editor. Call getCurrentDocument later: assets[].hasTranscript says when it has landed.",
+			"Docebo Screen Recorder did not finish this transcription in time; it may still be running in the editor. Call getCurrentDocument later: assets[].hasTranscript says when it has landed.",
 			true,
 		);
 	}

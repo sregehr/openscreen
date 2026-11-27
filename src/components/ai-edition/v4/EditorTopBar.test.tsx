@@ -255,29 +255,6 @@ describe("AppMenu", () => {
 		}
 	});
 
-	it("offers the repo permanently and routes it through main, on every channel", async () => {
-		// The counterpart to the one-time ask after an export: this row is always there. It is
-		// deliberately NOT behind the update veto — a link to the repo root is the one thing a
-		// Store/Flathub/Snap copy may show, since it can walk nobody into a parallel install.
-		const openRepoPage = vi.fn(() => Promise.resolve());
-		(window as unknown as { electronAPI?: unknown }).electronAPI = { openRepoPage };
-		try {
-			renderTopBar("Demo Project");
-			fireEvent.click(screen.getByRole("button", { name: /Docebo Screen Recorder/ }));
-			// Present next to About even though Check for Updates is absent here (no channel
-			// answer in jsdom), which is the pairing that would break if the two ever shared a veto.
-			expect(
-				screen.queryByRole("menuitem", { name: /actions\.checkForUpdates/ }),
-			).not.toBeInTheDocument();
-			fireEvent.click(screen.getByRole("menuitem", { name: /actions\.starOnGithub/ }));
-			// No URL argument: the renderer holds no link, main owns the one it opens.
-			expect(openRepoPage).toHaveBeenCalledWith();
-			expect(screen.queryByRole("menu")).not.toBeInTheDocument();
-		} finally {
-			(window as unknown as { electronAPI?: unknown }).electronAPI = undefined;
-		}
-	});
-
 	it("carries the file actions the bar used to show as three icons", () => {
 		const { onNewProject, onOpenProject, onSave } = renderTopBar("Demo Project");
 		// Not in the bar any more: only the menu reaches them (and Ctrl+N / Ctrl+O / Ctrl+S).

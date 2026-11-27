@@ -82,7 +82,7 @@ const SUBCOMMANDS = new Set([
 	"-h",
 ]);
 
-export const CLI_USAGE = `OpenScreen CLI
+export const CLI_USAGE = `Docebo Screen Recorder CLI
 
 Usage:
   openscreen export <project.openscreen> [options]   Render a project to MP4/GIF, or its audio to WAV/M4A
