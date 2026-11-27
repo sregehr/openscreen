@@ -73,13 +73,6 @@ import { setDisplaySleepBlocked } from "./recording/displaySleepBlocker";
 import { RecordingsDirManager } from "./recording/recordingsDirManager";
 import { registerSttIpc, shutdownStt } from "./stt";
 import { checkLatestRelease } from "./update-checker";
-import {
-	doNotTrack,
-	loadUsagePingState,
-	sendUsagePing,
-	setUsagePingEnabled,
-	USAGE_PING_INTERVAL_MS,
-} from "./usage-ping";
 import { configureWaylandSupport } from "./wayland";
 import {
 	createCountdownOverlayWindow,
@@ -711,29 +704,6 @@ async function installWhenReady() {
 	if (blocked) await showBlockedInstall(blocked);
 }
 
-let usagePingEnabled = true;
-
-/** Hidden where the ping never runs anyway: a dev build, or DO_NOT_TRACK set. */
-function showUsagePingToggle(): boolean {
-	return getInstallChannel() !== "dev" && !doNotTrack(process.env);
-}
-
-function persistUsagePingEnabled(enabled: boolean) {
-	usagePingEnabled = enabled;
-	setUsagePingEnabled(app.getPath("userData"), enabled);
-	updateTrayMenu(isRecording);
-}
-
-function runUsagePing() {
-	void sendUsagePing(app.getPath("userData"), {
-		version: app.getVersion(),
-		os: process.platform,
-		arch: process.arch,
-		channel: getInstallChannel(),
-		surface: "app",
-	});
-}
-
 async function downloadAndInstall(latestVersion: string) {
 	const result = await runUnblockedDownloadAndInstall({
 		download: downloadSelfUpdate,
@@ -1018,16 +988,6 @@ function updateTrayMenu(recording: boolean = false) {
 							{
 								label: mainT("common", "actions.checkForUpdates") || "Check for Updates",
 								click: runUpdateCheck,
-							},
-						]
-					: []),
-				...(showUsagePingToggle()
-					? [
-							{
-								label: mainT("common", "actions.usagePing") || "Send Anonymous Usage Count",
-								type: "checkbox" as const,
-								checked: usagePingEnabled,
-								click: () => persistUsagePingEnabled(!usagePingEnabled),
 							},
 						]
 					: []),
@@ -1441,12 +1401,9 @@ appReady?.then(async () => {
 	// startup time and the channels that cannot use it must not pay for it at
 	// all (see auto-updater.ts getUpdater) — every real update path applies
 	// its settings lazily on first use.
-	usagePingEnabled = loadUsagePingState(app.getPath("userData")).enabled;
 	createTray();
 	updateTrayMenu();
 	startBackgroundUpdateTimer();
-	runUsagePing();
-	setInterval(runUsagePing, USAGE_PING_INTERVAL_MS).unref();
 	configureAboutPanel();
 	setupApplicationMenu();
 	await ensureRecordingsDir();

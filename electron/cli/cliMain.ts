@@ -16,7 +16,6 @@ import { watchForMacMcpShutdown } from "../mcp/mac-update-shutdown";
 import { serveMcpOverStdio } from "../mcp/stdio-server";
 import { readReleaseLookup, refreshReleaseLookup, updateNotice } from "../mcp/update-notice";
 import { registerSttIpc, shutdownStt } from "../stt";
-import { sendUsagePing, USAGE_PING_INTERVAL_MS } from "../usage-ping";
 import { createRunnerWindow } from "../windows";
 import { CLI_USAGE, type CliCommand } from "./args";
 import { onCliActivate } from "./openGui";
@@ -453,19 +452,6 @@ export function runCli(command: CliCommand): void {
 						// and stdout is the protocol.
 					});
 				}
-				// An install driven only by an agent is an active install too. Same ping, state
-				// file and opt-outs as the GUI's, and it writes nothing: stdout is the protocol.
-				// The other commands stay silent: they are scripts and CI more often than people.
-				const pingUsage = () =>
-					void sendUsagePing(userDataDir, {
-						version: app.getVersion(),
-						os: process.platform,
-						arch: process.arch,
-						channel: getInstallChannel(),
-						surface: "mcp",
-					});
-				pingUsage();
-				setInterval(pingUsage, USAGE_PING_INTERVAL_MS).unref();
 				return;
 			}
 

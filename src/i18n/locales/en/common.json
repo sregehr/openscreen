@@ -11,7 +11,6 @@
 		"checkForUpdates": "Check for Updates",
 		"update": "Update",
 		"updateTo": "Update to {{version}}",
-		"usagePing": "Send Anonymous Usage Count",
 		"viewRelease": "View Release",
 		"downloadUpdate": "Download Update",
 		"restartNow": "Restart Now",

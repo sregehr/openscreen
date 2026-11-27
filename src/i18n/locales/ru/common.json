@@ -11,7 +11,6 @@
 		"checkForUpdates": "Проверить обновления",
 		"update": "Обновить",
 		"updateTo": "Обновить до {{version}}",
-		"usagePing": "Отправлять анонимный счётчик использования",
 		"viewRelease": "Открыть выпуск",
 		"downloadUpdate": "Загрузить обновление",
 		"restartNow": "Перезапустить",

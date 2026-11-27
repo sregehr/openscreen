@@ -11,7 +11,6 @@
 		"checkForUpdates": "Rechercher des mises à jour",
 		"update": "Mettre à jour",
 		"updateTo": "Mettre à jour vers la version {{version}}",
-		"usagePing": "Envoyer le comptage d'utilisation anonyme",
 		"viewRelease": "Voir la version",
 		"downloadUpdate": "Télécharger la mise à jour",
 		"restartNow": "Redémarrer maintenant",
