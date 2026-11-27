@@ -1,6 +1,7 @@
 {
 	"actions": {
 		"cancel": "Zrušit",
+		"tryAgain": "Zkusit znovu",
 		"save": "Uložit",
 		"delete": "Smazat",
 		"close": "Zavřít",

@@ -1,6 +1,7 @@
 {
 	"actions": {
 		"cancel": "キャンセル",
+		"tryAgain": "再試行",
 		"save": "保存",
 		"delete": "削除",
 		"close": "閉じる",

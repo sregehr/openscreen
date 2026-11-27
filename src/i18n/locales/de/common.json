@@ -1,6 +1,7 @@
 {
 	"actions": {
 		"cancel": "Abbrechen",
+		"tryAgain": "Erneut versuchen",
 		"save": "Speichern",
 		"delete": "Löschen",
 		"close": "Schließen",

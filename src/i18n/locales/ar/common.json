@@ -1,6 +1,7 @@
 {
 	"actions": {
 		"cancel": "الغاء",
+		"tryAgain": "إعادة المحاولة",
 		"save": "حفظ",
 		"delete": "حذف",
 		"close": "اغلاق",
