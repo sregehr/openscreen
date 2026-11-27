@@ -44,7 +44,7 @@ export function updateNotice(currentVersion: string, lookup: ReleaseLookup | nul
 }
 
 /** Looks the latest release up if the cached answer is older than the interval. Throws on a
- *  network or GitHub failure; the caller drops it, as the next session tries again. */
+ *  network or feed failure; the caller drops it, as the next session tries again. */
 export async function refreshReleaseLookup(options: {
 	userData: string;
 	currentVersion: string;

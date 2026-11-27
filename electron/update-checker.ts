@@ -1,6 +1,13 @@
-const LATEST_RELEASE_API = "https://api.github.com/repos/sregehr/openscreen/releases/latest";
-const RELEASES_API = "https://api.github.com/repos/sregehr/openscreen/releases?per_page=30";
-const OFFICIAL_RELEASE_PREFIX = "/sregehr/openscreen/releases/tag/";
+// Releases live on a private GitLab project, which the app cannot read without a login. So the
+// newest version is published as a small public marker file, and an update is offered as a link
+// to that version's GitLab release page, where a signed-in team member downloads it.
+//
+// The marker is `latest.json` on the `update-feed` branch of the public fork: `{"version":"2.4.1"}`.
+// It names a version and nothing else. The page it leads to is built here, from the version, so a
+// tampered marker cannot send anyone to another site.
+export const UPDATE_FEED_URL =
+	"https://raw.githubusercontent.com/sregehr/openscreen/update-feed/latest.json";
+const RELEASE_PAGE_PREFIX = "https://gitlab.com/stefan.regehr/screen-recorder/-/releases/";
 
 interface ReleaseResponse {
 	ok: boolean;
@@ -78,32 +85,8 @@ export function compareVersions(left: string, right: string): number {
 	return comparePrerelease(a.prerelease, b.prerelease);
 }
 
-function officialReleaseUrl(value: string, tag: string): string {
-	let url: URL;
-	try {
-		url = new URL(value);
-	} catch {
-		throw new Error("untrusted release URL");
-	}
-	const encodedTag = url.pathname.slice(OFFICIAL_RELEASE_PREFIX.length);
-	let decodedTag = "";
-	try {
-		decodedTag = decodeURIComponent(encodedTag);
-	} catch {
-		throw new Error("untrusted release URL");
-	}
-	if (
-		url.protocol !== "https:" ||
-		url.hostname !== "github.com" ||
-		url.port !== "" ||
-		!url.pathname.startsWith(OFFICIAL_RELEASE_PREFIX) ||
-		decodedTag !== tag ||
-		url.search !== "" ||
-		url.hash !== ""
-	) {
-		throw new Error("untrusted release URL");
-	}
-	return url.toString();
+export function releasePageUrl(version: string): string {
+	return `${RELEASE_PAGE_PREFIX}${encodeURIComponent(`v${parseVersion(version).normalized}`)}`;
 }
 
 export type UpdateCheckResult =
@@ -119,35 +102,12 @@ export type UpdateCheckResult =
 			latestVersion: string;
 	  };
 
-interface Release {
-	tag_name: string;
-	html_url: string;
-}
-
-function asRelease(payload: unknown, allowPrerelease: boolean): Release {
-	const fields = payload as Record<string, unknown>;
-	if (
-		typeof payload !== "object" ||
-		payload === null ||
-		typeof fields.tag_name !== "string" ||
-		typeof fields.html_url !== "string" ||
-		fields.draft !== false ||
-		(allowPrerelease ? typeof fields.prerelease !== "boolean" : fields.prerelease !== false)
-	) {
-		throw new Error("invalid GitHub release response");
+function feedVersion(payload: unknown): ParsedVersion {
+	const version = (payload as { version?: unknown } | null)?.version;
+	if (typeof payload !== "object" || payload === null || typeof version !== "string") {
+		throw new Error("invalid update feed response");
 	}
-	return payload as Release;
-}
-
-function newestRelease(payload: unknown): Release {
-	if (!Array.isArray(payload) || payload.length === 0) {
-		throw new Error("invalid GitHub release response");
-	}
-	return payload
-		.map((entry) => asRelease(entry, true))
-		.reduce((newest, release) =>
-			compareVersions(release.tag_name, newest.tag_name) > 0 ? release : newest,
-		);
+	return parseVersion(version);
 }
 
 export async function checkLatestRelease(options: {
@@ -156,23 +116,14 @@ export async function checkLatestRelease(options: {
 	signal?: AbortSignal;
 }): Promise<UpdateCheckResult> {
 	const current = parseVersion(options.currentVersion);
-	// releases/latest only ever resolves to a stable release, so an RC would never be offered the
-	// next RC (#1447). An RC tester opted into prereleases: compare against them too.
-	const onPrerelease = current.prerelease.length > 0;
-	const response = await options.fetchLatest(onPrerelease ? RELEASES_API : LATEST_RELEASE_API, {
-		headers: {
-			Accept: "application/vnd.github+json",
-			"X-GitHub-Api-Version": "2022-11-28",
-		},
+	const response = await options.fetchLatest(UPDATE_FEED_URL, {
+		headers: { Accept: "application/json" },
 		...(options.signal ? { signal: options.signal } : {}),
 	});
-	if (!response.ok) throw new Error(`GitHub release check failed (${response.status})`);
+	if (!response.ok) throw new Error(`Update check failed (${response.status})`);
 
-	const payload = await response.json();
-	const release = onPrerelease ? newestRelease(payload) : asRelease(payload, false);
-	const latest = parseVersion(release.tag_name);
-	const comparison = compareVersions(latest.normalized, current.normalized);
-	if (comparison <= 0) {
+	const latest = feedVersion(await response.json());
+	if (compareVersions(latest.normalized, current.normalized) <= 0) {
 		return {
 			kind: "current",
 			currentVersion: current.normalized,
@@ -184,6 +135,6 @@ export async function checkLatestRelease(options: {
 		kind: "available",
 		currentVersion: current.normalized,
 		latestVersion: latest.normalized,
-		releaseUrl: officialReleaseUrl(release.html_url, release.tag_name),
+		releaseUrl: releasePageUrl(latest.normalized),
 	};
 }
