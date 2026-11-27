@@ -867,22 +867,22 @@ pub struct VideoEncoder {
     nv12: *mut crate::ffi::AVFrame,
 }
 
-/// VideoToolbox quality (0-100) for exports. VideoToolbox spends an average bitrate in full,
-/// whatever the picture needs: a 1882x1080/30 screen recording asked for 9.1 Mb/s came out at
-/// 8.6 Mb/s. In quality mode the same six-minute export measured, on a 90 s excerpt against
-/// that 8.6 Mb/s file:
+/// VideoToolbox quality (1-100) for exports. VideoToolbox spends an average bitrate in full,
+/// whatever the picture needs: a 1882x1080/30 screen recording with a camera, asked for
+/// 9.1 Mb/s, came out at 8.6 Mb/s and 444 MB for 6.7 minutes. In quality mode, 90 s of that
+/// same recording exported at the same size, SSIM against the quality-95 export:
 ///
-///     quality 60   0.96 Mb/s   SSIM 0.9901
-///     quality 65   1.15 Mb/s   SSIM 0.9927
-///     quality 70   1.59 Mb/s   SSIM 0.9955
-///     quality 80   2.82 Mb/s   SSIM 0.9975
-///     x264 (HandBrake) at 1.0 Mb/s over the whole file: SSIM 0.9885
+///     quality 50   0.79 Mb/s   0.9784
+///     quality 55   1.03 Mb/s   0.9846
+///     quality 60   1.29 Mb/s   0.9894
+///     quality 65   1.55 Mb/s   0.9925
+///     quality 70   2.06 Mb/s   0.9955
 ///
-/// 65 is past what the x264 re-encode people were making by hand delivers, at an eighth of
-/// the bits.
-const VT_EXPORT_QUALITY: i32 = 65;
+/// The yardstick is the x264 re-encode people were making by hand to shrink these files
+/// (HandBrake, 1.0 Mb/s): 0.9885 against the export it was made from. 60 matches it.
+const VT_EXPORT_QUALITY: i32 = 60;
 
-/// `OPENSCREEN_EXPORT_QUALITY=<1-100>` overrides it, for measuring the next table.
+/// `OPENSCREEN_EXPORT_QUALITY=<1-100>` overrides it: that is how the table above was measured.
 fn vt_export_quality() -> i32 {
     std::env::var("OPENSCREEN_EXPORT_QUALITY")
         .ok()
