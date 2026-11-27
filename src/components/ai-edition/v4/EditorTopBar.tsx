@@ -14,7 +14,6 @@ import {
 	RefreshCw,
 	Save,
 	Sparkles,
-	Star,
 	Sun,
 	Undo2,
 } from "lucide-react";
@@ -547,24 +546,6 @@ function AppMenu({ actions }: { actions: TopBarActions }) {
 					>
 						<LifeBuoy size={15} />
 						{tCommon("actions.saveDiagnostics")}
-					</button>
-					{/* The permanent way to reach the repo, as opposed to the one-time ask after an
-					    export. Unconditional: unlike the update check above, a link to the repo root
-					    is safe on every channel, the Store included. Main opens the URL, so this row
-					    and the export prompt can never point at different pages. */}
-					<button
-						type="button"
-						role="menuitem"
-						className={styles.appMenuRow}
-						data-testid="app-menu-star-on-github"
-						onClick={run(() => {
-							void window.electronAPI
-								?.openRepoPage?.()
-								.catch((err) => console.warn("[star] could not open the repo page:", err));
-						})}
-					>
-						<Star size={15} />
-						{tCommon("actions.starOnGithub")}
 					</button>
 				</div>
 			) : null}

@@ -21,7 +21,6 @@ import {
 	usesNativeAboutPanel,
 } from "./about";
 import { flushChatPersistence } from "./ai-edition/chat-service";
-import { AppSettingsStore } from "./app-settings";
 import {
 	blockedFromInstalling,
 	checkForSelfUpdate,
@@ -72,7 +71,6 @@ import {
 import { describeChildProcessGone, describeRenderProcessGone } from "./processGoneLog";
 import { setDisplaySleepBlocked } from "./recording/displaySleepBlocker";
 import { RecordingsDirManager } from "./recording/recordingsDirManager";
-import { offersStarPrompt, REPO_URL, storeReviewUrl } from "./star-prompt";
 import { registerSttIpc, shutdownStt } from "./stt";
 import { checkLatestRelease } from "./update-checker";
 import {
@@ -292,13 +290,6 @@ function setupApplicationMenu() {
 					label: mainT("common", "actions.saveDiagnostics") || "Save Diagnostics",
 					click: runSaveDiagnostics,
 				},
-				// Permanent and unconditional, unlike the update check below: a link to the repo
-				// is the one thing every channel may show, the Store included. Not in the tray,
-				// which is the recording surface — nothing asks for a favour mid-take.
-				{
-					label: mainT("common", "actions.starOnGithub") || "Star on GitHub",
-					click: runStarOnGithub,
-				},
 				// Omitted entirely — here, in the Help menu and in the tray — where a package
 				// manager owns the update. See `canOfferUpdateCheck`.
 				...(canOfferUpdateCheck()
@@ -462,10 +453,6 @@ function setupApplicationMenu() {
 					label: mainT("common", "actions.saveDiagnostics") || "Save Diagnostics",
 					click: runSaveDiagnostics,
 				},
-				{
-					label: mainT("common", "actions.starOnGithub") || "Star on GitHub",
-					click: runStarOnGithub,
-				},
 			],
 		});
 	}
@@ -609,13 +596,6 @@ async function presentAboutDialog() {
 function runAboutDialog() {
 	showAboutDialog().catch((error) => {
 		console.error("[about] dialog failed", error);
-	});
-}
-
-/** Menu, tray and renderer all end up here, so the link cannot drift between them. */
-function runStarOnGithub() {
-	shell.openExternal(REPO_URL).catch((error) => {
-		console.error("[star] could not open the repo page", error);
 	});
 }
 
@@ -1417,55 +1397,6 @@ appReady?.then(async () => {
 	// Returns at once: whatever follows the click is a native dialog or a quit, owned by this side.
 	ipcMain.handle("apply-update", () => {
 		runApplyUpdate();
-	});
-
-	// The one-time star ask. Decided here, not in the renderer, for the same reason the update
-	// check is: the take flag and the install channel live in this file, and a rule enforced in
-	// two places is a rule that gets asked two different ways. The renderer learns yes or no —
-	// never the counters behind it, which stay on disk and are reported nowhere.
-	//
-	// Its own store instance: `AppSettingsStore` is a stateless wrapper around one JSON file, so
-	// this costs a path string, and the alternative is threading ipc/handlers.ts' instance out
-	// through a module that has no other reason to export it.
-	const starPromptSettings = new AppSettingsStore(app.getPath("userData"));
-
-	ipcMain.handle("star-prompt:export-finished", () => {
-		const { successfulExports, dismissed } = starPromptSettings.recordSuccessfulExport();
-		return {
-			offer: offersStarPrompt({
-				successfulExports,
-				dismissed,
-				recording: isRecording,
-				// Every handler in this file is registered inside `appReady`, which the CLI boot
-				// path never reaches, so this is the second lock on a shut door — see the note on
-				// `headless` in star-prompt.ts.
-				headless: cliCommand !== null,
-			}),
-			// Drives which links the prompt shows. A Store copy must not be pointed at Releases
-			// or at an .exe, so it is offered the repo root and the Store's own review page.
-			store: getInstallChannel() === "store",
-		};
-	});
-
-	// Opening the repo goes through main like the Store link does, so the renderer holds no URL
-	// at all and every surface that offers a star opens the same one.
-	ipcMain.handle("star-prompt:open-repo", () => {
-		runStarOnGithub();
-	});
-
-	// Starring and declining are the same answer to this handler: the ask is over either way.
-	ipcMain.handle("star-prompt:dismiss", () => {
-		starPromptSettings.dismissStarPrompt();
-	});
-
-	// The deep link is built in the main process and never crosses the IPC boundary as a string.
-	// `open-external-url` allows http/https/mailto only — deliberately, because handing the OS a
-	// custom scheme from a renderer that runs with `webSecurity:false` is a launch primitive —
-	// and one fixed URL is not a reason to widen that.
-	ipcMain.handle("star-prompt:open-store-review", async () => {
-		if (getInstallChannel() !== "store") return { success: false };
-		await shell.openExternal(storeReviewUrl());
-		return { success: true };
 	});
 
 	// The editor's app menu opens the SAME About box the native menu and the tray do, rather

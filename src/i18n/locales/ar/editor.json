@@ -65,11 +65,11 @@
 		"importVideoButton": "استيراد فيديو",
 		"loadProjectButton": "فتح مشروع",
 		"supportedFormats": "الصيغ المدعومة: MP4، MOV، WebM، MKV، AVI، M4V، WMV",
-		"dragDropHint": "أو اسحب وأفلت ملف مشروع .openscreen هنا",
+		"dragDropHint": "أو اسحب وأفلت ملف مشروع هنا",
 		"dropOverlay": "أفلت ملف المشروع لفتحه",
 		"dropErrors": {
 			"unsupportedFormatTitle": "تنسيق غير مدعوم",
-			"unsupportedFormatMessage": "يمكن إسقاط ملفات مشروع .openscreen فقط هنا. لاستيراد مقطع فيديو، استخدم زر \"استيراد ملف فيديو...\" بدلاً من ذلك.",
+			"unsupportedFormatMessage": "يمكن إسقاط ملفات مشروع فقط هنا. لاستيراد مقطع فيديو، استخدم زر \"استيراد ملف فيديو...\" بدلاً من ذلك.",
 			"couldNotOpenTitle": "تعذّر فتح الملف",
 			"couldNotOpenMessage": "تعذّر فتح ملف المشروع. ربما تم نقل الفيديو المرجعي أو حذفه."
 		}
@@ -214,9 +214,6 @@
 		"exportedGif": "تم تصدير GIF",
 		"exportedVideo": "تم تصدير الفيديو",
 		"showInFolder": "إظهار في المجلد",
-		"starPrompt": "OpenScreen مجاني ومرخّص بموجب MIT. نجمة على GitHub تساعد الآخرين على العثور عليه.",
-		"starPromptNoThanks": "لا، شكرًا",
-		"rateOnStore": "قيّم التطبيق في متجر Microsoft",
 		"exportFailed": "فشل التصدير",
 		"failedToWriteFile": "فشلت كتابة الملف",
 		"qualityUpscaleWarning": "تكبير الدقة",

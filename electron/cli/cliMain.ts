@@ -435,7 +435,7 @@ export function runCli(command: CliCommand): void {
 							if (mcp.isBusy()) return false;
 							safeWrite(
 								process.stderr,
-								"OpenScreen is updating. Restart the MCP server after the app returns.\n",
+								"Docebo Screen Recorder is updating. Restart the MCP server after the app returns.\n",
 							);
 							closeMcp();
 							return true;

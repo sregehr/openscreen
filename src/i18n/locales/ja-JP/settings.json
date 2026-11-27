@@ -407,7 +407,6 @@
 		"save": "プロジェクトを保存"
 	},
 	"support": {
-		"starOnGithub": "GitHub でスターを付ける",
 		"saveDiagnostics": "診断情報を保存",
 		"reportBug": "バグを報告"
 	},

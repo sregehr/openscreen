@@ -211,7 +211,7 @@ describe("openscreen mcp update notice", () => {
 		cacheLookup("9.9.9");
 		await runMcp();
 		expect(mocks.serve.mock.calls[0][0].updateNotice).toContain(
-			"OpenScreen 9.9.9 is available; this is 2.1.0.",
+			"Docebo Screen Recorder 9.9.9 is available; this is 2.1.0.",
 		);
 		// The cache is fresh, so the background lookup did not go out.
 		expect(mocks.netFetch).not.toHaveBeenCalled();

@@ -1,12 +1,6 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
-import {
-	type AboutFacts,
-	COPYRIGHT,
-	formatAboutDetail,
-	usesNativeAboutPanel,
-	WEBSITE_URL,
-} from "./about";
+import { type AboutFacts, COPYRIGHT, formatAboutDetail, usesNativeAboutPanel } from "./about";
 
 function facts(overrides: Partial<AboutFacts> = {}): AboutFacts {
 	return {
@@ -22,13 +16,9 @@ function facts(overrides: Partial<AboutFacts> = {}): AboutFacts {
 }
 
 describe("formatAboutDetail", () => {
-	it("lays the runtime, the install and the project out one per line", () => {
+	it("lays the runtime and the install out one per line", () => {
 		expect(formatAboutDetail(facts())).toBe(
-			[
-				"Electron 41.2.1 · Chromium 138.0.7204.100 · Node 22.22.1",
-				"darwin arm64 · dmg",
-				WEBSITE_URL,
-			].join("\n"),
+			["Electron 41.2.1 · Chromium 138.0.7204.100 · Node 22.22.1", "darwin arm64 · dmg"].join("\n"),
 		);
 	});
 

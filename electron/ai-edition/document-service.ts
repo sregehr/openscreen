@@ -100,7 +100,7 @@ export class DocumentNotFoundError extends Error {
 export class ProjectOpenInEditorError extends Error {
 	constructor(public readonly projectId: string) {
 		super(
-			"The edit was NOT applied: this project is open in the OpenScreen editor, and the editor could not be reached to apply it there (a file edit would be overwritten by its next save). Retry in a moment. If it is refused again, ask the user to close the project in OpenScreen, or to restart or update OpenScreen.",
+			"The edit was NOT applied: this project is open in the Docebo Screen Recorder editor, and the editor could not be reached to apply it there (a file edit would be overwritten by its next save). Retry in a moment. If it is refused again, ask the user to close the project in Docebo Screen Recorder, or to restart or update Docebo Screen Recorder.",
 		);
 		this.name = "ProjectOpenInEditorError";
 	}

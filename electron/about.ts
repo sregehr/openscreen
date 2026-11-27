@@ -8,7 +8,6 @@
 
 import type { InstallChannel } from "./install-channel";
 
-export const WEBSITE_URL = "https://getopenscreen.com";
 /** The brand spelling, for the surfaces we render ourselves. NOT `app.name`: that resolves to
  *  electron-builder's `productName` ("Docebo Screen Recorder") when packaged and to package.json's `name`
  *  ("openscreen") in dev, so the About box would disagree with its own title bar. */
@@ -45,8 +44,8 @@ export interface AboutFacts {
 	node: string;
 }
 
-/** The block under "Openscreen <version>". Untranslated on purpose: every line is a version
- *  number, a platform identifier or a URL, and a pasted bug report reads the same whatever
+/** The block under "<product name> <version>". Untranslated on purpose: every line is a version
+ *  number, or a platform identifier, and a pasted bug report reads the same whatever
  *  locale the reporter runs.
  *
  *  `COPYRIGHT` is deliberately NOT part of it: the macOS About panel has its own field for
@@ -56,6 +55,5 @@ export function formatAboutDetail(facts: AboutFacts): string {
 	return [
 		`Electron ${facts.electron} · Chromium ${facts.chrome} · Node ${facts.node}`,
 		`${facts.platform} ${facts.arch} · ${facts.channel}`,
-		WEBSITE_URL,
 	].join("\n");
 }

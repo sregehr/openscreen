@@ -220,7 +220,7 @@ describe("what `openscreen mcp` tells its client", () => {
 		const instructions = client.getInstructions() ?? "";
 		expect(instructions.startsWith(mediaPreamble("stdio"))).toBe(true);
 		expect(instructions).toContain("Before a series of edits, call createCheckpoint");
-		expect(instructions).toContain("in OpenScreen's memory while the app runs");
+		expect(instructions).toContain("in Docebo Screen Recorder's memory while the app runs");
 		expect(instructions).not.toMatch(
 			/project open in the editor|Project edits|Agent edits|Nothing here records|undo step|exporting\)/,
 		);
@@ -241,7 +241,7 @@ describe("what `openscreen mcp` tells its client", () => {
 
 	it("answers in its own terms when no app answers: no editor, no Ctrl/Cmd+Z, its own lifetime", async () => {
 		const noProject = await call("getCurrentDocument");
-		expect(textOf(noProject)).toContain("OpenScreen is not running");
+		expect(textOf(noProject)).toContain("Docebo Screen Recorder is not running");
 		expect(textOf(noProject)).not.toContain("No project is open");
 
 		const other = await documents.createProject("Other");
@@ -612,7 +612,7 @@ describe("setPointerTrack", () => {
 			events: clickAt(take, 0.2),
 		});
 		expect(refused.isError).toBe(true);
-		expect(textOf(refused)).toContain("open in the OpenScreen editor");
+		expect(textOf(refused)).toContain("open in the Docebo Screen Recorder editor");
 		expect(await sidecarFile(take.videoPath)).toBe(before);
 		expect((await documents.getProject(take.projectId)).zoomRanges).toHaveLength(take.autoZooms);
 	});

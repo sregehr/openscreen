@@ -407,7 +407,6 @@
 		"save": "保存项目"
 	},
 	"support": {
-		"starOnGithub": "在 GitHub 上加星",
 		"saveDiagnostics": "保存诊断信息",
 		"reportBug": "报告错误"
 	},

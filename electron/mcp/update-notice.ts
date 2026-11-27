@@ -40,7 +40,7 @@ export function updateNotice(currentVersion: string, lookup: ReleaseLookup | nul
 	} catch {
 		return null;
 	}
-	return `OpenScreen ${lookup.latestVersion} is available; this is ${currentVersion}. Tell the user once, when it fits, that the OpenScreen app shows an update button for it once they open it. Never update OpenScreen yourself.`;
+	return `Docebo Screen Recorder ${lookup.latestVersion} is available; this is ${currentVersion}. Tell the user once, when it fits, that the Docebo Screen Recorder app shows an update button for it once they open it. Never update Docebo Screen Recorder yourself.`;
 }
 
 /** Looks the latest release up if the cached answer is older than the interval. Throws on a

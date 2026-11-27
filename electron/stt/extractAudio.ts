@@ -39,7 +39,7 @@ export class FfmpegUnavailableError extends Error {
 	constructor() {
 		super(
 			"ffmpeg is missing: transcription needs it to read the audio, and this install has none. " +
-				"Reinstall OpenScreen, or set OPENSCREEN_FFMPEG_PATH to an ffmpeg executable.",
+				"Reinstall Docebo Screen Recorder, or set OPENSCREEN_FFMPEG_PATH to an ffmpeg executable.",
 		);
 		this.name = "FfmpegUnavailableError";
 	}

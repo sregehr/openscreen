@@ -60,7 +60,7 @@ const MAX_TOKEN_LINE_BYTES = 256;
 const MAX_ANSWER_BYTES = 256 * 1024 * 1024;
 
 const LOST_MESSAGE =
-	"OpenScreen stopped answering during this call, so whether it took effect is unknown. Call getCurrentDocument with the same projectId to check before retrying.";
+	"Docebo Screen Recorder stopped answering during this call, so whether it took effect is unknown. Call getCurrentDocument with the same projectId to check before retrying.";
 
 interface Discovery {
 	pid: number;

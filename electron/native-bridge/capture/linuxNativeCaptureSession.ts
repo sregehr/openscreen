@@ -375,7 +375,7 @@ export class LinuxNativeCaptureSession {
 			this.kill();
 			reject?.(
 				new Error(
-					"OpenScreen could not start screen capture: the screen share delivered no " +
+					"Docebo Screen Recorder could not start screen capture: the screen share delivered no " +
 						`frame within ${FIRST_FRAME_TIMEOUT_MS / 1000} s.`,
 				),
 			);

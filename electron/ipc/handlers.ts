@@ -1970,7 +1970,7 @@ export async function exportDiagnosticFile(payload: {
 }) {
 	const { filePath, canceled } = await dialog.showSaveDialog({
 		title: "Save Diagnostic File",
-		defaultPath: `openscreen-diagnostic-${Date.now()}.zip`,
+		defaultPath: `screen-recorder-diagnostic-${Date.now()}.zip`,
 		filters: [{ name: "ZIP", extensions: ["zip"] }],
 	});
 

@@ -65,11 +65,11 @@
 		"importVideoButton": "匯入影片",
 		"loadProjectButton": "開啟專案",
 		"supportedFormats": "支援的格式：MP4、MOV、WebM、MKV、AVI、M4V、WMV",
-		"dragDropHint": "或將 .openscreen 專案檔案拖放至此",
+		"dragDropHint": "或將專案檔案拖放至此",
 		"dropOverlay": "將專案檔案拖放至此以開啟",
 		"dropErrors": {
 			"unsupportedFormatTitle": "不支援的格式",
-			"unsupportedFormatMessage": "此處只能拖放 .openscreen 專案檔案。要匯入影片，請使用「匯入影片檔案...」按鈕。",
+			"unsupportedFormatMessage": "此處只能拖放專案檔案。要匯入影片，請使用「匯入影片檔案...」按鈕。",
 			"couldNotOpenTitle": "無法開啟檔案",
 			"couldNotOpenMessage": "無法開啟專案檔案。它所參照的影片可能已被移動或刪除。"
 		}
@@ -214,9 +214,6 @@
 		"exportedGif": "GIF 已匯出",
 		"exportedVideo": "影片已匯出",
 		"showInFolder": "在資料夾中顯示",
-		"starPrompt": "OpenScreen 免費且採用 MIT 授權。在 GitHub 上給顆星，能幫助更多人找到它。",
-		"starPromptNoThanks": "不用了",
-		"rateOnStore": "在 Microsoft Store 評分",
 		"exportFailed": "匯出失敗",
 		"failedToWriteFile": "寫入檔案失敗",
 		"qualityUpscaleWarning": "放大",

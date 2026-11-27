@@ -82,19 +82,26 @@ export function webcamVideoConstraints(
  * Encoder bitrate for a frame the camera actually delivered.
  *
  * Keyed off the delivered size rather than the requested preset: a 720p camera
- * asked for 2160p must not be encoded as if it were 4K. The tiers mirror the
- * native ladder in electron/native/wgc-capture/src/main.cpp -- keep them in step.
+ * asked for 2160p must not be encoded as if it were 4K.
+ *
+ * About 0.08 bit per pixel per frame at 30 fps, a little under the screen capture rule
+ * (`defaultVideoBitrate` in the ScreenCaptureKit helper). MediaRecorder spends
+ * what it is given whatever the picture holds: at the earlier 16 Mbit/s a
+ * 1664x1248 camera wrote 807 MB for a 6.7-minute take, 2.5x the 4K screen
+ * recording beside it. These are deliberately below the Windows native ladder
+ * in electron/native/wgc-capture/src/main.cpp, whose encoder treats its figure
+ * as a ceiling.
  */
 export function webcamBitrateFor(width: number | undefined, height: number | undefined): number {
 	const preset = WEBCAM_QUALITY_PRESETS[DEFAULT_WEBCAM_QUALITY];
 	const pixels =
 		width && height && width > 0 && height > 0 ? width * height : preset.width * preset.height;
 
-	if (pixels >= 3840 * 2160) return 40_000_000;
-	if (pixels >= 2560 * 1440) return 24_000_000;
-	if (pixels >= 1920 * 1080) return 16_000_000;
-	if (pixels >= 1280 * 720) return 8_000_000;
-	return 4_000_000;
+	if (pixels >= 3840 * 2160) return 20_000_000;
+	if (pixels >= 2560 * 1440) return 10_000_000;
+	if (pixels >= 1920 * 1080) return 5_000_000;
+	if (pixels >= 1280 * 720) return 2_500_000;
+	return 1_500_000;
 }
 
 /** The bitrate for whatever the stream's first video track ended up delivering. */
